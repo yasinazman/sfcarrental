@@ -97,4 +97,12 @@ class AdminsController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
+    public function login()
+    {
+        $this->viewBuilder()->disableAutoLayout();
+        // Buat masa 
+        // ini kita biarkan kosong dahulu untuk memaparkan rekaan UI
+        // Logik pengesahan pangkalan data akan diletakkan di sini nanti
+    }
 }
