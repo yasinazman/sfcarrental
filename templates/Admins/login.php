@@ -16,7 +16,7 @@
     </button>
 
     <div class="login-container">
-        <div class="logo-text">SF <span>Car Rental</span></div>
+        <div class="logo-text">SF <span>Adib Car rental</span></div>
         
         <div class="flash-message">
             <?= $this->Flash->render() ?>
