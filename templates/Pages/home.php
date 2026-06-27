@@ -13,283 +13,9 @@ $this->disableAutoLayout();
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>sfcarrental | Sewa Kereta Mudah & Pantas</title>
     <?= $this->Html->meta('icon') ?>
-
-    <style>
-        /* CSS RESET & VARIABLES */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        :root {
-            --primary-red: #E50914;
-            --dark-black: #111111;
-            --light-white: #FFFFFF;
-            --gray-bg: #F5F5F5;
-            --text-dark: #222222;
-            --text-muted: #666666;
-        }
-
-        body {
-            background-color: var(--light-white);
-            color: var(--text-dark);
-            line-height: 1.6;
-        }
-
-        /* NAVBAR */
-        header {
-            background-color: var(--dark-black);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1rem 2rem;
-        }
-        .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: var(--light-white);
-            text-decoration: none;
-            letter-spacing: 1px;
-        }
-        .logo span {
-            color: var(--primary-red);
-        }
-        .nav-links {
-            display: flex;
-            list-style: none;
-            align-items: center;
-        }
-        .nav-links li {
-            margin-left: 2rem;
-        }
-        .nav-links a {
-            color: var(--light-white);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-        .nav-links a:hover {
-            color: var(--primary-red);
-        }
-        .btn-login {
-            background-color: var(--primary-red);
-            color: var(--light-white) !important;
-            padding: 0.6rem 1.5rem;
-            border-radius: 4px;
-            font-weight: bold;
-            transition: background 0.3s;
-        }
-        .btn-login:hover {
-            background-color: #b8070f;
-        }
-
-        /* HERO SECTION */
-        .hero {
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1920') no-repeat center center/cover;
-            height: 80vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: var(--light-white);
-            padding: 0 1rem;
-        }
-        .hero-content h1 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-        }
-        .hero-content p {
-            font-size: 1.25rem;
-            margin-bottom: 2rem;
-            color: #cccccc;
-        }
-        .btn-cta {
-            background-color: var(--primary-red);
-            color: var(--light-white);
-            padding: 1rem 2.5rem;
-            font-size: 1.1rem;
-            font-weight: bold;
-            text-decoration: none;
-            border-radius: 4px;
-            box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
-            transition: transform 0.3s, background 0.3s;
-            display: inline-block;
-        }
-        .btn-cta:hover {
-            background-color: #b8070f;
-            transform: translateY(-3px);
-        }
-
-        /* SECTION STYLING */
-        section {
-            padding: 5rem 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-            position: relative;
-            font-weight: 700;
-        }
-        .section-title::after {
-            content: '';
-            display: block;
-            width: 60px;
-            height: 4px;
-            background-color: var(--primary-red);
-            margin: 10px auto 0;
-        }
-
-        /* FLEET PREVIEW (KAD KERETA) */
-        .fleet-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-        .car-card {
-            background: var(--light-white);
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            transition: transform 0.3s;
-        }
-        .car-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary-red);
-        }
-        .car-img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-        .car-info {
-            padding: 1.5rem;
-        }
-        .car-name {
-            font-size: 1.4rem;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-        }
-        .car-specs {
-            display: flex;
-            justify-content: space-between;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-bottom: 1.5rem;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 1rem;
-        }
-        .btn-lock {
-            display: block;
-            text-align: center;
-            background-color: var(--dark-black);
-            color: var(--light-white);
-            text-decoration: none;
-            padding: 0.75rem;
-            border-radius: 4px;
-            font-weight: 600;
-            transition: background 0.3s;
-        }
-        .btn-lock:hover {
-            background-color: var(--primary-red);
-        }
-
-        /* WHY CHOOSE US */
-        .features-bg {
-            background-color: var(--gray-bg);
-            max-width: 100%;
-        }
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .feature-box {
-            text-align: center;
-            padding: 2.5rem 1.5rem;
-            background: var(--light-white);
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-        }
-        .feature-icon {
-            font-size: 2.5rem;
-            color: var(--primary-red);
-            margin-bottom: 1rem;
-        }
-        .feature-box h3 {
-            margin-bottom: 0.5rem;
-            font-size: 1.25rem;
-        }
-
-        /* HOW IT WORKS */
-        .steps-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            text-align: center;
-        }
-        .step {
-            position: relative;
-            padding: 1rem;
-        }
-        .step-num {
-            width: 50px;
-            height: 50px;
-            background-color: var(--primary-red);
-            color: var(--light-white);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin: 0 auto 1.5rem;
-        }
-
-        /* FOOTER */
-        footer {
-            background-color: var(--dark-black);
-            color: var(--light-white);
-            padding: 3rem 2rem;
-            text-align: center;
-        }
-        .footer-content p {
-            margin-bottom: 1rem;
-            color: #888888;
-        }
-        .footer-links a {
-            color: var(--light-white);
-            text-decoration: none;
-            margin: 0 1rem;
-            transition: color 0.3s;
-        }
-        .footer-links a:hover {
-            color: var(--primary-red);
-        }
-
-        /* RESPONSIVE */
-        @media (max-width: 768px) {
-            .hero-content h1 { font-size: 2.3rem; }
-            .navbar { flex-direction: column; gap: 1rem; }
-            .nav-links { padding-left: 0; }
-            .nav-links li { margin: 0 1rem; }
-        }
-    </style>
+    
+    <?= $this->Html->css('home') ?>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
@@ -298,102 +24,146 @@ $this->disableAutoLayout();
             <a href="#" class="logo">sf<span>carrental</span></a>
             <ul class="nav-links">
                 <li><a href="#utama">Utama</a></li>
-                <li><a href="#kereta">Koleksi Kereta</a></li>
+                <li><a href="#kategori-section">Kategori</a></li>
+                <li><a href="#kereta-section">Koleksi Kereta</a></li>
                 <li><a href="#kelebihan">Kelebihan</a></li>
                 <li><a href="#" class="btn-login">Log Masuk / Daftar</a></li>
             </ul>
         </div>
     </header>
 
-    <main id="utama">
-        <div class="hero">
+    <main id="utama" class="hero">
+        <div class="hero-container">
             <div class="hero-content">
                 <h1>Sewa Kereta Impian Anda Dengan Mudah</h1>
-                <p>Harga telus, kereta bersih, dan servis pantas. Daftar akaun sfcarrental hari ini.</p>
-                <a href="#" class="btn-cta">Semak Kereta Tersedia</a>
+                <p>Harga telus, kereta bersih, dan servis pantas di seluruh Malaysia.</p>
+            </div>
+
+            <div class="booking-form-container">
+                <form action="#" method="GET" class="booking-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-location-dot"></i> Lokasi Ambil (Pick Up)</label>
+                            <select name="pickup_location" required>
+                                <option value="">Pilih Lokasi Ambil...</option>
+                                <option value="KLIA">KLIA / KLIA2</option>
+                                <option value="KL">Kuala Lumpur</option>
+                                <option value="Shah Alam">Shah Alam, Selangor</option>
+                                <option value="Penang">Pulau Pinang</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-map-location-dot"></i> Lokasi Destinasi (Destinasi Utama)</label>
+                            <input type="text" name="destination" placeholder="Contoh: Johor Bahru, Ipoh..." required>
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-calendar-plus"></i> Tarikh & Masa Ambil</label>
+                            <input type="datetime-local" name="pickup_date" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-calendar-minus"></i> Tarikh & Masa Pulang</label>
+                            <input type="datetime-local" name="return_date" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-car-side"></i> Jenis Kereta</label>
+                            <select name="car_type">
+                                <option value="all">Semua Jenis Kereta</option>
+                                <option value="ekonomi">Ekonomi / Hatchback</option>
+                                <option value="sedan">Sedan</option>
+                                <option value="suv">SUV</option>
+                                <option value="mpv">MPV</option>
+                                <option value="luxury">Luxury</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group btn-container">
+                            <button type="submit" class="btn-search">
+                                <i class="fa-solid fa-magnifying-glass"></i> Cari Kereta
+                            </button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </main>
 
-    <section id="car-fleet">
-        <h2 class="section-title" id="kereta">Pilihan Kereta Popular</h2>
+    <section id="kategori-section" class="categories-container">
+        <h2 class="section-title">Ikut Kategori Pilihan</h2>
+        <div class="categories-grid">
+            <div class="category-card active"><i class="fa-solid fa-car"></i> Semua</div>
+            <div class="category-card"><i class="fa-solid fa-gas-pump"></i> Ekonomi</div>
+            <div class="category-card"><i class="fa-solid fa-car-side"></i> Sedan</div>
+            <div class="category-card"><i class="fa-solid fa-cloud-sun"></i> SUV</div>
+            <div class="category-card"><i class="fa-solid fa-users"></i> MPV</div>
+            <div class="category-card"><i class="fa-solid fa-gem"></i> Mewah</div>
+        </div>
+    </section>
+
+    <section id="kereta-section">
+        <h2 class="section-title">Pilihan Kereta Popular</h2>
         <div class="fleet-grid">
             
             <div class="car-card">
+                <div class="car-tag">Ekonomi</div>
                 <img src="https://peroduapj.com.my/wp-content/uploads/2015/12/perodua-axia-color-377345.webp" alt="Perodua Axia" class="car-img">
                 <div class="car-info">
-                    <div class="car-name">Ekonomi (Perodua Axia)</div>
+                    <div class="car-name">Perodua Axia</div>
+                    
                     <div class="car-specs">
-                        <span>👤 4 Tempat Duduk</span>
-                        <span>⚙️ Auto</span>
-                        <span>🧳 1 Bagasi</span>
+                        <span><i class="fa-solid fa-user"></i> 4 Tempat Duduk</span>
+                        <span><i class="fa-solid fa-gear"></i> Auto</span>
                     </div>
-                    <a href="#" class="btn-lock">🔑 Log Masuk Untuk Tempah</a>
+
+                    <div class="car-extra-details">
+                        <div class="detail-item"><i class="fa-solid fa-gas-pump"></i> <span>Fuel:</span> Petrol (EEV)</div>
+                        <div class="detail-item"><i class="fa-solid fa-circle-dot"></i> <span>Spare Tyre:</span> Ada</div>
+                        <div class="detail-item"><i class="fa-solid fa-baby-carriage"></i> <span>Child Seat:</span> Request (Sewa)</div>
+                        <div class="detail-item"><i class="fa-solid fa-wrench"></i> <span>Spec:</span> 1.0L G-Spec</div>
+                    </div>
+
+                    <a href="#" class="btn-lock"><i class="fa-solid fa-key"></i> Log Masuk Untuk Tempah</a>
                 </div>
             </div>
 
             <div class="car-card">
+                <div class="car-tag">Sedan</div>
                 <img src="https://www.gemcarrental.com.my/wp-content/uploads/2022/04/bezza-left-square.jpg" alt="Perodua Bezza" class="car-img">
                 <div class="car-info">
-                    <div class="car-name">Sedan (Perodua Bezza)</div>
+                    <div class="car-name">Perodua Bezza</div>
                     <div class="car-specs">
-                        <span>👤 5 Tempat Duduk</span>
-                        <span>⚙️ Auto</span>
-                        <span>🧳 2 Bagasi</span>
+                        <span><i class="fa-solid fa-user"></i> 5 Tempat Duduk</span>
+                        <span><i class="fa-solid fa-gear"></i> Auto</span>
                     </div>
-                    <a href="#" class="btn-lock">🔑 Log Masuk Untuk Tempah</a>
+                    <div class="car-extra-details">
+                        <div class="detail-item"><i class="fa-solid fa-gas-pump"></i> <span>Fuel:</span> Petrol</div>
+                        <div class="detail-item"><i class="fa-solid fa-circle-dot"></i> <span>Spare Tyre:</span> Ada</div>
+                        <div class="detail-item"><i class="fa-solid fa-baby-carriage"></i> <span>Child Seat:</span> Request (Sewa)</div>
+                        <div class="detail-item"><i class="fa-solid fa-wrench"></i> <span>Spec:</span> 1.3L Premium X</div>
+                    </div>
+                    <a href="#" class="btn-lock"><i class="fa-solid fa-key"></i> Log Masuk Untuk Tempah</a>
                 </div>
             </div>
 
             <div class="car-card">
-                <img src="https://dodomat.com.my/cdn/shop/files/car_mat_proton_x50_2020-800x800_a8330c0f-9661-4eeb-a5ad-06e2a349a6b7.jpg?v=1732870426" alt="Proton X50 Lookalike" class="car-img">
+                <div class="car-tag">SUV</div>
+                <img src="https://dodomat.com.my/cdn/shop/files/car_mat_proton_x50_2020-800x800_a8330c0f-9661-4eeb-a5ad-06e2a349a6b7.jpg?v=1732870426" alt="Proton X50" class="car-img">
                 <div class="car-info">
-                    <div class="car-name">SUV (Proton X50)</div>
+                    <div class="car-name">Proton X50</div>
                     <div class="car-specs">
-                        <span>👤 5 Tempat Duduk</span>
-                        <span>⚙️ Auto</span>
-                        <span>🧳 4 Bagasi</span>
+                        <span><i class="fa-solid fa-user"></i> 5 Tempat Duduk</span>
+                        <span><i class="fa-solid fa-gear"></i> Auto</span>
                     </div>
-                    <a href="#" class="btn-lock">🔑 Log Masuk Untuk Tempah</a>
-                </div>
-            </div>
-
-            <div class="car-card">
-                <img src="https://peroduasale.com.my/wp-content/uploads/2024/08/Perodua-Alza.png" alt="Perodua Alza Lookalike" class="car-img">
-                <div class="car-info">
-                    <div class="car-name">MPV (Perodua Alza)</div>
-                    <div class="car-specs">
-                        <span>👤 7 Tempat Duduk</span>
-                        <span>⚙️ Auto</span>
-                        <span>🧳 5 Bagasi</span>
+                    <div class="car-extra-details">
+                        <div class="detail-item"><i class="fa-solid fa-gas-pump"></i> <span>Fuel:</span> Petrol Turbo</div>
+                        <div class="detail-item"><i class="fa-solid fa-circle-dot"></i> <span>Spare Tyre:</span> Ruang Khas (Tersedia)</div>
+                        <div class="detail-item"><i class="fa-solid fa-baby-carriage"></i> <span>Child Seat:</span> ISOFIX (Tersedia)</div>
+                        <div class="detail-item"><i class="fa-solid fa-wrench"></i> <span>Spec:</span> 1.5T Flagship</div>
                     </div>
-                    <a href="#" class="btn-lock">🔑 Log Masuk Untuk Tempah</a>
-                </div>
-            </div>
-
-            <div class="car-card">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTb7nWdYEIwWfVqXY2yuhIXq9RnHnJzA8KSESLx_9YsdEflG6mmBlZR7dox&s=10" alt="BMW M5 F90 Lookalike" class="car-img">
-                <div class="car-info">
-                    <div class="car-name">Luxury (BMW M5 F90)</div>
-                    <div class="car-specs">
-                        <span>👤 5 Tempat Duduk</span>
-                        <span>⚙️ Auto</span>
-                        <span>🧳 4 Bagasi</span>
-                    </div>
-                    <a href="#" class="btn-lock">🔑 Log Masuk Untuk Tempah</a>
-                </div>
-            </div>
-
-            <div class="car-card">
-                <img src="https://assets.nst.com.my/images/articles/Triton_Athlete-Side_Quarter_Visual_1617871938.jpg" alt="Mitsubishi Triton Lookalike" class="car-img">
-                <div class="car-info">
-                    <div class="car-name">4x4 (Mitsubishi Triton)</div>
-                    <div class="car-specs">
-                        <span>👤 5 Tempat Duduk</span>
-                        <span>⚙️ Auto</span>
-                        <span>🧳 12 Bagasi</span>
-                    </div>
-                    <a href="#" class="btn-lock">🔑 Log Masuk Untuk Tempah</a>
+                    <a href="#" class="btn-lock"><i class="fa-solid fa-key"></i> Log Masuk Untuk Tempah</a>
                 </div>
             </div>
 
@@ -405,44 +175,23 @@ $this->disableAutoLayout();
             <h2 class="section-title">Kenapa Pilih sfcarrental?</h2>
             <div class="features-grid">
                 <div class="feature-box">
-                    <div class="feature-icon">✨</div>
+                    <div class="feature-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
                     <h3>Kereta Sentiasa Bersih</h3>
                     <p>Setiap kenderaan disinfeksi dan diservis sebelum diserahkan kepada anda.</p>
                 </div>
                 <div class="feature-box">
-                    <div class="feature-icon">💰</div>
+                    <div class="feature-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div>
                     <h3>Tiada Caj Tersembunyi</h3>
                     <p>Harga yang anda lihat adalah harga yang anda bayar. Telus dan adil.</p>
                 </div>
                 <div class="feature-box">
-                    <div class="feature-icon">🛠️</div>
+                    <div class="feature-icon"><i class="fa-solid fa-headset"></i></div>
                     <h3>Bantuan Jalanraya 24/7</h3>
                     <p>Kami sentiasa bersedia membantu anda sekiranya berlaku sebarang kecemasan.</p>
                 </div>
             </div>
         </section>
     </div>
-
-    <section>
-        <h2 class="section-title">3 Langkah Mudah Untuk Memandu</h2>
-        <div class="steps-grid">
-            <div class="step">
-                <div class="step-num">1</div>
-                <h3>Daftar & Log Masuk</h3>
-                <p>Cipta akaun sfcarrental anda dengan selamat dalam masa 1 minit sahaja.</p>
-            </div>
-            <div class="step">
-                <div class="step-num">2</div>
-                <h3>Pilih Kereta & Tarikh</h3>
-                <p>Akses dashboard tempahan kami, pilih kenderaan dan tarikh yang anda mahu.</p>
-            </div>
-            <div class="step">
-                <div class="step-num">3</div>
-                <h3>Ambil & Pandu</h3>
-                <p>Selesaikan pembayaran atas talian dan ambil kereta di lokasi pilihan anda.</p>
-            </div>
-        </div>
-    </section>
 
     <footer>
         <div class="footer-content">
