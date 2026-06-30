@@ -1,459 +1,324 @@
 <?php
 /**
- * sfcarrental - Preview Homepage
+ * sfcarrental - Preview Homepage (Premium Tourist Edition with Float Dark Mode & Language)
  * @var \App\View\AppView $this
  */
-
 $this->disableAutoLayout();
 ?>
 <!DOCTYPE html>
-<html lang="ms">
+<html lang="en">
 <head>
     <?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>sfcarrental | Sewa Kereta Mudah & Pantas</title>
+    <title>sfcarrental | Premium Car Rental & Airport Transfer</title>
     <?= $this->Html->meta('icon') ?>
-
-    <style>
-        /* CSS RESET & VARIABLES */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        :root {
-            --primary-red: #E50914;
-            --dark-black: #111111;
-            --light-white: #FFFFFF;
-            --gray-bg: #F5F5F5;
-            --text-dark: #222222;
-            --text-muted: #666666;
-        }
-
-        body {
-            background-color: var(--light-white);
-            color: var(--text-dark);
-            line-height: 1.6;
-        }
-
-        /* NAVBAR */
-        header {
-            background-color: var(--dark-black);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1rem 2rem;
-        }
-        .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: var(--light-white);
-            text-decoration: none;
-            letter-spacing: 1px;
-        }
-        .logo span {
-            color: var(--primary-red);
-        }
-        .nav-links {
-            display: flex;
-            list-style: none;
-            align-items: center;
-        }
-        .nav-links li {
-            margin-left: 2rem;
-        }
-        .nav-links a {
-            color: var(--light-white);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-        .nav-links a:hover {
-            color: var(--primary-red);
-        }
-        .btn-login {
-            background-color: var(--primary-red);
-            color: var(--light-white) !important;
-            padding: 0.6rem 1.5rem;
-            border-radius: 4px;
-            font-weight: bold;
-            transition: background 0.3s;
-        }
-        .btn-login:hover {
-            background-color: #b8070f;
-        }
-
-        /* HERO SECTION */
-        .hero {
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1920') no-repeat center center/cover;
-            height: 80vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: var(--light-white);
-            padding: 0 1rem;
-        }
-        .hero-content h1 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-        }
-        .hero-content p {
-            font-size: 1.25rem;
-            margin-bottom: 2rem;
-            color: #cccccc;
-        }
-        .btn-cta {
-            background-color: var(--primary-red);
-            color: var(--light-white);
-            padding: 1rem 2.5rem;
-            font-size: 1.1rem;
-            font-weight: bold;
-            text-decoration: none;
-            border-radius: 4px;
-            box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
-            transition: transform 0.3s, background 0.3s;
-            display: inline-block;
-        }
-        .btn-cta:hover {
-            background-color: #b8070f;
-            transform: translateY(-3px);
-        }
-
-        /* SECTION STYLING */
-        section {
-            padding: 5rem 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-            position: relative;
-            font-weight: 700;
-        }
-        .section-title::after {
-            content: '';
-            display: block;
-            width: 60px;
-            height: 4px;
-            background-color: var(--primary-red);
-            margin: 10px auto 0;
-        }
-
-        /* FLEET PREVIEW (KAD KERETA) */
-        .fleet-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-        .car-card {
-            background: var(--light-white);
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            transition: transform 0.3s;
-        }
-        .car-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary-red);
-        }
-        .car-img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-        .car-info {
-            padding: 1.5rem;
-        }
-        .car-name {
-            font-size: 1.4rem;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-        }
-        .car-specs {
-            display: flex;
-            justify-content: space-between;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-bottom: 1.5rem;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 1rem;
-        }
-        .btn-lock {
-            display: block;
-            text-align: center;
-            background-color: var(--dark-black);
-            color: var(--light-white);
-            text-decoration: none;
-            padding: 0.75rem;
-            border-radius: 4px;
-            font-weight: 600;
-            transition: background 0.3s;
-        }
-        .btn-lock:hover {
-            background-color: var(--primary-red);
-        }
-
-        /* WHY CHOOSE US */
-        .features-bg {
-            background-color: var(--gray-bg);
-            max-width: 100%;
-        }
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .feature-box {
-            text-align: center;
-            padding: 2.5rem 1.5rem;
-            background: var(--light-white);
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-        }
-        .feature-icon {
-            font-size: 2.5rem;
-            color: var(--primary-red);
-            margin-bottom: 1rem;
-        }
-        .feature-box h3 {
-            margin-bottom: 0.5rem;
-            font-size: 1.25rem;
-        }
-
-        /* HOW IT WORKS */
-        .steps-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            text-align: center;
-        }
-        .step {
-            position: relative;
-            padding: 1rem;
-        }
-        .step-num {
-            width: 50px;
-            height: 50px;
-            background-color: var(--primary-red);
-            color: var(--light-white);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin: 0 auto 1.5rem;
-        }
-
-        /* FOOTER */
-        footer {
-            background-color: var(--dark-black);
-            color: var(--light-white);
-            padding: 3rem 2rem;
-            text-align: center;
-        }
-        .footer-content p {
-            margin-bottom: 1rem;
-            color: #888888;
-        }
-        .footer-links a {
-            color: var(--light-white);
-            text-decoration: none;
-            margin: 0 1rem;
-            transition: color 0.3s;
-        }
-        .footer-links a:hover {
-            color: var(--primary-red);
-        }
-
-        /* RESPONSIVE */
-        @media (max-width: 768px) {
-            .hero-content h1 { font-size: 2.3rem; }
-            .navbar { flex-direction: column; gap: 1rem; }
-            .nav-links { padding-left: 0; }
-            .nav-links li { margin: 0 1rem; }
-        }
-    </style>
+    
+    <?= $this->Html->css('home') ?>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
+
+    <button id="theme-toggle-float" class="theme-btn-float" title="Toggle Dark/Light Mode">
+        <i class="fa-solid fa-moon"></i>
+    </button>
+
+    <div class="top-bar">
+        <div class="top-bar-container">
+            <div class="top-info">
+                <span><i class="fa-solid fa-plane-arrival"></i> <span data-en="Free KLIA1 & KLIA2 Airport Pickup" data-bm="Pengambilan Percuma di Airport KLIA1 & KLIA2">Free KLIA1 & KLIA2 Airport Pickup</span></span>
+                <span><i class="fa-solid fa-headset"></i> <span data-en="24/7 Tourist Support: " data-bm="Bantuan Pelancong 24/7: ">24/7 Tourist Support: </span>+6012-3456789</span>
+            </div>
+            <div class="top-langs">
+                <span id="lang-en" class="lang-btn active">EN</span> | <span id="lang-bm" class="lang-btn">BM</span>
+            </div>
+        </div>
+    </div>
 
     <header>
         <div class="navbar">
             <a href="#" class="logo">sf<span>carrental</span></a>
             <ul class="nav-links">
-                <li><a href="#utama">Utama</a></li>
-                <li><a href="#kereta">Koleksi Kereta</a></li>
-                <li><a href="#kelebihan">Kelebihan</a></li>
-                <li><a href="#" class="btn-login">Log Masuk / Daftar</a></li>
+                <li><a href="#utama" data-en="Home" data-bm="Utama">Home</a></li>
+                <li><a href="#kategori-section" data-en="Categories" data-bm="Kategori">Categories</a></li>
+                <li><a href="#kereta-section" data-en="Our Fleet" data-bm="Koleksi Kereta">Our Fleet</a></li>
+                <li><a href="#kelebihan" data-en="Why Us" data-bm="Kelebihan">Why Us</a></li>
+                <li><a href="#" class="btn-login"><i class="fa-solid fa-user-plus"></i> <span data-en="Sign In / Register" data-bm="Log Masuk / Daftar">Sign In / Register</span></a></li>
             </ul>
         </div>
     </header>
 
-    <main id="utama">
-        <div class="hero">
+    <main id="utama" class="hero">
+        <div class="hero-container">
             <div class="hero-content">
-                <h1>Sewa Kereta Impian Anda Dengan Mudah</h1>
-                <p>Harga telus, kereta bersih, dan servis pantas. Daftar akaun sfcarrental hari ini.</p>
-                <a href="#" class="btn-cta">Semak Kereta Tersedia</a>
+                <span class="hero-badge" data-en="✨ Malaysia's Top Choice for Travelers" data-bm="✨ Pilihan Utama Pelancong di Malaysia">✨ Malaysia's Top Choice for Travelers</span>
+                <h1 data-en="Explore Malaysia With Absolute Freedom" data-bm="Terokai Malaysia Dengan Kebebasan Mutlak">Explore Malaysia With Absolute Freedom</h1>
+                <p data-en="Transparent pricing, pristine cars, and seamless airport handovers. No hidden tourist surcharges." data-bm="Harga telus, kereta bersih, dan penyerahan mudah di lapangan terbang. Tiada caj tersembunyi.">Transparent pricing, pristine cars, and seamless airport handovers. No hidden tourist surcharges.</p>
+            </div>
+
+            <div class="booking-form-container">
+                <div class="form-tabs">
+                    <button class="tab-btn active"><i class="fa-solid fa-car"></i> <span data-en="Self Drive" data-bm="Pandu Sendiri">Self Drive</span></button>
+                    <button class="tab-btn"><i class="fa-solid fa-user-tie"></i> <span data-en="With Chauffeur" data-bm="Dengan Pemandu">With Chauffeur</span></button>
+                </div>
+                
+                <form action="#" method="GET" class="booking-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-location-dot"></i> <span data-en="Pick-up Location" data-bm="Lokasi Ambil">Pick-up Location</span></label>
+                            <select name="pickup_location" required>
+                                <option value="" data-en="Select Location..." data-bm="Pilih Lokasi...">Select Location...</option>
+                                <option value="KLIA">KLIA Terminal 1 / 2 (Airport)</option>
+                                <option value="KL">Kuala Lumpur City Centre</option>
+                                <option value="Penang">Penang International Airport</option>
+                                <option value="JB">Johor Bahru (Customs / Airport)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-map-location-dot"></i> <span data-en="Where are you heading to?" data-bm="Lokasi Destinasi">Where are you heading to?</span></label>
+                            <input type="text" name="destination" placeholder="e.g., Genting Highlands..." data-en-placeholder="e.g., Genting Highlands, Melaka..." data-bm-placeholder="e.g., Genting Highlands, Melaka..." required>
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-calendar-plus"></i> <span data-en="Pick-up Date & Time" data-bm="Tarikh & Masa Ambil">Pick-up Date & Time</span></label>
+                            <input type="datetime-local" name="pickup_date" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-calendar-minus"></i> <span data-en="Return Date & Time" data-bm="Tarikh & Masa Pulang">Return Date & Time</span></label>
+                            <input type="datetime-local" name="return_date" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-car-side"></i> <span data-en="Vehicle Class" data-bm="Jenis Kereta">Vehicle Class</span></label>
+                            <select name="car_type">
+                                <option value="all" data-en="All Vehicle Classes" data-bm="Semua Jenis Kereta">All Vehicle Classes</option>
+                                <option value="ekonomi" data-en="Budget / Economy" data-bm="Bajet / Ekonomi">Budget / Economy</option>
+                                <option value="sedan" data-en="Standard Sedan" data-bm="Sedan Standard">Standard Sedan</option>
+                                <option value="suv" data-en="SUV / Crossover" data-bm="SUV / Crossover">SUV / Crossover</option>
+                                <option value="mpv" data-en="Family MPV (7-Seater)" data-bm="MPV Keluarga (7-Tempat)">Family MPV (7-Seater)</option>
+                                <option value="luxury" data-en="Luxury & Sports" data-bm="Mewah & Sukan">Luxury & Sports</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group btn-container">
+                            <button type="submit" class="btn-search">
+                                <i class="fa-solid fa-magnifying-glass"></i> <span data-en="Search Available Cars" data-bm="Cari Kereta Tersedia">Search Available Cars</span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </main>
 
-    <section id="car-fleet">
-        <h2 class="section-title" id="kereta">Pilihan Kereta Popular</h2>
-        <div class="fleet-grid">
-            
-            <div class="car-card">
-                <img src="https://peroduapj.com.my/wp-content/uploads/2015/12/perodua-axia-color-377345.webp" alt="Perodua Axia" class="car-img">
-                <div class="car-info">
-                    <div class="car-name">Ekonomi (Perodua Axia)</div>
-                    <div class="car-specs">
-                        <span>👤 4 Tempat Duduk</span>
-                        <span>⚙️ Auto</span>
-                        <span>🧳 1 Bagasi</span>
-                    </div>
-                    <a href="#" class="btn-lock">🔑 Log Masuk Untuk Tempah</a>
+    <div class="content-wrapper-centered">
+
+        <section class="trust-badges">
+            <div class="badge-item">
+                <i class="fa-solid fa-shield-halved"></i>
+                <div>
+                    <h4 data-en="Full Insurance Coverage" data-bm="Perlindungan Insurans Penuh">Full Insurance Coverage</h4>
+                    <p data-en="CDW & Theft protection included" data-bm="Perlindungan CDW & kecurian disertakan">CDW & Theft protection included</p>
                 </div>
             </div>
-
-            <div class="car-card">
-                <img src="https://www.gemcarrental.com.my/wp-content/uploads/2022/04/bezza-left-square.jpg" alt="Perodua Bezza" class="car-img">
-                <div class="car-info">
-                    <div class="car-name">Sedan (Perodua Bezza)</div>
-                    <div class="car-specs">
-                        <span>👤 5 Tempat Duduk</span>
-                        <span>⚙️ Auto</span>
-                        <span>🧳 2 Bagasi</span>
-                    </div>
-                    <a href="#" class="btn-lock">🔑 Log Masuk Untuk Tempah</a>
+            <div class="badge-item">
+                <i class="fa-solid fa-ban"></i>
+                <div>
+                    <h4 data-en="Free Cancellation" data-bm="Pembatalan Percuma">Free Cancellation</h4>
+                    <p data-en="Up to 24 hours before pickup" data-bm="Sehingga 24 jam sebelum ambil">Up to 24 hours before pickup</p>
                 </div>
             </div>
-
-            <div class="car-card">
-                <img src="https://dodomat.com.my/cdn/shop/files/car_mat_proton_x50_2020-800x800_a8330c0f-9661-4eeb-a5ad-06e2a349a6b7.jpg?v=1732870426" alt="Proton X50 Lookalike" class="car-img">
-                <div class="car-info">
-                    <div class="car-name">SUV (Proton X50)</div>
-                    <div class="car-specs">
-                        <span>👤 5 Tempat Duduk</span>
-                        <span>⚙️ Auto</span>
-                        <span>🧳 4 Bagasi</span>
-                    </div>
-                    <a href="#" class="btn-lock">🔑 Log Masuk Untuk Tempah</a>
-                </div>
-            </div>
-
-            <div class="car-card">
-                <img src="https://peroduasale.com.my/wp-content/uploads/2024/08/Perodua-Alza.png" alt="Perodua Alza Lookalike" class="car-img">
-                <div class="car-info">
-                    <div class="car-name">MPV (Perodua Alza)</div>
-                    <div class="car-specs">
-                        <span>👤 7 Tempat Duduk</span>
-                        <span>⚙️ Auto</span>
-                        <span>🧳 5 Bagasi</span>
-                    </div>
-                    <a href="#" class="btn-lock">🔑 Log Masuk Untuk Tempah</a>
-                </div>
-            </div>
-
-            <div class="car-card">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTb7nWdYEIwWfVqXY2yuhIXq9RnHnJzA8KSESLx_9YsdEflG6mmBlZR7dox&s=10" alt="BMW M5 F90 Lookalike" class="car-img">
-                <div class="car-info">
-                    <div class="car-name">Luxury (BMW M5 F90)</div>
-                    <div class="car-specs">
-                        <span>👤 5 Tempat Duduk</span>
-                        <span>⚙️ Auto</span>
-                        <span>🧳 4 Bagasi</span>
-                    </div>
-                    <a href="#" class="btn-lock">🔑 Log Masuk Untuk Tempah</a>
-                </div>
-            </div>
-
-            <div class="car-card">
-                <img src="https://assets.nst.com.my/images/articles/Triton_Athlete-Side_Quarter_Visual_1617871938.jpg" alt="Mitsubishi Triton Lookalike" class="car-img">
-                <div class="car-info">
-                    <div class="car-name">4x4 (Mitsubishi Triton)</div>
-                    <div class="car-specs">
-                        <span>👤 5 Tempat Duduk</span>
-                        <span>⚙️ Auto</span>
-                        <span>🧳 12 Bagasi</span>
-                    </div>
-                    <a href="#" class="btn-lock">🔑 Log Masuk Untuk Tempah</a>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <div class="features-bg" id="kelebihan">
-        <section>
-            <h2 class="section-title">Kenapa Pilih sfcarrental?</h2>
-            <div class="features-grid">
-                <div class="feature-box">
-                    <div class="feature-icon">✨</div>
-                    <h3>Kereta Sentiasa Bersih</h3>
-                    <p>Setiap kenderaan disinfeksi dan diservis sebelum diserahkan kepada anda.</p>
-                </div>
-                <div class="feature-box">
-                    <div class="feature-icon">💰</div>
-                    <h3>Tiada Caj Tersembunyi</h3>
-                    <p>Harga yang anda lihat adalah harga yang anda bayar. Telus dan adil.</p>
-                </div>
-                <div class="feature-box">
-                    <div class="feature-icon">🛠️</div>
-                    <h3>Bantuan Jalanraya 24/7</h3>
-                    <p>Kami sentiasa bersedia membantu anda sekiranya berlaku sebarang kecemasan.</p>
+            <div class="badge-item">
+                <i class="fa-solid fa-percentage"></i>
+                <div>
+                    <h4 data-en="No Credit Card Fees" data-bm="Tiada Caj Kad Kredit">No Credit Card Fees</h4>
+                    <p data-en="Zero hidden processing surcharges" data-bm="Tiada caj pemprosesan tersembunyi">Zero hidden processing surcharges</p>
                 </div>
             </div>
         </section>
-    </div>
 
-    <section>
-        <h2 class="section-title">3 Langkah Mudah Untuk Memandu</h2>
-        <div class="steps-grid">
-            <div class="step">
-                <div class="step-num">1</div>
-                <h3>Daftar & Log Masuk</h3>
-                <p>Cipta akaun sfcarrental anda dengan selamat dalam masa 1 minit sahaja.</p>
+        <section id="kategori-section" class="categories-container">
+            <h2 class="section-title" data-en="Browse by Vehicle Category" data-bm="Ikut Kategori Pilihan">Browse by Vehicle Category</h2>
+            <div class="categories-grid">
+                <div class="category-card active"><i class="fa-solid fa-border-all"></i> <span data-en="All Cars" data-bm="Semua">All Cars</span></div>
+                <div class="category-card"><i class="fa-solid fa-leaf"></i> <span data-en="Economy" data-bm="Ekonomi">Economy</span></div>
+                <div class="category-card"><i class="fa-solid fa-car-side"></i> <span data-en="Sedan" data-bm="Sedan">Sedan</span></div>
+                <div class="category-card"><i class="fa-solid fa-cloud-sun"></i> <span data-en="SUV" data-bm="SUV">SUV</span></div>
+                <div class="category-card"><i class="fa-solid fa-users"></i> <span data-en="MPV (Family)" data-bm="MPV (Keluarga)">MPV (Family)</span></div>
+                <div class="category-card"><i class="fa-solid fa-gem"></i> <span data-en="Luxury" data-bm="Mewah">Luxury</span></div>
             </div>
-            <div class="step">
-                <div class="step-num">2</div>
-                <h3>Pilih Kereta & Tarikh</h3>
-                <p>Akses dashboard tempahan kami, pilih kenderaan dan tarikh yang anda mahu.</p>
+        </section>
+
+        <section id="kereta-section" class="fleet-section">
+            <h2 class="section-title" data-en="Our International Standard Fleet" data-bm="Pilihan Kereta Standard Antarabangsa">Our International Standard Fleet</h2>
+            <div class="fleet-grid">
+                
+                <div class="car-card">
+                    <div class="car-tag" data-en="Economy / Compact" data-bm="Ekonomi / Kompak">Economy / Compact</div>
+                    <img src="https://peroduapj.com.my/wp-content/uploads/2015/12/perodua-axia-color-377345.webp" alt="Perodua Axia" class="car-img">
+                    <div class="car-info">
+                        <div class="car-name">Perodua Axia <span data-en="or similar" data-bm="atau setaraf">or similar</span></div>
+                        <div class="price-box">
+                            <span class="currency">MYR</span> <span class="amount">110</span> <span class="per-day">/day</span>
+                            <span class="usd-convert">≈ $25 USD</span>
+                        </div>
+                        <div class="car-specs">
+                            <span><i class="fa-solid fa-user"></i> <span data-en="4 Seats" data-bm="4 Tempat">4 Seats</span></span>
+                            <span><i class="fa-solid fa-gear"></i> Automatic</span>
+                            <span><i class="fa-solid fa-suitcase"></i> 1 Bag</span>
+                        </div>
+                        <div class="car-extra-details">
+                            <div class="detail-item"><i class="fa-solid fa-gas-pump"></i> <span>Fuel:</span> Petrol</div>
+                            <div class="detail-item"><i class="fa-solid fa-circle-dot"></i> <span data-en="Spare Tyre:" data-bm="Tayar Ganti:">Spare Tyre:</span> <span data-en="Included" data-bm="Disediakan">Included</span></div>
+                            <div class="detail-item"><i class="fa-solid fa-baby-carriage"></i> <span>Child Seat:</span> Request</div>
+                            <div class="detail-item"><i class="fa-solid fa-wrench"></i> <span>Specs:</span> 1.0L Dual VVT-i</div>
+                        </div>
+                        <a href="#" class="btn-lock"><i class="fa-solid fa-calendar-check"></i> <span data-en="Book Now & Pay Later" data-bm="Tempah & Bayar Kemudian">Book Now & Pay Later</span></a>
+                    </div>
+                </div>
+
+                <div class="car-card">
+                    <div class="car-tag">SUV / Crossover</div>
+                    <img src="https://dodomat.com.my/cdn/shop/files/car_mat_proton_x50_2020-800x800_a8330c0f-9661-4eeb-a5ad-06e2a349a6b7.jpg?v=1732870426" alt="Proton X50" class="car-img">
+                    <div class="car-info">
+                        <div class="car-name">Proton X50 <span>Premium SUV</span></div>
+                        <div class="price-box">
+                            <span class="currency">MYR</span> <span class="amount">250</span> <span class="per-day">/day</span>
+                            <span class="usd-convert">≈ $58 USD</span>
+                        </div>
+                        <div class="car-specs">
+                            <span><i class="fa-solid fa-user"></i> <span data-en="5 Seats" data-bm="5 Tempat">5 Seats</span></span>
+                            <span><i class="fa-solid fa-gear"></i> Automatic</span>
+                            <span><i class="fa-solid fa-suitcase"></i> 3 Bags</span>
+                        </div>
+                        <div class="car-extra-details">
+                            <div class="detail-item"><i class="fa-solid fa-gas-pump"></i> <span>Fuel:</span> Petrol (Turbo)</div>
+                            <div class="detail-item"><i class="fa-solid fa-circle-dot"></i> <span data-en="Spare Tyre:" data-bm="Tayar Ganti:">Spare Tyre:</span> <span data-en="Built-in" data-bm="Sedia Ada">Built-in</span></div>
+                            <div class="detail-item"><i class="fa-solid fa-baby-carriage"></i> <span>Child Seat:</span> ISOFIX</div>
+                            <div class="detail-item"><i class="fa-solid fa-wrench"></i> <span>Specs:</span> 1.5L Turbo</div>
+                        </div>
+                        <a href="#" class="btn-lock"><i class="fa-solid fa-calendar-check"></i> <span data-en="Book Now & Pay Later" data-bm="Tempah & Bayar Kemudian">Book Now & Pay Later</span></a>
+                    </div>
+                </div>
+
+                <div class="car-card">
+                    <div class="car-tag" data-en="MPV / 7-Seater" data-bm="MPV / 7-Tempat">MPV / 7-Seater</div>
+                    <img src="https://peroduasale.com.my/wp-content/uploads/2024/08/Perodua-Alza.png" alt="Perodua Alza" class="car-img">
+                    <div class="car-info">
+                        <div class="car-name">Perodua Alza <span>New Model</span></div>
+                        <div class="price-box">
+                            <span class="currency">MYR</span> <span class="amount">180</span> <span class="per-day">/day</span>
+                            <span class="usd-convert">≈ $42 USD</span>
+                        </div>
+                        <div class="car-specs">
+                            <span><i class="fa-solid fa-user"></i> <span data-en="7 Seats" data-bm="7 Tempat">7 Seats</span></span>
+                            <span><i class="fa-solid fa-gear"></i> Automatic</span>
+                            <span><i class="fa-solid fa-suitcase"></i> 4 Bags</span>
+                        </div>
+                        <div class="car-extra-details">
+                            <div class="detail-item"><i class="fa-solid fa-gas-pump"></i> <span>Fuel:</span> Petrol EEV</div>
+                            <div class="detail-item"><i class="fa-solid fa-circle-dot"></i> <span data-en="Spare Tyre:" data-bm="Tayar Ganti:">Spare Tyre:</span> <span data-en="Included" data-bm="Disediakan">Included</span></div>
+                            <div class="detail-item"><i class="fa-solid fa-baby-carriage"></i> <span>Child Seat:</span> ISOFIX</div>
+                            <div class="detail-item"><i class="fa-solid fa-wrench"></i> <span>Specs:</span> 1.5L H-Advance</div>
+                        </div>
+                        <a href="#" class="btn-lock"><i class="fa-solid fa-calendar-check"></i> <span data-en="Book Now & Pay Later" data-bm="Tempah & Bayar Kemudian">Book Now & Pay Later</span></a>
+                    </div>
+                </div>
+
             </div>
-            <div class="step">
-                <div class="step-num">3</div>
-                <h3>Ambil & Pandu</h3>
-                <p>Selesaikan pembayaran atas talian dan ambil kereta di lokasi pilihan anda.</p>
-            </div>
+        </section>
+
+        <div class="features-bg-container" id="kelebihan">
+            <section class="features-section-inner">
+                <h2 class="section-title" data-en="Why Tourists Choose sfcarrental?" data-bm="Kenapa Pelancong Pilih sfcarrental?">Why Tourists Choose sfcarrental?</h2>
+                <div class="features-grid">
+                    <div class="feature-box">
+                        <div class="feature-icon"><i class="fa-solid fa-sparkles"></i></div>
+                        <h3 data-en="5-Star Hygiene Clean" data-bm="Kebersihan Gred 5-Bintang">5-Star Hygiene Clean</h3>
+                        <p data-en="Every single vehicle undergoes full medical-grade sanitization and multi-point inspection before handover." data-bm="Setiap kenderaan dinyahkuman sepenuhnya menggunakan gred perubatan sebelum diserahkan.">Every single vehicle undergoes full medical-grade sanitization and multi-point inspection before handover.</p>
+                    </div>
+                    <div class="feature-box">
+                        <div class="feature-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+                        <h3 data-en="True Pricing Guarantee" data-bm="Jaminan Harga Sebenar">True Pricing Guarantee</h3>
+                        <p data-en="What you see is exactly what you pay. No local taxes added at counter, no seasonal tourist markups." data-bm="Harga tertera adalah harga dibayar. Tiada cukai tambahan kaunter atau caj tersembunyi bermusim.">What you see is exactly what you pay. No local taxes added at counter, no seasonal tourist markups.</p>
+                    </div>
+                    <div class="feature-box">
+                        <div class="feature-icon"><i class="fa-solid fa-road-circle-check"></i></div>
+                        <h3 data-en="24/7 Roadside Assistance" data-bm="Bantuan Kecemasan Jalan Raya 24/7">24/7 Roadside Assistance</h3>
+                        <p data-en="Drive with peace of mind. Our dedicated English-speaking emergency team is ready to assist you anywhere, anytime." data-bm="Pandu tanpa risau. Pasukan bantuan kecemasan bersiap sedia membantu anda di mana-mana sahaja.">Drive with peace of mind. Our dedicated English-speaking emergency team is ready to assist you anywhere, anytime.</p>
+                    </div>
+                </div>
+            </section>
         </div>
-    </section>
 
-    <footer>
+    </div> <footer>
         <div class="footer-content">
-            <p>&copy; 2026 sfcarrental. Hak Cipta Terpelihara.</p>
+            <p>&copy; 2026 sfcarrental Malaysia. All Rights Reserved. Managed by SF Travel & Tours Sdn Bhd.</p>
             <div class="footer-links">
-                <a href="#">Terma & Syarat</a> | 
-                <a href="#">Dasar Privasi</a> | 
-                <a href="#">Hubungi Kami</a>
+                <a href="#" data-en="Terms & Conditions" data-bm="Terma & Syarat">Terms & Conditions</a> | 
+                <a href="#" data-en="Privacy Policy" data-bm="Dasar Privasi">Privacy Policy</a> | 
+                <a href="#" data-en="Contact Support" data-bm="Hubungi Bantuan">Contact Support</a>
             </div>
         </div>
     </footer>
 
+    <script>
+        // --- LOGIK TUKAR BAHASA EN / BM ---
+        const btnEn = document.getElementById('lang-en');
+        const btnBm = document.getElementById('lang-bm');
+
+        function toggleLanguage(lang) {
+            document.querySelectorAll('[data-en]').forEach(element => {
+                if (lang === 'en') {
+                    element.innerHTML = element.getAttribute('data-en');
+                } else {
+                    element.innerHTML = element.getAttribute('data-bm');
+                }
+            });
+
+            // Kemas kini placeholder untuk input carian destinasi
+            const destInput = document.querySelector('input[name="destination"]');
+            if(destInput) {
+                destInput.placeholder = lang === 'en' ? destInput.getAttribute('data-en-placeholder') : destInput.getAttribute('data-bm-placeholder');
+            }
+        }
+
+        btnEn.addEventListener('click', () => {
+            btnEn.classList.add('active');
+            btnBm.classList.remove('active');
+            toggleLanguage('en');
+        });
+
+        btnBm.addEventListener('click', () => {
+            btnBm.classList.add('active');
+            btnEn.classList.remove('active');
+            toggleLanguage('bm');
+        });
+
+        // --- LOGIK DARK MODE TERAPUNG (FLOATING TOGGLE) ---
+        const themeToggleFloat = document.getElementById('theme-toggle-float');
+        
+        // Simpan mod pilihan dalam localStorage supaya tak hilang bila tukar page/refresh
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-theme');
+            themeToggleFloat.innerHTML = '<i class="fa-solid fa-sun"></i>';
+        }
+
+        themeToggleFloat.addEventListener('click', () => {
+            document.body.classList.toggle('dark-theme');
+            let theme = 'light';
+            
+            if (document.body.classList.contains('dark-theme')) {
+                theme = 'dark';
+                themeToggleFloat.innerHTML = '<i class="fa-solid fa-sun"></i>';
+            } else {
+                themeToggleFloat.innerHTML = '<i class="fa-solid fa-moon"></i>';
+            }
+            localStorage.setItem('theme', theme);
+        });
+    </script>
 </body>
 </html>
