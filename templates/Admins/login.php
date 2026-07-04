@@ -22,7 +22,7 @@
             <?= $this->Flash->render() ?>
         </div>
 
-        <?= $this->Form->create() ?>
+        <?= $this->Form->create(null, ['url' => ['controller' => 'Admins', 'action' => 'login']]) ?>
             <div class="input-group">
                 <label>Username</label>
                 <?= $this->Form->text('username', ['required' => true, 'placeholder' => 'Enter username']) ?>

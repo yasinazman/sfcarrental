@@ -1,28 +1,25 @@
-<?php
-/**
- * @var \App\View\AppView $this
- * @var \App\Model\Entity\Admin $admin
- */
+<?php 
+$this->assign('title', 'Add New Administrator'); 
+$this->Html->css('admin-form', ['block' => true]); 
 ?>
-<div class="row">
-    <aside class="column">
-        <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('List Admins'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-        </div>
-    </aside>
-    <div class="column column-80">
-        <div class="admins form content">
-            <?= $this->Form->create($admin) ?>
-            <fieldset>
-                <legend><?= __('Add Admin') ?></legend>
-                <?php
-                    echo $this->Form->control('username');
-                    echo $this->Form->control('password');
-                ?>
-            </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
-            <?= $this->Form->end() ?>
-        </div>
+
+<div class="form-container" style="max-width: 500px;">
+    <?= $this->Form->create($admin) ?>
+    
+    <div class="form-group">
+        <label>Username</label>
+        <?= $this->Form->text('username', ['class' => 'form-control', 'required' => true, 'placeholder' => 'Enter admin username']) ?>
     </div>
+
+    <div class="form-group">
+        <label>Password</label>
+        <?= $this->Form->password('password', ['class' => 'form-control', 'required' => true, 'placeholder' => 'Enter strong password']) ?>
+    </div>
+
+    <div style="margin-top: 20px;">
+        <?= $this->Form->button('Create Admin', ['class' => 'btn-submit']) ?>
+        <a href="<?= $this->Url->build(['action' => 'index']) ?>" class="btn-cancel">Cancel</a>
+    </div>
+
+    <?= $this->Form->end() ?>
 </div>

@@ -39,5 +39,12 @@ class Car extends Entity
         'created' => true,
         'modified' => true,
         'bookings' => true,
+        'image' => true,
+        'seat_capacity' => true,
+        'transmission' => true,
+        'baggage_capacity' => true,
+        'fuel_type' => true,
+        'spare_tyre' => true,
+        'special_specs' => true,
     ];
 }
