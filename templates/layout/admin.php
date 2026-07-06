@@ -54,9 +54,21 @@
 
         <div class="menu-label">Operations & Reports</div>
         <ul class="nav-links">
-            <li><a href="#"><i class="fas fa-chart-line"></i> View Sales</a></li>
-            <li><a href="#"><i class="fas fa-tools"></i> Maintenance</a></li>
-            <li><a href="#"><i class="fas fa-map-marker-alt"></i> GPS Tracker</a></li>
+            <li>
+                <a href="<?= $this->Url->build(['controller' => 'AdminsSales', 'action' => 'index']) ?>" class="<?= $currentController === 'AdminsSales' ? 'active' : '' ?>">
+                    <i class="fas fa-chart-line"></i> View Sales
+                </a>
+            </li>
+            <li>
+                <a href="<?= $this->Url->build(['controller' => 'AdminsMaintenances', 'action' => 'index']) ?>" class="<?= $currentController === 'AdminsMaintenances' ? 'active' : '' ?>">
+                    <i class="fas fa-tools"></i> Maintenance
+                </a>
+            </li>
+            <li>
+                <a href="<?= $this->Url->build(['controller' => 'AdminsGps', 'action' => 'index']) ?>" class="<?= $currentController === 'AdminsGps' ? 'active' : '' ?>">
+                    <i class="fas fa-map-marker-alt"></i> GPS Tracker
+                </a>
+            </li>
             <li style="margin-top: 30px;">
                 <a href="<?= $this->Url->build(['controller' => 'Admins', 'action' => 'logout']) ?>" style="color: var(--text-light);">
                     <i class="fas fa-sign-out-alt"></i> Log Out

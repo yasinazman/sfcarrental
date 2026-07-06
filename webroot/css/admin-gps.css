@@ -1,0 +1,30 @@
+.car-permanent-label {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #007bff;
+    border-radius: 4px;
+    font-weight: 600;
+    text-align: center;
+    padding: 4px 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.car-permanent-label::before {
+    border-top-color: #007bff; /* Warna jarum tooltip */
+}
+
+.btn-track {
+    background: #e8f4fd;
+    color: #007bff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 12px;
+    transition: all 0.2s ease;
+}
+
+.btn-track:hover {
+    background: #007bff;
+    color: #fff;
+}
