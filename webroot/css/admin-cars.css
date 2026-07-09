@@ -1,0 +1,122 @@
+.cars-header {
+    margin-bottom: 24px;
+}
+
+.cars-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.cars-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.cars-filter-bar {
+    margin: 0;
+    padding: 0;
+}
+
+.cars-search-group {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.cars-search-form {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin: 0;
+}
+
+.search-input {
+    width: 250px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.btn-search {
+    padding: 8px 15px;
+    border-radius: 6px;
+    background: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+.btn-search:hover { background: #0056b3; }
+
+.btn-clear-search {
+    padding: 8px 15px;
+    text-decoration: none;
+    border-radius: 6px;
+    background: #f8f9fa;
+    border: 1px solid #ccc;
+    color: #dc3545;
+    transition: background 0.2s ease;
+}
+.btn-clear-search:hover { background: #e2e6ea; }
+
+.toolbar-divider {
+    width: 1px;
+    height: 30px;
+    background: #ddd;
+}
+
+/* Butang Eksport CSV */
+.btn-export {
+    padding: 8px 15px;
+    border-radius: 6px;
+    background: #28a745;
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+}
+.btn-export:hover {
+    background: #218838;
+    transform: translateY(-1px);
+}
+
+.cars-action-cell {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+}
+
+.icon-avail { 
+    color: #28a745; font-size: 18px; 
+}
+
+.icon-maint { 
+    color: #dc3545; font-size: 18px; 
+}
+
+.icon-view { 
+    color: #17a2b8; font-size: 16px; 
+}
+
+.icon-edit { 
+    color: #007bff; font-size: 16px; 
+}
+
+.icon-delete { 
+    color: var(--accent-red); font-size: 16px; 
+}
+
+.action-divider { 
+    color: #ccc; 
+}
