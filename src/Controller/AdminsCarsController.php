@@ -5,11 +5,28 @@ class AdminsCarsController extends AppController
 {
     public function index()
     {
+        $category = $this->request->getQuery('category');
+        
         $carsTable = $this->fetchTable('Cars');
-        $cars = $carsTable->find()->order(['id' => 'DESC'])->all();
+        $query = $carsTable->find()->order(['id' => 'DESC']);
+        
+        if (!empty($category)) {
+            $query->where(['category' => $category]);
+        }
+        
+        $cars = $query->all();
 
-        $this->set(compact('cars'));
+        $this->set(compact('cars', 'category'));
         $this->set('pageTitle', 'Manage Cars');
+    }
+
+    public function view($id = null)
+    {
+        $carsTable = $this->fetchTable('Cars');
+        $car = $carsTable->get($id);
+
+        $this->set(compact('car'));
+        $this->set('pageTitle', 'View Car Details');
     }
 
    public function add()

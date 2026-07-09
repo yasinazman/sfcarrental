@@ -44,11 +44,17 @@ class CarsTable extends Table
         $this->setTable('cars');
         $this->setDisplayField('plate_number');
         $this->setPrimaryKey('id');
-
         $this->addBehavior('Timestamp');
-
         $this->hasMany('Bookings', [
             'foreignKey' => 'car_id',
+            'dependent' => true, 
+            'cascadeCallbacks' => true,
+        ]);
+
+        $this->hasMany('Maintenances', [
+            'foreignKey' => 'car_id',
+            'dependent' => true,
+            'cascadeCallbacks' => true,
         ]);
     }
 

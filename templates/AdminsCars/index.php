@@ -1,15 +1,30 @@
-<?php $this->assign('title', $pageTitle); ?>
+<?php 
+$this->assign('title', $pageTitle); 
+$this->Html->css('admin-dashboard', ['block' => true]); 
+?>
 
-<div class="content-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+<div class="content-header box-header">
     <div>
-        <h3 style="margin: 0;">Car Fleet</h3>
+        <h3 class="box-title" style="font-size: 22px;">Car Fleet</h3>
         <p style="color: var(--text-light); font-size: 14px; margin: 5px 0 0;">Manage your rental vehicles</p>
     </div>
-    <a href="<?= $this->Url->build(['action' => 'add']) ?>" class="btn-add" style="background: var(--accent-red); color: white; padding: 10px 20px; text-decoration: none; border-radius: 6px; font-size: 14px; font-weight: 500;"><i class="fas fa-plus"></i> Add New Car</a>
+    <a href="<?= $this->Url->build(['action' => 'add']) ?>" class="btn-add-new"><i class="fas fa-plus"></i> Add New Car</a>
 </div>
 
-<div class="recent-activity">
-    <table>
+<div class="category-filter-bar">
+    <?php 
+    $categories = ['Economy', 'Compact', 'Sedan', 'MPV', 'SUV']; 
+    $currentCategory = $this->request->getQuery('category');
+    ?>
+    <a href="<?= $this->Url->build(['action' => 'index']) ?>" class="badge-status <?= empty($currentCategory) ? 'badge-blue' : 'badge-grey' ?>" style="text-decoration: none; padding: 8px 16px;">All Cars</a>
+    
+    <?php foreach($categories as $cat): ?>
+        <a href="<?= $this->Url->build(['action' => 'index', '?' => ['category' => $cat]]) ?>" class="badge-status <?= $currentCategory == $cat ? 'badge-blue' : 'badge-grey' ?>" style="text-decoration: none; padding: 8px 16px;"><?= $cat ?></a>
+    <?php endforeach; ?>
+</div>
+
+<div class="recent-activity dashboard-box">
+    <table class="dashboard-table" style="width: 100%;">
         <thead>
             <tr>
                 <th>No. Plate</th>
@@ -23,39 +38,39 @@
         <tbody>
             <?php if ($cars->isEmpty()): ?>
             <tr>
-                <td colspan="6" style="text-align: center; padding: 30px; color: var(--text-light);">No cars found in the database. Click 'Add New Car' to begin.</td>
+                <td colspan="6" class="no-data-text">No cars found in this category.</td>
             </tr>
             <?php else: ?>
                 <?php foreach ($cars as $car): ?>
                 <tr>
-                    <td style="font-weight: 600;"><?= h($car->plate_number) ?></td>
+                    <td class="id-cell"><?= h($car->plate_number) ?></td>
                     <td>
-                        <div style="display: flex; align-items: center; gap: 15px;">
+                        <div class="car-title-group">
                             <?php if (!empty($car->image)): ?>
-                                <img src="<?= $this->Url->image('cars/' . $car->image) ?>" alt="Car" style="width: 70px; height: 45px; object-fit: cover; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                                <img src="<?= $this->Url->image('cars/' . $car->image) ?>" alt="Car" class="car-list-image">
                             <?php else: ?>
-                                <div style="width: 70px; height: 45px; background: #f0f0f0; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #999;">No Image</div>
+                                <div class="car-no-image">No Image</div>
                             <?php endif; ?>
                             <div>
-                                <div style="font-weight: 600; color: var(--text-main);"><?= h($car->car_model) ?></div>
+                                <div class="name-cell"><?= h($car->car_model) ?></div>
                                 <div style="font-size: 12px; color: var(--text-light);">
-                                    <?= h($car->transmission ?: 'N/A') ?> • <?= h($car->seat_capacity ?: '-') ?> Seats
+                                    <span style="color: #007bff; font-weight: 500;"><?= h($car->category ?: 'Uncategorized') ?></span> • <?= h($car->transmission ?: 'N/A') ?> • <?= h($car->seat_capacity ?: '-') ?> Seats
                                 </div>
                             </div>
                         </div>
                     </td>
                     <td><?= h($car->engine_capacity ?: 'N/A') ?></td>
-                    <td style="color: var(--accent-red); font-weight: 600;">RM <?= $this->Number->format($car->daily_rate, ['places' => 2]) ?></td>
+                    <td class="car-rate-text">RM <?= $this->Number->format($car->daily_rate, ['places' => 2]) ?></td>
                     <td>
                         <?php 
-                            $badgeColor = $car->availability_status === 'Available' ? '#28a745' : '#dc3545';
-                            $badgeBg = $car->availability_status === 'Available' ? 'rgba(40, 167, 69, 0.1)' : 'rgba(220, 53, 69, 0.1)';
+                            $badgeClass = $car->availability_status === 'Available' ? 'badge-green' : 'badge-red';
                         ?>
-                        <span style="padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; background: <?= $badgeBg ?>; color: <?= $badgeColor ?>;">
+                        <span class="badge-status <?= $badgeClass ?>">
                             <?= h($car->availability_status) ?>
                         </span>
                     </td>
                     <td style="text-align: center;">
+                        <a href="<?= $this->Url->build(['action' => 'view', $car->id]) ?>" style="color: #17a2b8; margin-right: 15px; font-size: 16px;" title="View Details"><i class="fas fa-eye"></i></a>
                         <a href="<?= $this->Url->build(['action' => 'edit', $car->id]) ?>" style="color: #007bff; margin-right: 15px; font-size: 16px;" title="Edit"><i class="fas fa-edit"></i></a>
                         
                         <?= $this->Form->postLink(

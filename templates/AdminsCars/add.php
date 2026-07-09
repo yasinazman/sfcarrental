@@ -3,28 +3,15 @@ $this->assign('title', $pageTitle);
 $this->Html->css('admin-form', ['block' => true]); 
 ?>
 
-<!-- Tambahan CSS sikit untuk buat grid dua lajur supaya borang lebih kemas -->
-<style>
-    .form-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 0 20px;
-    }
-    .full-width {
-        grid-column: 1 / -1;
-    }
-</style>
-
 <div class="content-header" style="margin-bottom: 24px;">
     <h3 style="margin: 0;">Register New Vehicle</h3>
     <p style="color: var(--text-light); font-size: 14px; margin: 5px 0 0;">Fill in the full specifications to match the frontend catalog.</p>
 </div>
 
 <div class="form-container" style="max-width: 800px;">
-    <!-- Wajib tambah 'type' => 'file' untuk membenarkan muat naik gambar -->
     <?= $this->Form->create($car, ['type' => 'file']) ?>
     
-    <div class="form-grid">
+    <div class="car-form-grid">
         <div class="form-group full-width">
             <label>Car Image <span style="color: var(--text-light); font-size: 12px;">(Format: JPG, PNG)</span></label>
             <?= $this->Form->file('image_file', ['class' => 'form-control', 'accept' => 'image/*']) ?>
@@ -38,6 +25,17 @@ $this->Html->css('admin-form', ['block' => true]);
         <div class="form-group">
             <label>Car Model</label>
             <?= $this->Form->text('car_model', ['class' => 'form-control', 'placeholder' => 'e.g. Perodua Myvi 1.5 Advance', 'required' => true]) ?>
+        </div>
+
+        <div class="form-group">
+            <label>Car Category</label>
+            <?= $this->Form->select('category', [
+                'Economy' => 'Economy',
+                'Compact' => 'Compact',
+                'Sedan' => 'Sedan',
+                'MPV' => 'MPV',
+                'SUV' => 'SUV'
+            ], ['class' => 'form-control', 'empty' => 'Select Category', 'required' => true]) ?>
         </div>
         
         <div class="form-group">
