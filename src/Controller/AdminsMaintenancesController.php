@@ -5,14 +5,56 @@ class AdminsMaintenancesController extends AppController
 {
     public function index()
     {
+        $statusFilter = $this->request->getQuery('status');
         $maintenancesTable = $this->fetchTable('Maintenances');
         
-        $maintenances = $maintenancesTable->find()
+        $query = $maintenancesTable->find()
             ->contain(['Cars'])
-            ->order(['Maintenances.service_date' => 'DESC'])
-            ->all();
+            ->order(['Maintenances.service_date' => 'DESC']);
 
-        $this->set(compact('maintenances'));
+        if (!empty($statusFilter)) {
+            $query->where(['Maintenances.status' => $statusFilter]);
+        }
+        $maintenances = $query->all();
+
+        $totalCost = 0;
+        $inProgressCount = 0;
+        $scheduledCount = 0;
+        
+        $allRecords = $maintenancesTable->find()->all();
+        foreach ($allRecords as $rec) {
+            if (strtolower($rec->status) === 'completed') {
+                $totalCost += (float)$rec->cost;
+            } elseif (strtolower($rec->status) === 'in progress') {
+                $inProgressCount++;
+            } elseif (strtolower($rec->status) === 'scheduled') {
+                $scheduledCount++;
+            }
+        }
+
+        $calendarEvents = [];
+        foreach ($maintenances as $record) {
+            $status = strtolower($record->status);
+            $color = '#17a2b8'; 
+            if (strpos($status, 'completed') !== false) $color = '#28a745';
+            elseif (strpos($status, 'scheduled') !== false) $color = '#ffc107';
+
+            $targetDate = $record->service_date;
+            if (strpos($status, 'scheduled') !== false && $record->next_service_date) {
+                $targetDate = $record->next_service_date;
+            }
+
+            $calendarEvents[] = [
+                'id' => 'M' . $record->id,
+                'title' => $record->car->plate_number . ' - ' . $record->service_type,
+                'start' => $targetDate->format('Y-m-d'),
+                'allDay' => true,
+                'color' => $color,
+                'url' => \Cake\Routing\Router::url(['action' => 'view', $record->id])
+            ];
+        }
+
+        $this->set(compact('maintenances', 'statusFilter', 'totalCost', 'inProgressCount', 'scheduledCount', 'calendarEvents'));
         $this->set('pageTitle', 'Fleet Maintenance');
     }
 
