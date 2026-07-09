@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Controller\Controller;
+use Cake\Event\EventInterface;
 
 class AppController extends Controller
 {
@@ -12,11 +13,19 @@ class AppController extends Controller
         parent::initialize();
 
         $this->loadComponent('Flash');
-
         $this->loadComponent('Authentication.Authentication');
     }
 
-    public function beforeRender(\Cake\Event\EventInterface $event)
+    public function beforeFilter(EventInterface $event)
+    {
+        parent::beforeFilter($event);
+
+        if ($this->request->getParam('controller') === 'Pages') {
+            $this->Authentication->addUnauthenticatedActions(['display']);
+        }
+    }
+
+    public function beforeRender(EventInterface $event)
     {
         if ($this->request->getParam('controller') === 'Pages') {
             $this->viewBuilder()->setLayout('default');

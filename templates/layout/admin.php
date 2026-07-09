@@ -17,7 +17,7 @@
 <body>
 
     <aside class="sidebar">
-        <div class="brand-logo">SF <span>Rental</span></div>
+        <div class="brand-logo">SF <span> Car Rental</span></div>
         
         <?php 
             // Get the currently active controller name
