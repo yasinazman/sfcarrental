@@ -1,8 +1,15 @@
 <?php 
 $this->assign('title', $pageTitle); 
 $this->Html->css('admin-dashboard', ['block' => true]); 
-$this->Html->css('admin-cars', ['block' => true]); // Panggil fail CSS baharu
+$this->Html->css('admin-cars', ['block' => true]); 
 ?>
+
+<div class="content-header box-header cars-header">
+    <div>
+        <h3 class="box-title" style="font-size: 22px;">Car Fleet</h3>
+        <p style="color: var(--text-light); font-size: 14px; margin: 5px 0 0;">Manage your rental vehicles and track availability.</p>
+    </div>
+</div>
 
 <div class="maintenance-stats-grid cars-stats-grid">
     <div class="m-stat-card">
@@ -35,40 +42,56 @@ $this->Html->css('admin-cars', ['block' => true]); // Panggil fail CSS baharu
     </div>
 </div>
 
-<div class="cars-toolbar">
+<div style="background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); margin-bottom: 24px; display: flex; flex-direction: column; gap: 15px;">
     
-    <div class="category-filter-bar cars-filter-bar">
-        <?php 
-        $categories = ['Economy', 'Compact', 'Sedan', 'MPV', 'SUV']; 
-        $currentCategory = $this->request->getQuery('category');
-        ?>
-        <a href="<?= $this->Url->build(['action' => 'index']) ?>" class="badge-status <?= empty($currentCategory) ? 'badge-blue' : 'badge-grey' ?>" style="text-decoration: none; padding: 8px 16px;">All Cars</a>
-        <?php foreach($categories as $cat): ?>
-            <a href="<?= $this->Url->build(['action' => 'index', '?' => ['category' => $cat]]) ?>" class="badge-status <?= $currentCategory == $cat ? 'badge-blue' : 'badge-grey' ?>" style="text-decoration: none; padding: 8px 16px;"><?= $cat ?></a>
-        <?php endforeach; ?>
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; border-bottom: 1px solid #f0f0f0; padding-bottom: 15px;">
+        
+        <div class="category-filter-bar" style="margin: 0; padding: 0;">
+            <?php 
+            $categories = ['Economy', 'Compact', 'Sedan', 'MPV', 'SUV']; 
+            $currentCategory = $this->request->getQuery('category');
+            $currentStatus = $this->request->getQuery('status');
+            ?>
+            <a href="<?= $this->Url->build(['action' => 'index', '?' => ['status' => $currentStatus]]) ?>" class="badge-status <?= empty($currentCategory) ? 'badge-blue' : 'badge-grey' ?>" style="text-decoration: none; padding: 8px 16px;">All Categories</a>
+            <?php foreach($categories as $cat): ?>
+                <a href="<?= $this->Url->build(['action' => 'index', '?' => ['category' => $cat, 'status' => $currentStatus]]) ?>" class="badge-status <?= $currentCategory == $cat ? 'badge-blue' : 'badge-grey' ?>" style="text-decoration: none; padding: 8px 16px;"><?= $cat ?></a>
+            <?php endforeach; ?>
+        </div>
+
+        <div class="category-filter-bar" style="margin: 0; padding: 0;">
+            <a href="<?= $this->Url->build(['action' => 'index', '?' => ['category' => $currentCategory]]) ?>" class="badge-status <?= empty($currentStatus) ? 'badge-blue' : 'badge-grey' ?>" style="text-decoration: none; padding: 8px 16px;">All Status</a>
+            <a href="<?= $this->Url->build(['action' => 'index', '?' => ['status' => 'Available', 'category' => $currentCategory]]) ?>" class="badge-status <?= $currentStatus === 'Available' ? 'badge-green' : 'badge-grey' ?>" style="text-decoration: none; padding: 8px 16px;">Available</a>
+            <a href="<?= $this->Url->build(['action' => 'index', '?' => ['status' => 'On Rent', 'category' => $currentCategory]]) ?>" class="badge-status <?= $currentStatus === 'On Rent' ? 'badge-blue' : 'badge-grey' ?>" style="text-decoration: none; padding: 8px 16px;">On Rent</a>
+            <a href="<?= $this->Url->build(['action' => 'index', '?' => ['status' => 'Maintenance', 'category' => $currentCategory]]) ?>" class="badge-status <?= $currentStatus === 'Maintenance' ? 'badge-red' : 'badge-grey' ?>" style="text-decoration: none; padding: 8px 16px;">Maintenance</a>
+        </div>
     </div>
 
-    <div class="cars-search-group">
-        <form method="get" action="<?= $this->Url->build(['action' => 'index']) ?>" class="cars-search-form">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+        
+        <form method="get" action="<?= $this->Url->build(['action' => 'index']) ?>" style="display: flex; gap: 8px; align-items: center; margin: 0;">
             <?php if (!empty($currentCategory)): ?>
                 <input type="hidden" name="category" value="<?= h($currentCategory) ?>">
             <?php endif; ?>
-            <input type="text" name="search" value="<?= h($search ?? '') ?>" placeholder="Search Plate No or Model..." class="form-control search-input">
-            <button type="submit" class="btn-search" title="Search"><i class="fas fa-search"></i></button>
+            <?php if (!empty($currentStatus)): ?>
+                <input type="hidden" name="status" value="<?= h($currentStatus) ?>">
+            <?php endif; ?>
+            
+            <input type="text" name="search" value="<?= h($search ?? '') ?>" placeholder="Search Plate No or Model..." style="width: 280px; padding: 9px 15px; border-radius: 6px; border: 1px solid #ddd; outline: none;">
+            <button type="submit" style="padding: 9px 18px; border-radius: 6px; background: #007bff; color: white; border: none; cursor: pointer;"><i class="fas fa-search"></i></button>
             <?php if (!empty($search)): ?>
-                <a href="<?= $this->Url->build(['action' => 'index', '?' => ['category' => $currentCategory]]) ?>" class="btn-clear-search" title="Clear Search"><i class="fas fa-times"></i></a>
+                <a href="<?= $this->Url->build(['action' => 'index', '?' => ['category' => $currentCategory, 'status' => $currentStatus]]) ?>" style="padding: 9px 15px; text-decoration: none; border-radius: 6px; background: #f8f9fa; border: 1px solid #ddd; color: #dc3545;" title="Clear Search"><i class="fas fa-times"></i></a>
             <?php endif; ?>
         </form>
 
-        <div class="toolbar-divider"></div>
-
-        <a href="<?= $this->Url->build(['action' => 'export', '?' => $this->request->getQuery()]) ?>" class="btn-export">
-            <i class="fas fa-file-csv"></i> Export CSV
-        </a>
-
-        <a href="<?= $this->Url->build(['action' => 'add']) ?>" class="btn-add-new">
-            <i class="fas fa-plus"></i> Add New Car
-        </a>
+        <div style="display: flex; gap: 12px; align-items: center;">
+            <a href="<?= $this->Url->build(['action' => 'export', '?' => $this->request->getQuery()]) ?>" style="padding: 9px 18px; border-radius: 6px; background: #28a745; color: white; text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; transition: 0.2s;" onmouseover="this.style.background='#218838';" onmouseout="this.style.background='#28a745';">
+                <i class="fas fa-file-csv"></i> Export CSV
+            </a>
+            
+            <a href="<?= $this->Url->build(['action' => 'add']) ?>" style="padding: 9px 18px; border-radius: 6px; background: var(--accent-red); color: white; text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; transition: 0.2s;" onmouseover="this.style.background='#c82333';" onmouseout="this.style.background='var(--accent-red)';">
+                <i class="fas fa-plus"></i> Add New Car
+            </a>
+        </div>
         
     </div>
 </div>

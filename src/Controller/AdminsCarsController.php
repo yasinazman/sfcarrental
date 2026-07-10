@@ -8,13 +8,15 @@ class AdminsCarsController extends AppController
         $category = $this->request->getQuery('category');
         $search = $this->request->getQuery('search');
         
+        $statusFilter = $this->request->getQuery('status'); 
+
         $carsTable = $this->fetchTable('Cars');
         $query = $carsTable->find()->order(['id' => 'DESC']);
-        
+
         if (!empty($category)) {
             $query->where(['category' => $category]);
         }
-        
+
         if (!empty($search)) {
             $query->where([
                 'OR' => [
@@ -23,7 +25,11 @@ class AdminsCarsController extends AppController
                 ]
             ]);
         }
-        
+
+        if (!empty($statusFilter)) {
+            $query->where(['availability_status' => $statusFilter]);
+        }
+
         $cars = $query->all();
 
         $totalCars = $carsTable->find()->count();
@@ -31,7 +37,7 @@ class AdminsCarsController extends AppController
         $onRentCount = $carsTable->find()->where(['availability_status' => 'On Rent'])->count();
         $maintenanceCount = $carsTable->find()->where(['availability_status' => 'Maintenance'])->count();
 
-        $this->set(compact('cars', 'category', 'search', 'totalCars', 'availableCount', 'onRentCount', 'maintenanceCount'));
+        $this->set(compact('cars', 'category', 'search', 'statusFilter', 'totalCars', 'availableCount', 'onRentCount', 'maintenanceCount'));
         $this->set('pageTitle', 'Manage Cars');
     }
 

@@ -11,6 +11,9 @@ class Admin extends Entity
     protected array $_accessible = [
         'username' => true,
         'password' => true,
+        'role' => true,
+        'status' => true,
+        'last_login' => true,
         'created' => true,
         'modified' => true,
     ];

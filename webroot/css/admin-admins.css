@@ -1,0 +1,192 @@
+/* Header & Layout */
+.admin-header-flex { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 24px; 
+}
+
+.admin-title-wrap h3 { 
+    margin: 0; 
+    font-size: 22px; 
+}
+
+.admin-title-wrap p { 
+    color: var(--text-light); 
+    font-size: 14px; 
+    margin: 5px 0 0; 
+}
+
+.btn-add-admin { 
+    background: var(--accent-red); 
+    color: white; 
+    padding: 10px 20px; 
+    text-decoration: none; 
+    border-radius: 6px; 
+    font-weight: 500; 
+    transition: background 0.2s ease; 
+}
+
+.btn-add-admin:hover { 
+    background: #c82333; 
+}
+
+.btn-add-admin i { 
+    margin-right: 5px; 
+}
+
+/* Dashboard Analytics */
+.admin-stats-grid { 
+    display: grid; 
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 24px; 
+    margin-bottom: 24px; 
+}
+
+/* Table Elements */
+.admin-user-flex { 
+    display: flex; 
+    align-items: center; 
+    gap: 15px; 
+}
+
+.admin-avatar { 
+    width: 40px; 
+    height: 40px; 
+    border-radius: 50%; 
+    color: white; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    font-weight: bold; 
+    font-size: 18px; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+}
+
+.avatar-master { 
+    background: linear-gradient(135deg, #ffd700, #daa520); 
+}
+
+.avatar-staff { 
+    background: linear-gradient(135deg, #007bff, #0056b3); 
+}
+
+/* Typography */
+.admin-username { 
+    font-weight: 600; 
+    color: var(--text-main); 
+    font-size: 15px; 
+}
+
+.master-tag { 
+    font-size: 11px; 
+    color: #daa520; 
+    font-weight: bold; 
+    letter-spacing: 0.5px; 
+    margin-top: 2px; 
+}
+
+.master-tag i { 
+    font-size: 10px; 
+    margin-right: 3px; 
+}
+
+.staff-id { 
+    font-size: 12px; 
+    color: var(--text-light); 
+    margin-top: 2px; 
+}
+
+/* Badges & Status */
+.role-badge-group { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 5px; 
+    align-items: flex-start; 
+}
+
+.badge-small { 
+    font-size: 11px; 
+}
+
+.login-time { 
+    font-weight: 500; 
+    color: #28a745; 
+}
+
+.login-time i { 
+    margin-right: 5px; 
+    color: #ccc; 
+}
+
+.login-never { 
+    color: #999; 
+    font-style: italic; 
+}
+
+.created-date { 
+    color: #555; 
+    font-size: 13px; 
+}
+
+/* Actions */
+.action-flex { 
+    text-align: center; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    gap: 15px; 
+}
+
+.action-divider { 
+    color: #ccc; 
+}
+
+.icon-suspend { 
+    color: #dc3545; 
+    font-size: 16px; 
+    transition: transform 0.2s; 
+}
+
+.icon-activate { 
+    color: #28a745; 
+    font-size: 16px; 
+    transition: transform 0.2s; 
+}
+
+.icon-delete { 
+    color: var(--accent-red); 
+    font-size: 16px; 
+    transition: transform 0.2s; 
+}
+
+.icon-shield { 
+    font-size: 20px; 
+    color: #e0e0e0; 
+}
+
+.icon-suspend:hover, 
+.icon-activate:hover, 
+.icon-delete:hover { 
+    transform: scale(1.1); 
+}
+
+/* Search Bar */
+.admin-search-wrapper { 
+    margin-bottom: 20px; 
+    display: flex; 
+    justify-content: flex-end; 
+}
+
+.admin-search-input { 
+    width: 300px; 
+    padding: 8px 15px; 
+    border-radius: 6px; 
+    border: 1px solid #ddd; 
+    outline: none; 
+    transition: border-color 0.2s; 
+}
+
+.admin-search-input:focus { 
+    border-color: #007bff; 
+}
