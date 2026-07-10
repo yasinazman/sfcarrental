@@ -4,13 +4,6 @@ $this->Html->css('admin-dashboard', ['block' => true]);
 $this->Html->css('admin-cars', ['block' => true]); 
 ?>
 
-<div class="content-header box-header cars-header">
-    <div>
-        <h3 class="box-title" style="font-size: 22px;">Car Fleet</h3>
-        <p style="color: var(--text-light); font-size: 14px; margin: 5px 0 0;">Manage your rental vehicles and track availability.</p>
-    </div>
-</div>
-
 <div class="maintenance-stats-grid cars-stats-grid">
     <div class="m-stat-card">
         <div class="m-stat-icon" style="background: rgba(0, 123, 255, 0.1); color: #007bff;"><i class="fas fa-car-side"></i></div>

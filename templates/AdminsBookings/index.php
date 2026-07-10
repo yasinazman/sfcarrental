@@ -6,13 +6,6 @@ $this->Html->css('admin-bookings', ['block' => true]);
 
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
 
-<div class="content-header booking-header" style="margin-bottom: 20px;">
-    <div>
-        <h3>Booking Management & Schedule</h3>
-        <p>Monitor customer rentals and vehicle maintenance schedules</p>
-    </div>
-</div>
-
 <div class="maintenance-stats-grid" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 24px;">
     <div class="m-stat-card">
         <div class="m-stat-icon" style="background: rgba(255, 193, 7, 0.1); color: #ffc107;"><i class="fas fa-clock"></i></div>

@@ -5,14 +5,6 @@ $this->Html->css('admin-dashboard', ['block' => true]);
 
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
 
-<div class="content-header box-header" style="margin-bottom: 24px;">
-    <div>
-        <h3 class="box-title" style="font-size: 22px;">Maintenance Records</h3>
-        <p style="color: var(--text-light); font-size: 14px; margin: 5px 0 0;">Monitor service schedules and repair costs.</p>
-    </div>
-    <a href="<?= $this->Url->build(['action' => 'add']) ?>" class="btn-add-new"><i class="fas fa-plus"></i> Add New Record</a>
-</div>
-
 <div class="maintenance-stats-grid">
     <div class="m-stat-card">
         <div class="m-stat-icon" style="background: rgba(220, 53, 69, 0.1); color: #dc3545;"><i class="fas fa-wrench"></i></div>
@@ -41,16 +33,24 @@ $this->Html->css('admin-dashboard', ['block' => true]);
     <div id="maintenanceCalendar" style="min-height: 400px;"></div>
 </div>
 
-<div class="category-filter-bar" style="margin-top: 40px; margin-bottom: 24px; padding-bottom: 10px;">
-    <?php 
-    $statuses = ['Completed', 'In Progress', 'Scheduled']; 
-    $currentStatus = $this->request->getQuery('status');
-    ?>
-    <a href="<?= $this->Url->build(['action' => 'index']) ?>" class="badge-status <?= empty($currentStatus) ? 'badge-blue' : 'badge-grey' ?>" style="text-decoration: none; padding: 8px 16px;">All Records</a>
+<div style="display: flex; justify-content: space-between; align-items: center; margin-top: 40px; margin-bottom: 24px; border-bottom: 1px solid #f0f0f0; padding-bottom: 15px;">
     
-    <?php foreach($statuses as $stat): ?>
-        <a href="<?= $this->Url->build(['action' => 'index', '?' => ['status' => $stat]]) ?>" class="badge-status <?= $currentStatus == $stat ? 'badge-blue' : 'badge-grey' ?>" style="text-decoration: none; padding: 8px 16px;"><?= $stat ?></a>
-    <?php endforeach; ?>
+    <div class="category-filter-bar" style="margin: 0; padding: 0; border: none; display: flex; gap: 10px;">
+        <?php 
+        $statuses = ['Completed', 'In Progress', 'Scheduled']; 
+        $currentStatus = $this->request->getQuery('status');
+        ?>
+        <a href="<?= $this->Url->build(['action' => 'index']) ?>" class="badge-status <?= empty($currentStatus) ? 'badge-blue' : 'badge-grey' ?>" style="text-decoration: none; padding: 8px 16px;">All Records</a>
+        
+        <?php foreach($statuses as $stat): ?>
+            <a href="<?= $this->Url->build(['action' => 'index', '?' => ['status' => $stat]]) ?>" class="badge-status <?= $currentStatus == $stat ? 'badge-blue' : 'badge-grey' ?>" style="text-decoration: none; padding: 8px 16px;"><?= $stat ?></a>
+        <?php endforeach; ?>
+    </div>
+
+    <a href="<?= $this->Url->build(['action' => 'add']) ?>" class="btn-add-new" style="margin: 0; background: var(--accent-red); color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: 500; font-size: 14px; box-shadow: 0 4px 6px rgba(220, 53, 69, 0.2);">
+        <i class="fas fa-plus"></i> Add New Record
+    </a>
+    
 </div>
 
 <div class="dashboard-box">
