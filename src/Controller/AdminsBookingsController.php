@@ -92,12 +92,18 @@ class AdminsBookingsController extends AppController
     {
         $this->request->allowMethod(['post']);
         $bookingsTable = $this->fetchTable('Bookings');
-        $booking = $bookingsTable->get($id);
+        
+        $booking = $bookingsTable->get($id, ['contain' => ['Cars']]);
         
         $validStatuses = ['Approved', 'Cancelled', 'Completed'];
         if (in_array($status, $validStatuses)) {
             $booking->booking_status = $status;
+            
             if ($bookingsTable->save($booking)) {
+                if (!empty($booking->car_id)) {
+                    $this->_syncCarStatus($booking->car_id, $status);
+                }
+                
                 $this->Flash->success("Booking #{$id} has been successfully {$status}.");
             } else {
                 $this->Flash->error("Unable to update Booking #{$id}.");
@@ -127,7 +133,12 @@ class AdminsBookingsController extends AppController
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $booking = $bookingsTable->patchEntity($booking, $this->request->getData());
+            
             if ($bookingsTable->save($booking)) {
+                if (!empty($booking->car_id)) {
+                    $this->_syncCarStatus($booking->car_id, $booking->booking_status);
+                }
+                
                 $this->Flash->success('Booking status and details have been successfully updated.');
                 return $this->redirect(['action' => 'index']);
             }
@@ -182,5 +193,29 @@ class AdminsBookingsController extends AppController
         return $this->response->withStringBody($csvData)
             ->withType('csv')
             ->withDownload($fileName);
+    }
+    
+    /**
+     * FUNGSI BANTUAN (PRIVATE HELPER)
+     * Mengemaskini status di jadual Cars secara automatik berdasarkan status Tempahan
+     */
+    private function _syncCarStatus($carId, $bookingStatus)
+    {
+        $carsTable = $this->fetchTable('Cars');
+        try {
+            $car = $carsTable->get($carId);
+            $status = strtolower($bookingStatus);
+
+            if ($status === 'approved') {
+                $car->availability_status = 'On Rent';
+                $carsTable->save($car);
+            } elseif ($status === 'completed' || $status === 'cancelled') {
+                $car->availability_status = 'Available';
+                $car->latitude = '3.068600';
+                $car->longitude = '101.490400';
+                $carsTable->save($car);
+            }
+        } catch (\Cake\Datasource\Exception\RecordNotFoundException $e) {
+        }
     }
 }
