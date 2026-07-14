@@ -62,7 +62,6 @@ class AdminsMaintenancesController extends AppController
     {
         $maintenancesTable = $this->fetchTable('Maintenances');
         
-        // Tarik rekod spesifik berdasarkan ID dan pautkan dengan data kereta
         $maintenance = $maintenancesTable->get($id, [
             'contain' => ['Cars']
         ]);
@@ -79,13 +78,15 @@ class AdminsMaintenancesController extends AppController
         if ($this->request->is('post')) {
             $maintenance = $maintenancesTable->patchEntity($maintenance, $this->request->getData());
             if ($maintenancesTable->save($maintenance)) {
+                
+                $this->_syncCarStatus($maintenance->car_id, $maintenance->status);
+
                 $this->Flash->success('Maintenance record has been successfully added.');
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error('Unable to add the record. Please check the form and try again.');
         }
 
-        // Tarik senarai kereta (gabungkan model dan plate) untuk Dropdown
         $carsTable = $this->fetchTable('Cars');
         $cars = $carsTable->find('list', [
             'keyField' => 'id',
@@ -108,13 +109,15 @@ class AdminsMaintenancesController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $maintenance = $maintenancesTable->patchEntity($maintenance, $this->request->getData());
             if ($maintenancesTable->save($maintenance)) {
+                
+                $this->_syncCarStatus($maintenance->car_id, $maintenance->status);
+
                 $this->Flash->success('Maintenance record has been updated.');
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error('Unable to update the record. Please check the form.');
         }
 
-        // Tarik senarai kereta untuk dropdown
         $carsTable = $this->fetchTable('Cars');
         $cars = $carsTable->find('list', [
             'keyField' => 'id',
@@ -134,11 +137,38 @@ class AdminsMaintenancesController extends AppController
         $maintenance = $maintenancesTable->get($id);
         
         if ($maintenancesTable->delete($maintenance)) {
+            if (strtolower($maintenance->status) === 'in progress') {
+                $this->_syncCarStatus($maintenance->car_id, 'Completed'); 
+            }
             $this->Flash->success('The maintenance record has been deleted.');
         } else {
             $this->Flash->error('Unable to delete the record.');
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    /**
+     * FUNGSI BANTUAN (PRIVATE HELPER)
+     * Mengemaskini status di jadual Cars secara automatik berdasarkan status Maintenance
+     */
+    private function _syncCarStatus($carId, $maintenanceStatus)
+    {
+        $carsTable = $this->fetchTable('Cars');
+        try {
+            $car = $carsTable->get($carId);
+            $status = strtolower($maintenanceStatus);
+
+            if ($status === 'in progress') {
+                $car->availability_status = 'Maintenance';
+                $carsTable->save($car);
+            } elseif ($status === 'completed') {
+                $car->availability_status = 'Available';
+                $car->latitude = '3.068600';
+                $car->longitude = '101.490400';
+                $carsTable->save($car);
+            }
+        } catch (\Cake\Datasource\Exception\RecordNotFoundException $e) {
+        }
     }
 }

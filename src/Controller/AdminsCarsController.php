@@ -133,6 +133,11 @@ class AdminsCarsController extends AppController
                 $car->availability_status = 'Available';
             }
 
+            if (empty($car->latitude) || empty($car->longitude)) {
+                $car->latitude = '3.068600';
+                $car->longitude = '101.490400';
+            }
+
             if ($carsTable->save($car)) {
                 $this->Flash->success('New car and specifications have been successfully saved.');
                 return $this->redirect(['action' => 'index']);

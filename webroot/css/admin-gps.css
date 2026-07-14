@@ -1,30 +1,196 @@
+/* Map Container */
+.gps-map-container {
+    background: #fff;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+    margin-bottom: 30px;
+}
+
+.gps-map-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 0 5px;
+}
+
+.gps-map-title {
+    margin: 0;
+    color: var(--text-main);
+    font-size: 16px;
+}
+
+/* Live Toggle */
+.live-toggle-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    color: #555;
+}
+
+.live-toggle-checkbox {
+    width: 18px;
+    height: 18px;
+    accent-color: #dc3545;
+}
+
+/* Map Dimensions */
+#map {
+    height: 500px;
+    width: 100%;
+    border-radius: 8px;
+    z-index: 1;
+}
+
+/* Leaflet Custom Tooltip (Car Label) */
 .car-permanent-label {
     background: rgba(255, 255, 255, 0.9);
-    border: 1px solid #007bff;
+    border: 1px solid #ddd;
     border-radius: 4px;
-    font-weight: 600;
     text-align: center;
     padding: 4px 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    line-height: 1.3;
 }
 
-.car-permanent-label::before {
-    border-top-color: #007bff; /* Warna jarum tooltip */
+/* Animations for "Live" Indicator */
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
 }
 
-.btn-track {
-    background: #e8f4fd;
-    color: #007bff;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 600;
+.gps-time {
     font-size: 12px;
-    transition: all 0.2s ease;
+    color: #28a745;
+    font-weight: 600;
 }
 
-.btn-track:hover {
-    background: #007bff;
-    color: #fff;
+.gps-time i {
+    font-size: 8px;
+    margin-right: 4px;
+}
+
+.gps-time i.live-blink {
+    animation: blink 1.5s infinite;
+}
+
+.btn-action {
+    padding: 6px 12px;
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-weight: 500;
+    text-decoration: none;
+    font-size: 13px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.btn-action:hover {
+    background: #e9ecef;
+}
+
+.btn-locate {
+    color: #007bff;
+}
+
+.btn-view {
+    color: #17a2b8;
+}
+
+.btn-direction {
+    color: #28a745;
+}
+
+.gps-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.gps-modal-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.gps-modal {
+    background: #fff;
+    width: 400px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transform: translateY(-20px);
+    transition: transform 0.3s ease;
+    overflow: hidden;
+}
+
+.gps-modal-overlay.show .gps-modal {
+    transform: translateY(0);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+    background: #f8f9fa;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #999;
+    transition: color 0.2s;
+    line-height: 1;
+}
+
+.close-btn:hover {
+    color: #dc3545;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.modal-detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px dashed #eee;
+}
+
+.modal-detail-row:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    color: #777;
+    font-size: 14px;
+}
+
+.detail-value {
+    color: #333;
+    font-size: 14px;
+    text-align: right;
 }
