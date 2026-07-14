@@ -97,4 +97,12 @@ class CarsController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
+    public function browse()
+{
+    // Ambil semua kereta yang ada dalam database
+    $cars = $this->Cars->find('all')->toArray();
+    
+    $this->set(compact('cars'));
+}
 }

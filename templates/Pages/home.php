@@ -68,13 +68,9 @@ $this->disableAutoLayout();
     $userLoginUrl = $this->Url->build(['controller' => 'Users', 'action' => 'login']);
     $adminLoginUrl = '#'; // TODO: setup lepas Admin panel siap
 ?>
-
-                <a href="<?= h($userLoginUrl) ?>" class="signin-option-btn">
-
-                    <i class="fa-solid fa-user"></i>
-
-                    <span data-en="Continue as User" data-bm="Teruskan sebagai Pengguna">Continue as User</span>
-
+                <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'login']) ?>" class="btn-option btn-user" style="text-decoration: none;">
+                <i class="fa fa-user"></i> 
+                <span data-en="Continue as User" data-bm="Teruskan sebagai Pengguna">Continue as User</span>
                 </a>
 
                 <a href="<?= h($adminLoginUrl) ?>" class="signin-option-btn admin">
@@ -341,39 +337,35 @@ $this->disableAutoLayout();
 
             <section class="features-section-inner">
 
-                <h2 class="section-title" data-en="Why Tourists Choose sfcarrental?" data-bm="Kenapa Pelancong Pilih sfcarrental?">Why Tourists Choose sfcarrental?</h2>
+               <h2 class="section-title" data-en="Why Tourists Choose sfcarrental?" data-bm="Kenapa Pelancong Pilih sfcarrental?">Why Tourists Choose sfcarrental?</h2>
 
-                <div class="features-grid">
+<div class="features-grid">
 
-                    <div class="feature-box">
+    <div class="feature-box">
+        <div class="feature-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+        <h3 data-en="5-Star Hygiene Clean" data-bm="Kebersihan Gred 5-Bintang">5-Star Hygiene Clean</h3>
+        <p data-en="Every single vehicle undergoes full medical-grade sanitization and multi-point inspection before handover." data-bm="Setiap kenderaan dinyahkuman sepenuhnya menggunakan gred perubatan sebelum diserahkan.">Every single vehicle undergoes full medical-grade sanitization and multi-point inspection before handover.</p>
+    </div>
 
-                        <div class="feature-icon"><i class="fa-solid fa-sparkles"></i></div>
+    <div class="feature-box">
+        <div class="feature-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+        <h3 data-en="True Pricing Guarantee" data-bm="Jaminan Harga Sebenar">True Pricing Guarantee</h3>
+        <p data-en="What you see is exactly what you pay. No local taxes added at counter, no seasonal tourist markups." data-bm="Harga tertera adalah harga dibayar. Tiada cukai tambahan kaunter atau caj tersembunyi bermusim.">What you see is exactly what you pay. No local taxes added at counter, no seasonal tourist markups.</p>
+    </div>
 
-                        <h3 data-en="5-Star Hygiene Clean" data-bm="Kebersihan Gred 5-Bintang">5-Star Hygiene Clean</h3>
+    <div class="feature-box">
+        <div class="feature-icon"><i class="fa-solid fa-road-circle-check"></i></div>
+        <h3 data-en="24/7 Roadside Assistance" data-bm="Bantuan Kecemasan Jalan Raya 24/7">24/7 Roadside Assistance</h3>
+        <p data-en="Drive with peace of mind. Our dedicated emergency team is ready to assist you anywhere, anytime." data-bm="Pandu tanpa risau. Pasukan bantuan kecemasan bersiap sedia membantu anda di mana-mana sahaja.">Drive with peace of mind. Our dedicated emergency team is ready to assist you anywhere, anytime.</p>
+    </div>
 
-                        <p data-en="Every single vehicle undergoes full medical-grade sanitization and multi-point inspection before handover." data-bm="Setiap kenderaan dinyahkuman sepenuhnya menggunakan gred perubatan sebelum diserahkan.">Every single vehicle undergoes full medical-grade sanitization and multi-point inspection before handover.</p>
+    <div class="feature-box">
+        <div class="feature-icon"><i class="fa-solid fa-key"></i></div>
+        <h3 data-en="Express Lockbox Pickup" data-bm="Pengambilan Ekspres Lockbox">Express Lockbox Pickup</h3>
+        <p data-en="Skip the long counter queues. Get your secure digital smart-pin via user dashboard and collect your car keys instantly." data-bm="Tanpa perlu beratur panjang di kaunter. Dapatkan pin digital selamat di dashboard dan ambil kunci kereta anda serta-merta.">Skip the long counter queues. Get your secure digital smart-pin via user dashboard and collect your car keys instantly.</p>
+    </div>
 
-                    </div>
-
-                    <div class="feature-box">
-
-                        <div class="feature-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div>
-
-                        <h3 data-en="True Pricing Guarantee" data-bm="Jaminan Harga Sebenar">True Pricing Guarantee</h3>
-
-                        <p data-en="What you see is exactly what you pay. No local taxes added at counter, no seasonal tourist markups." data-bm="Harga tertera adalah harga dibayar. Tiada cukai tambahan kaunter atau caj tersembunyi bermusim.">What you see is exactly what you pay. No local taxes added at counter, no seasonal tourist markups.</p>
-
-                    </div>
-
-                    <div class="feature-box">
-
-                        <div class="feature-icon"><i class="fa-solid fa-road-circle-check"></i></div>
-
-                        <h3 data-en="24/7 Roadside Assistance" data-bm="Bantuan Kecemasan Jalan Raya 24/7">24/7 Roadside Assistance</h3>
-
-                        <p data-en="Drive with peace of mind. Our dedicated English-speaking emergency team is ready to assist you anywhere, anytime." data-bm="Pandu tanpa risau. Pasukan bantuan kecemasan bersiap sedia membantu anda di mana-mana sahaja.">Drive with peace of mind. Our dedicated English-speaking emergency team is ready to assist you anywhere, anytime.</p>
-
-                    </div>
+</div>
 
                 </div>
 

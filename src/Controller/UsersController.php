@@ -10,53 +10,44 @@ class UsersController extends AppController
     public function beforeFilter(EventInterface $event)
     {
         parent::beforeFilter($event);
-        // Benarkan sesiapa akses login & register tanpa perlu login dulu
-        $this->Authentication->addUnauthenticatedActions(['login', 'register']);
+        
+        if ($this->components()->has('Authentication')) {
+            $this->Authentication->addUnauthenticatedActions(['login', 'register', 'dashboard']);
+        }
     }
 
     public function login()
     {
-        $this->request->allowMethod(['get', 'post']);
-        $result = $this->Authentication->getResult();
-
-        // Kalau dah login, terus redirect ke dashboard
-        if ($result && $result->isValid()) {
-            $redirect = $this->request->getQuery('redirect', [
-                'controller' => 'Users',
-                'action' => 'dashboard',
-            ]);
-            return $this->redirect($redirect);
-        }
-
-        if ($this->request->is('post') && !$result->isValid()) {
-            $this->Flash->error('Email atau kata laluan salah, sila cuba lagi.');
-        }
+        // Matikan layout global kawan kau secara total untuk page ini
+        $this->viewBuilder()->disableAutoLayout();
     }
 
     public function register()
     {
-        $user = $this->Users->newEmptyEntity();
-        if ($this->request->is('post')) {
-            $user = $this->Users->patchEntity($user, $this->request->getData());
-            if ($this->Users->save($user)) {
-                $this->Flash->success('Pendaftaran berjaya! Sila log masuk.');
-                return $this->redirect(['action' => 'login']);
-            }
-            $this->Flash->error('Pendaftaran gagal, sila semak semula maklumat.');
-        }
-        $this->set(compact('user'));
+        // Matikan layout global kawan kau secara total untuk page ini
+        $this->viewBuilder()->disableAutoLayout();
     }
 
     public function dashboard()
     {
-        $this->Authorization->skipAuthorization(); // atau letak logic authorization ikut kesesuaian
-        $user = $this->Authentication->getIdentity();
-        $this->set(compact('user'));
+        if ($this->components()->has('Authorization')) {
+            $this->Authorization->skipAuthorization();
+        }
+        // Matikan layout global kawan kau secara total untuk page ini
+        $this->viewBuilder()->disableAutoLayout();
     }
 
-    public function logout()
-    {
-        $this->Authentication->logout();
-        return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);
-    }
+    public function profile()
+{
+    $identity = $this->request->getAttribute('authentication')->getIdentity();
+    $customerId = $identity->id;
+
+    // Load model Customers secara manual jika berada di UsersController
+    $this->loadModel('Customers');
+    
+    // Ambil data profil customer
+    $customer = $this->Customers->get($customerId);
+
+    $this->set(compact('customer'));
+}
 }

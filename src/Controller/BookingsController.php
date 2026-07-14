@@ -101,5 +101,6 @@ class BookingsController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+        
     }
 }

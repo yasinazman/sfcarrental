@@ -1,137 +1,302 @@
-/* ==========================================================
-   sfcarrental - USER DASHBOARD STYLES
-   Fail ini load SELEPAS home.css (guna variable tema & reset
-   yang sama: --primary-red, --card-bg, --text-dark, dsb.)
-   Load kedua-dua dalam view:
-     <?= $this->Html->css(['home', 'dashboard']) ?>
-   ========================================================== */
+/* user-dashboard.css - Premium Dashboard System */
 
-.dashboard-hero {
-    background: var(--dark-black);
-    width: 100%;
-    padding: 2.5rem 0 2rem 0;
+/* 1. Global Variables & Color Tokens */
+:root {
+    --bg-user: #0c0c0c;
+    --sidebar-bg: #000000;
+    --card-bg-user: #161616;
+    --text-user: #ffffff;
+    --text-muted-user: #aaaaaa;
+    --primary-user: #e50914;
+    --primary-hover-user: #ff2e3b;
+    --border-user: #222222;
+    --table-hover: #1e1e1e;
 }
-.dashboard-hero-inner {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 0 1.5rem;
-    color: #FFFFFF;
-}
-.dashboard-hero-inner h1 { font-size: 1.9rem; font-weight: 800; margin-bottom: 0.4rem; }
-.dashboard-hero-inner p { color: #B0B8C1; font-size: 0.95rem; }
 
-.dashboard-wrapper {
-    width: 100%;
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 2.5rem 1.5rem 4rem 1.5rem;
+[data-theme="light"] {
+    --bg-user: #f4f5f7;
+    --sidebar-bg: #ffffff;
+    --card-bg-user: #ffffff;
+    --text-user: #1a1a1a;
+    --text-muted-user: #666666;
+    --primary-user: #d30812;
+    --primary-hover-user: #e50914;
+    --border-user: #e2e8f0;
+    --table-hover: #f8fafc;
+}
+
+/* 2. Reset & Layout Wrapper */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.user-dashboard-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 99999; /* Memotong impak layout lalai luaran */
+    background-color: var(--bg-user);
+    color: var(--text-user);
+    display: flex;
+    overflow: hidden;
+}
+
+/* 3. Modernized Sidebar Structure */
+.sidebar-user {
+    width: 260px;
+    background-color: var(--sidebar-bg);
+    padding: 35px 20px;
     display: flex;
     flex-direction: column;
-    gap: 1.8rem;
+    border-right: 1px solid var(--border-user);
+    height: 100%;
+    flex-shrink: 0;
 }
 
-.dash-card {
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 16px;
-    padding: 1.8rem;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
-    width: 100%;
+.brand-user {
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--primary-user);
+    text-align: center;
+    letter-spacing: 3px;
+    margin-bottom: 50px;
+    text-transform: uppercase;
 }
-.dash-card-header {
+
+.menu-user {
+    list-style: none;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+    flex-grow: 1; /* Biar menu ambil ruang dan tolak butang logout ke bawah secara bersih */
+}
+
+.menu-user li a {
+    display: block;
+    padding: 14px 18px;
+    color: var(--text-muted-user);
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.menu-user li.active a, 
+.menu-user li a:hover {
+    background-color: var(--primary-user);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(229, 9, 20, 0.2);
+}
+
+.logout-user a {
+    display: block;
+    padding: 14px 18px;
+    background-color: rgba(255, 46, 59, 0.1);
+    color: #ff2e3b;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 700;
+    border: 1px solid rgba(255, 46, 59, 0.2);
+}
+
+.logout-user a:hover {
+    background-color: #ff2e3b;
+    color: white;
+}
+
+/* 4. Main Content Frame */
+.content-user {
+    flex: 1;
+    padding: 40px;
+    overflow-y: auto;
+    background-color: var(--bg-user);
+}
+
+.header-user {
+    display: flex;
     justify-content: space-between;
-    margin-bottom: 1.4rem;
-    flex-wrap: wrap;
-    gap: 0.8rem;
-}
-.dash-card-header h2 {
-    font-size: 1.25rem;
-    font-weight: 800;
-    display: flex;
     align-items: center;
-    gap: 0.6rem;
+    margin-bottom: 35px;
+    border-bottom: 1px solid var(--border-user);
+    padding-bottom: 20px;
 }
-.dash-card-header h2 i { color: var(--primary-red); }
 
-/* PROFILE CARD */
-.profile-top { display: flex; align-items: center; gap: 1.2rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
-.profile-avatar {
-    width: 68px; height: 68px; border-radius: 50%;
-    background: rgba(229, 9, 20, 0.1); color: var(--primary-red);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.8rem; font-weight: 800; flex-shrink: 0;
+.header-user h1 {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text-user);
 }
-.profile-name { font-size: 1.2rem; font-weight: 800; }
-.profile-since { color: var(--text-muted); font-size: 0.82rem; margin-top: 2px; }
-.profile-info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
-.profile-info-item label { display: block; font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 0.3rem; }
-.profile-info-item p { font-size: 0.95rem; font-weight: 600; }
-.btn-edit-profile {
-    background-color: var(--primary-red); color: #FFFFFF !important; text-decoration: none;
-    padding: 0.65rem 1.3rem; border-radius: 8px; font-weight: 700; font-size: 0.88rem;
-    display: inline-flex; align-items: center; gap: 0.5rem;
-}
-.btn-edit-profile:hover { background-color: #b8070f; }
 
-/* BOOKING CARD */
-.booking-item {
-    display: flex; align-items: center; gap: 1.1rem;
-    padding: 1rem; border: 1px solid var(--border-color); border-radius: 12px;
-    margin-bottom: 0.9rem; flex-wrap: wrap;
+.controls-user {
+    display: flex;
+    gap: 12px;
 }
-.booking-item:last-child { margin-bottom: 0; }
-.booking-item-icon {
-    width: 46px; height: 46px; border-radius: 10px; flex-shrink: 0;
-    background: var(--gray-bg); color: var(--primary-red);
-    display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
-}
-.booking-item-details { flex: 1; min-width: 180px; }
-.booking-item-details h4 { font-size: 1rem; font-weight: 700; margin-bottom: 3px; }
-.booking-item-details p { font-size: 0.82rem; color: var(--text-muted); }
-.booking-item-details p i { width: 14px; color: var(--primary-red); margin-right: 4px; }
-.status-badge {
-    padding: 0.3rem 0.8rem; border-radius: 30px; font-size: 0.72rem; font-weight: 800;
-    text-transform: uppercase; letter-spacing: 0.4px; white-space: nowrap;
-}
-.status-confirmed { background: rgba(34, 197, 94, 0.12); color: #16A34A; }
-.status-pending { background: rgba(245, 158, 11, 0.12); color: #D97706; }
-.status-ongoing { background: rgba(59, 130, 246, 0.12); color: #2563EB; }
-.booking-item-actions { display: flex; gap: 0.5rem; width: 100%; margin-top: 0.6rem; }
-.btn-booking-action {
-    flex: 1; text-align: center; padding: 0.5rem; border-radius: 7px; font-size: 0.8rem; font-weight: 700;
-    text-decoration: none; border: 1px solid var(--border-color); color: var(--text-dark) !important;
-}
-.btn-booking-action:hover { background: var(--gray-bg); }
-.btn-booking-action.danger { color: var(--primary-red) !important; border-color: rgba(229,9,20,0.3); }
-.dash-empty-state { text-align: center; padding: 2rem 1rem; color: var(--text-muted); }
-.dash-empty-state i { font-size: 2rem; color: var(--border-color); margin-bottom: 0.8rem; display: block; }
 
-/* SUGGESTED CARS */
-.suggested-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; }
-.suggested-car-card { border: 1px solid var(--border-color); border-radius: 14px; overflow: hidden; }
-.suggested-car-card img { width: 100%; height: 130px; object-fit: cover; display: block; }
-.suggested-car-info { padding: 1rem; }
-.suggested-car-info h4 { font-size: 1rem; font-weight: 700; margin-bottom: 2px; }
-.suggested-car-info .car-type { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.6rem; }
-.suggested-car-info .car-price { font-size: 0.95rem; font-weight: 800; color: var(--primary-red); margin-bottom: 0.8rem; }
-.btn-rebook {
-    display: block; text-align: center; background: var(--dark-black); color: #FFFFFF !important;
-    text-decoration: none; padding: 0.6rem; border-radius: 8px; font-size: 0.85rem; font-weight: 700;
+.btn-user {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 14px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
-.btn-rebook:hover { background: var(--primary-red); }
-body.dark-theme .btn-rebook { background: #000000; border: 1px solid #333; }
 
-/* NAVBAR EXTRAS (nama user & butang log out di dashboard) */
-.nav-user-name { color: #E2E8F0; font-weight: 600; font-size: 0.92rem; display: flex; align-items: center; gap: 0.4rem; }
-.nav-user-name i { color: var(--primary-red); }
-.btn-logout { background-color: transparent !important; border: 1px solid #444; color: #E2E8F0 !important; }
-.btn-logout:hover { background-color: var(--primary-red) !important; border-color: var(--primary-red); }
+.btn-pri {
+    background-color: var(--primary-user);
+    color: white;
+}
+.btn-pri:hover {
+    background-color: var(--primary-hover-user);
+}
 
-/* RESPONSIVE */
-@media (max-width: 600px) {
-    .dashboard-hero-inner h1 { font-size: 1.5rem; }
-    .booking-item { flex-direction: column; align-items: flex-start; }
-    .profile-top { flex-direction: column; align-items: flex-start; }
+.btn-sec {
+    background-color: var(--card-bg-user);
+    color: var(--text-user);
+    border: 1px solid var(--border-user);
+}
+.btn-sec:hover {
+    border-color: var(--primary-user);
+}
+
+/* 5. Metrics Cards Grid */
+.grid-user {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 25px;
+    margin-bottom: 35px;
+}
+
+.card-user {
+    background-color: var(--card-bg-user);
+    padding: 25px;
+    border-radius: 14px;
+    border: 1px solid var(--border-user);
+    border-left: 4px solid var(--primary-user);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.card-user h3 {
+    font-size: 13px;
+    color: var(--text-muted-user);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
+}
+
+.card-user p {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--text-user);
+}
+
+.points-highlight {
+    color: var(--primary-user) !important;
+}
+
+/* 6. Professional Table Styling */
+.table-user-section {
+    background-color: var(--card-bg-user);
+    padding: 30px;
+    border-radius: 14px;
+    border: 1px solid var(--border-user);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.table-user-section h2 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: var(--text-user);
+    font-weight: 700;
+}
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.table-user {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-user th, .table-user td {
+    padding: 16px;
+    text-align: left;
+}
+
+.table-user th {
+    border-bottom: 2px solid var(--border-user);
+    color: var(--text-muted-user);
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.table-user td {
+    border-bottom: 1px solid var(--border-user);
+    color: var(--text-user);
+    font-size: 15px;
+}
+
+.table-user tbody tr:hover {
+    background-color: var(--table-hover);
+}
+
+.car-name {
+    font-weight: 600;
+}
+
+.plate-number {
+    color: var(--primary-user);
+    font-weight: 700;
+}
+
+/* Status Badges */
+.badge-user {
+    padding: 6px 14px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 700;
+    display: inline-block;
+}
+
+.badge-active {
+    background-color: rgba(40, 167, 69, 0.12);
+    color: #28a745;
+    border: 1px solid rgba(40, 167, 69, 0.2);
+}
+
+/* 7. Responsif Skrin Kecil */
+@media (max-width: 768px) {
+    .user-dashboard-wrapper {
+        flex-direction: column;
+    }
+    .sidebar-user {
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border-user);
+        padding: 20px;
+    }
+    .brand-user {
+        margin-bottom: 20px;
+    }
+    .menu-user {
+        flex-direction: row;
+        flex-wrap: wrap;
+        margin-top: 0;
+        justify-content: center;
+    }
+    .logout-user {
+        margin-top: 15px;
+    }
 }

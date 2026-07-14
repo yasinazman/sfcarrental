@@ -85,9 +85,9 @@ if ($carType !== 'all' && $carType !== '') {
                     $userLoginUrl = '#';
                     $adminLoginUrl = '#';
                 ?>
-                <a href="<?= h($userLoginUrl) ?>" class="signin-option-btn">
-                    <i class="fa-solid fa-user"></i>
-                    <span data-en="Continue as User" data-bm="Teruskan sebagai Pengguna">Continue as User</span>
+                <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'login']) ?>" class="btn-option btn-user" style="text-decoration: none;">
+                <i class="fa fa-user"></i> 
+                <span data-en="Continue as User" data-bm="Teruskan sebagai Pengguna">Continue as User</span>
                 </a>
                 <a href="<?= h($adminLoginUrl) ?>" class="signin-option-btn admin">
                     <i class="fa-solid fa-user-shield"></i>
