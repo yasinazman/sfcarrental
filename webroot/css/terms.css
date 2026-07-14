@@ -1,0 +1,192 @@
+/* =========================================================
+   TERMS & CONDITIONS PAGE - terms.css
+   Guna variables sedia ada dari home.css (--primary-red, --card-bg dll)
+   Pastikan home.css di-load DULU sebelum terms.css dalam <head>.
+   ========================================================= */
+
+/* Hero kecil di atas page */
+.terms-page-hero {
+    width: 100%;
+    background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.8)), url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1920') no-repeat center center/cover;
+    padding: 3.5rem 1.5rem;
+    text-align: center;
+    color: #FFFFFF;
+}
+.terms-page-hero h1 {
+    font-size: 2.4rem;
+    font-weight: 800;
+    margin-bottom: 0.6rem;
+}
+.terms-page-hero p {
+    font-size: 1rem;
+    color: #E2E8F0;
+    max-width: 620px;
+    margin: 0 auto;
+}
+
+/* Susunan utama: TOC (quick jump) + body content */
+.terms-section-wrap {
+    width: 100%;
+    text-align: left;
+    padding: 3rem 0 4rem 0;
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 2.5rem;
+    align-items: start;
+}
+
+/* QUICK JUMP NAV - sticky di sebelah kiri kandungan */
+.terms-toc {
+    position: sticky;
+    top: 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.2rem 1rem;
+    max-height: calc(100vh - 140px);
+    overflow-y: auto;
+}
+.terms-toc a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 0.45rem 0.6rem;
+    border-radius: 6px;
+    line-height: 1.3;
+}
+.terms-toc a:hover {
+    background: rgba(229, 9, 20, 0.08);
+    color: var(--primary-red);
+}
+.terms-toc a.active {
+    background: var(--primary-red);
+    color: #FFFFFF;
+}
+
+/* BODY - senarai kad seksyen */
+.terms-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.terms-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 2rem 2.2rem;
+    scroll-margin-top: 100px;
+}
+
+.terms-card h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    margin-bottom: 1rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.terms-num {
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background-color: var(--primary-red);
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    font-weight: 800;
+}
+
+.terms-card p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin-bottom: 0.9rem;
+}
+.terms-card p:last-child { margin-bottom: 0; }
+.terms-card strong { color: var(--text-dark); }
+
+.terms-card ul,
+.terms-card ol {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin: 0 0 0.9rem 1.3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+.terms-card ul ul,
+.terms-card ol ul {
+    margin-top: 0.4rem;
+}
+.terms-card li strong { color: var(--text-dark); }
+
+/* TABLE */
+.table-scroll {
+    width: 100%;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+}
+.terms-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    min-width: 420px;
+}
+.terms-table thead th {
+    background-color: var(--dark-black);
+    color: #FFFFFF;
+    text-align: left;
+    padding: 0.8rem 1.1rem;
+    font-weight: 700;
+    font-size: 0.85rem;
+}
+.terms-table tbody td {
+    padding: 0.75rem 1.1rem;
+    border-top: 1px solid var(--border-color);
+    color: var(--text-dark);
+}
+.terms-table tbody tr:nth-child(even) {
+    background-color: var(--gray-bg);
+}
+
+/* Pastikan content terms page geser ke kanan bagi ruang booking form floating,
+   sama macam home page. Diletak terus di sini (bukan cuma harap rule dari home.css)
+   supaya confirm terpakai walau apa pun susunan/cache CSS. */
+@media (min-width: 993px) {
+    body { padding-left: 280px !important; }
+}
+
+/* RESPONSIVE */
+@media (max-width: 992px) {
+    .terms-section-wrap {
+        grid-template-columns: 1fr;
+    }
+    .terms-toc {
+        position: static;
+        flex-direction: row;
+        flex-wrap: wrap;
+        max-height: none;
+        overflow-y: visible;
+    }
+    .terms-toc a {
+        flex: 0 0 auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .terms-page-hero h1 { font-size: 1.9rem; }
+    .terms-card { padding: 1.5rem 1.3rem; }
+}

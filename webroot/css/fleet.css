@@ -1,0 +1,273 @@
+/* =========================================================
+   FLEET PAGE - fleet.css
+   Menguruskan susunan kad kereta (Grid), Filter Bar, 
+   dan layout responsif untuk sfcarrental.
+   ========================================================= */
+
+/* Hero Section */
+.fleet-page-hero {
+    width: 100%;
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.85)), url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1920') no-repeat center center/cover;
+    padding: 4rem 1.5rem;
+    text-align: center;
+    color: #FFFFFF;
+}
+.fleet-page-hero h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.5px;
+}
+.fleet-page-hero p {
+    font-size: 1.1rem;
+    color: #CBD5E1;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Wrapper Utama */
+.content-wrapper-centered {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+/* Filter Bar (Semua, Ekonomi, Kompak, dll) */
+.fleet-filter-bar {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 2.5rem;
+    border-bottom: 1px solid var(--border-color, #E2E8F0);
+    padding-bottom: 1rem;
+}
+.fleet-filter-bar a {
+    padding: 0.6rem 1.2rem;
+    background: var(--card-bg, #FFFFFF);
+    border: 1px solid var(--border-color, #E2E8F0);
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--text-dark, #1E293B);
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+.fleet-filter-bar a:hover, 
+.fleet-filter-bar a.active {
+    background-color: var(--primary-red, #DC2626);
+    color: #FFFFFF;
+    border-color: var(--primary-red, #DC2626);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25);
+}
+
+/* =========================================================
+   FLEET GRID & CAR CARD LAYOUT (SUSUNAN UTAMA)
+   ========================================================= */
+.fleet-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2rem;
+    width: 100%;
+}
+
+.car-card {
+    background: var(--card-bg, #FFFFFF);
+    border: 1px solid var(--border-color, #F1F5F9);
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-content: space-between;
+    flex-direction: column;
+}
+.car-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* Badge Jenis Kereta (SUV, COMPACT, MPV) */
+.car-tag {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background: rgba(15, 23, 42, 0.85);
+    color: #FFFFFF;
+    padding: 0.35rem 0.8rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: 6px;
+    letter-spacing: 0.5px;
+    backdrop-filter: blur(4px);
+    z-index: 2;
+}
+
+/* Gambar Kereta - Dipastikan bersaiz sama rata */
+.car-img {
+    width: 100%;
+    height: 220px;          /* Tetapkan tinggi mati (fixed height) yang sama untuk semua kad */
+    object-fit: contain;     /* Memastikan gambar tidak penyek/herot (stretched) */
+    background-color: #F8FAFC; /* Latar belakang kelabu lembut untuk cover ruang kosong gambar */
+    padding: 1.2rem;         /* Beri ruang (breathing room) di sekeliling kereta */
+    display: block;
+    border-bottom: 1px solid #F1F5F9;
+}
+
+/* Info Kandungan Kad */
+.car-info {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+.car-name {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--text-dark, #1E293B);
+    margin-bottom: 0.5rem;
+}
+
+/* Harga Semalam */
+.price-box {
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: baseline;
+    gap: 0.25rem;
+}
+.price-box .currency {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--primary-red, #DC2626);
+}
+.price-box .amount {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--text-dark, #1E293B);
+}
+.price-box .per-day {
+    font-size: 0.85rem;
+    color: var(--text-muted, #64748B);
+}
+
+/* Spesifikasi Ringkas (Ikon Sebaris) */
+.car-specs {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid #F1F5F9;
+    border-bottom: 1px solid #F1F5F9;
+    padding: 0.75rem 0;
+    margin-bottom: 1rem;
+}
+.car-specs span {
+    font-size: 0.85rem;
+    color: var(--text-dark, #475569);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+.car-specs i {
+    color: var(--primary-red, #DC2626);
+}
+
+/* Spesifikasi Tambahan (2 Tiang/Columns) */
+.car-extra-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+    margin-bottom: 1.5rem;
+    background: #F8FAFC;
+    padding: 0.75rem;
+    border-radius: 10px;
+}
+.detail-item {
+    font-size: 0.8rem;
+    color: #64748B;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.detail-item i {
+    color: #94A3B8;
+    width: 14px;
+}
+.detail-item span {
+    font-weight: 600;
+    color: #475569;
+}
+
+/* Butang Tempahan */
+.btn-lock {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.85rem;
+    background: var(--primary-red, #DC2626);
+    color: #FFFFFF;
+    text-decoration: none;
+    font-weight: 700;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    text-align: center;
+    transition: background 0.2s ease, transform 0.1s ease;
+    margin-top: auto; /* Memastikan butang sentiasa selari di bawah */
+}
+.btn-lock:hover {
+    background: #B91C1C;
+}
+.btn-lock:active {
+    transform: scale(0.98);
+}
+
+/* =========================================================
+   RESPONSIVE DESIGN & SIDEBAR SPACE
+   ========================================================= */
+/* Untuk Dark Theme (Jika diaktifkan melalui JS) */
+body.dark-theme .car-card {
+    background: #1E293B;
+    border-color: #334155;
+}
+body.dark-theme .car-name,
+body.dark-theme .price-box .amount,
+body.dark-theme .car-specs span {
+    color: #F1F5F9;
+}
+body.dark-theme .car-extra-details {
+    background: #151F32;
+}
+body.dark-theme .fleet-filter-bar a {
+    background: #1E293B;
+    border-color: #334155;
+    color: #CBD5E1;
+}
+
+/* Responsif untuk desktop/skrin besar (Penjarakan dari Floating Booking Form) */
+@media (min-width: 993px) {
+    body { 
+        padding-left: 280px !important; 
+    }
+}
+
+@media (max-width: 768px) {
+    .fleet-page-hero h1 { 
+        font-size: 1.9rem; 
+    }
+    .fleet-grid {
+        grid-template-columns: 1fr; /* 1 baris penuh pada peranti mudah alih */
+    }
+    .fleet-filter-bar {
+        gap: 0.5rem;
+    }
+    .fleet-filter-bar a {
+        padding: 0.5rem 0.9rem;
+        font-size: 0.8rem;
+    }
+}

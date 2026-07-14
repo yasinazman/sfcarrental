@@ -1,0 +1,137 @@
+/* ==========================================================
+   sfcarrental - USER DASHBOARD STYLES
+   Fail ini load SELEPAS home.css (guna variable tema & reset
+   yang sama: --primary-red, --card-bg, --text-dark, dsb.)
+   Load kedua-dua dalam view:
+     <?= $this->Html->css(['home', 'dashboard']) ?>
+   ========================================================== */
+
+.dashboard-hero {
+    background: var(--dark-black);
+    width: 100%;
+    padding: 2.5rem 0 2rem 0;
+}
+.dashboard-hero-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    color: #FFFFFF;
+}
+.dashboard-hero-inner h1 { font-size: 1.9rem; font-weight: 800; margin-bottom: 0.4rem; }
+.dashboard-hero-inner p { color: #B0B8C1; font-size: 0.95rem; }
+
+.dashboard-wrapper {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 4rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.8rem;
+}
+
+.dash-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 1.8rem;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    width: 100%;
+}
+.dash-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.4rem;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+}
+.dash-card-header h2 {
+    font-size: 1.25rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+.dash-card-header h2 i { color: var(--primary-red); }
+
+/* PROFILE CARD */
+.profile-top { display: flex; align-items: center; gap: 1.2rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+.profile-avatar {
+    width: 68px; height: 68px; border-radius: 50%;
+    background: rgba(229, 9, 20, 0.1); color: var(--primary-red);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem; font-weight: 800; flex-shrink: 0;
+}
+.profile-name { font-size: 1.2rem; font-weight: 800; }
+.profile-since { color: var(--text-muted); font-size: 0.82rem; margin-top: 2px; }
+.profile-info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+.profile-info-item label { display: block; font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 0.3rem; }
+.profile-info-item p { font-size: 0.95rem; font-weight: 600; }
+.btn-edit-profile {
+    background-color: var(--primary-red); color: #FFFFFF !important; text-decoration: none;
+    padding: 0.65rem 1.3rem; border-radius: 8px; font-weight: 700; font-size: 0.88rem;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+}
+.btn-edit-profile:hover { background-color: #b8070f; }
+
+/* BOOKING CARD */
+.booking-item {
+    display: flex; align-items: center; gap: 1.1rem;
+    padding: 1rem; border: 1px solid var(--border-color); border-radius: 12px;
+    margin-bottom: 0.9rem; flex-wrap: wrap;
+}
+.booking-item:last-child { margin-bottom: 0; }
+.booking-item-icon {
+    width: 46px; height: 46px; border-radius: 10px; flex-shrink: 0;
+    background: var(--gray-bg); color: var(--primary-red);
+    display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+}
+.booking-item-details { flex: 1; min-width: 180px; }
+.booking-item-details h4 { font-size: 1rem; font-weight: 700; margin-bottom: 3px; }
+.booking-item-details p { font-size: 0.82rem; color: var(--text-muted); }
+.booking-item-details p i { width: 14px; color: var(--primary-red); margin-right: 4px; }
+.status-badge {
+    padding: 0.3rem 0.8rem; border-radius: 30px; font-size: 0.72rem; font-weight: 800;
+    text-transform: uppercase; letter-spacing: 0.4px; white-space: nowrap;
+}
+.status-confirmed { background: rgba(34, 197, 94, 0.12); color: #16A34A; }
+.status-pending { background: rgba(245, 158, 11, 0.12); color: #D97706; }
+.status-ongoing { background: rgba(59, 130, 246, 0.12); color: #2563EB; }
+.booking-item-actions { display: flex; gap: 0.5rem; width: 100%; margin-top: 0.6rem; }
+.btn-booking-action {
+    flex: 1; text-align: center; padding: 0.5rem; border-radius: 7px; font-size: 0.8rem; font-weight: 700;
+    text-decoration: none; border: 1px solid var(--border-color); color: var(--text-dark) !important;
+}
+.btn-booking-action:hover { background: var(--gray-bg); }
+.btn-booking-action.danger { color: var(--primary-red) !important; border-color: rgba(229,9,20,0.3); }
+.dash-empty-state { text-align: center; padding: 2rem 1rem; color: var(--text-muted); }
+.dash-empty-state i { font-size: 2rem; color: var(--border-color); margin-bottom: 0.8rem; display: block; }
+
+/* SUGGESTED CARS */
+.suggested-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; }
+.suggested-car-card { border: 1px solid var(--border-color); border-radius: 14px; overflow: hidden; }
+.suggested-car-card img { width: 100%; height: 130px; object-fit: cover; display: block; }
+.suggested-car-info { padding: 1rem; }
+.suggested-car-info h4 { font-size: 1rem; font-weight: 700; margin-bottom: 2px; }
+.suggested-car-info .car-type { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.6rem; }
+.suggested-car-info .car-price { font-size: 0.95rem; font-weight: 800; color: var(--primary-red); margin-bottom: 0.8rem; }
+.btn-rebook {
+    display: block; text-align: center; background: var(--dark-black); color: #FFFFFF !important;
+    text-decoration: none; padding: 0.6rem; border-radius: 8px; font-size: 0.85rem; font-weight: 700;
+}
+.btn-rebook:hover { background: var(--primary-red); }
+body.dark-theme .btn-rebook { background: #000000; border: 1px solid #333; }
+
+/* NAVBAR EXTRAS (nama user & butang log out di dashboard) */
+.nav-user-name { color: #E2E8F0; font-weight: 600; font-size: 0.92rem; display: flex; align-items: center; gap: 0.4rem; }
+.nav-user-name i { color: var(--primary-red); }
+.btn-logout { background-color: transparent !important; border: 1px solid #444; color: #E2E8F0 !important; }
+.btn-logout:hover { background-color: var(--primary-red) !important; border-color: var(--primary-red); }
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+    .dashboard-hero-inner h1 { font-size: 1.5rem; }
+    .booking-item { flex-direction: column; align-items: flex-start; }
+    .profile-top { flex-direction: column; align-items: flex-start; }
+}
