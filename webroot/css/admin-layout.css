@@ -521,3 +521,109 @@ table th, table td {
 [data-theme="dark"] .dropdown-name {
     color: var(--text-main) !important;
 }
+
+.toast-message {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 300px;
+    max-width: 420px;
+    padding: 16px 20px;
+    border-radius: 10px;
+    background: var(--white);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    font-size: 14px;
+    font-weight: 500;
+    animation: toastSlideIn 0.35s ease forwards, toastFadeOut 0.4s ease forwards 4s;
+}
+
+.toast-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.toast-text {
+    flex: 1;
+    color: var(--text-main);
+    line-height: 1.4;
+}
+
+.toast-close {
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--text-light);
+    flex-shrink: 0;
+    transition: color 0.2s ease;
+}
+.toast-close:hover {
+    color: var(--text-main);
+}
+
+.toast-success {
+    background-color: #28a745;
+    border-left: 5px solid #1e7e34;
+}
+
+.toast-success .toast-icon {
+    color: #ffffff;
+}
+
+.toast-success .toast-text {
+    color: #ffffff;
+}
+
+.toast-success .toast-close {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.toast-success .toast-close:hover {
+    color: #ffffff;
+}
+
+.toast-error {
+    border-left: 4px solid #dc3545;
+}
+.toast-error .toast-icon {
+    color: #dc3545;
+}
+
+.toast-warning {
+    border-left: 4px solid #ffc107;
+}
+.toast-warning .toast-icon {
+    color: #ffc107;
+}
+
+@keyframes toastSlideIn {
+    from {
+        transform: translateX(120%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes toastFadeOut {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(120%);
+    }
+}
+
+[data-theme="dark"] .toast-message {
+    background-color: var(--white) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4) !important;
+}
+[data-theme="dark"] .toast-text {
+    color: var(--text-main) !important;
+}

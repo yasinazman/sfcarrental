@@ -26,4 +26,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    document.querySelectorAll('.toast-message').forEach((toast) => {
+        setTimeout(() => {
+            toast.remove();
+        }, 4400);
+    });
 });

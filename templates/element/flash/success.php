@@ -8,4 +8,8 @@ if (!isset($params['escape']) || $params['escape'] !== false) {
     $message = h($message);
 }
 ?>
-<div class="message success" onclick="this.classList.add('hidden')"><?= $message ?></div>
+<div class="toast-message toast-success" role="alert">
+    <i class="fas fa-check-circle toast-icon"></i>
+    <span class="toast-text"><?= $message ?></span>
+    <i class="fas fa-times toast-close" onclick="this.closest('.toast-message').remove()"></i>
+</div>
