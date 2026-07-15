@@ -30,7 +30,7 @@ $this->Html->css('admin-dashboard', ['block' => true]);
 </div>
 
 <div class="calendar-container">
-    <div id="maintenanceCalendar" style="min-height: 400px;"></div>
+    <div id="maintenanceCalendar"></div>
 </div>
 
 <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 40px; margin-bottom: 24px; border-bottom: 1px solid #f0f0f0; padding-bottom: 15px;">
@@ -47,9 +47,15 @@ $this->Html->css('admin-dashboard', ['block' => true]);
         <?php endforeach; ?>
     </div>
 
-    <a href="<?= $this->Url->build(['action' => 'add']) ?>" class="btn-add-new" style="margin: 0; background: var(--accent-red); color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: 500; font-size: 14px; box-shadow: 0 4px 6px rgba(220, 53, 69, 0.2);">
-        <i class="fas fa-plus"></i> Add New Record
-    </a>
+    <div style="display: flex; gap: 12px; align-items: center;">
+        <a href="<?= $this->Url->build(['action' => 'export', '?' => $this->request->getQuery()]) ?>" style="padding: 10px 20px; border-radius: 6px; background: #28a745; color: white; text-decoration: none; font-weight: 500; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; transition: background 0.2s ease;" onmouseover="this.style.background='#218838';" onmouseout="this.style.background='#28a745';">
+            <i class="fas fa-file-csv"></i> Export CSV
+        </a>
+
+        <a href="<?= $this->Url->build(['action' => 'add']) ?>" class="btn-add-new" style="margin: 0; background: var(--accent-red); color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: 500; font-size: 14px; box-shadow: 0 4px 6px rgba(220, 53, 69, 0.2);">
+            <i class="fas fa-plus"></i> Add New Record
+        </a>
+    </div>
     
 </div>
 

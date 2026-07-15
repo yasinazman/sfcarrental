@@ -7,11 +7,6 @@ $this->Html->css('admin-dashboard', ['block' => true]);
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
-<div class="content-header" style="margin-bottom: 24px;">
-    <h3 style="margin: 0; font-size: 22px; color: var(--text-main);">Fleet Command Center</h3>
-    <p style="color: var(--text-light); font-size: 14px; margin: 5px 0 0;">Monitor the real-time location and status of your active fleet.</p>
-</div>
-
 <!-- FLEET STATUS DASHBOARD -->
 <div class="dashboard-stats">
     <div class="stat-card">

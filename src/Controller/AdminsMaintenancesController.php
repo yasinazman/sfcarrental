@@ -57,6 +57,51 @@ class AdminsMaintenancesController extends AppController
         $this->set(compact('maintenances', 'statusFilter', 'totalCost', 'inProgressCount', 'scheduledCount', 'calendarEvents'));
         $this->set('pageTitle', 'Fleet Maintenance');
     }
+    
+    public function export()
+    {
+        $this->autoRender = false;
+        $this->viewBuilder()->disableAutoLayout();
+
+        $statusFilter = $this->request->getQuery('status');
+        $maintenancesTable = $this->fetchTable('Maintenances');
+
+        $query = $maintenancesTable->find()
+            ->contain(['Cars'])
+            ->order(['Maintenances.service_date' => 'DESC']);
+
+        if (!empty($statusFilter)) {
+            $query->where(['Maintenances.status' => $statusFilter]);
+        }
+        $maintenances = $query->all();
+
+        $handle = fopen('php://temp', 'r+');
+
+        fputcsv($handle, ['Car Model', 'Plate Number', 'Service Type', 'Cost (RM)', 'Mileage (km)', 'Service Date', 'Status']);
+
+        foreach ($maintenances as $record) {
+            fputcsv($handle, [
+                $record->car->car_model ?? 'Unknown',
+                $record->car->plate_number ?? '',
+                $record->service_type,
+                number_format((float)$record->cost, 2),
+                $record->mileage ? number_format($record->mileage) : '-',
+                $record->service_date->format('d M Y'),
+                $record->status,
+            ]);
+        }
+
+        rewind($handle);
+        $csvContent = stream_get_contents($handle);
+        fclose($handle);
+
+        $this->response = $this->response
+            ->withType('csv')
+            ->withDownload('maintenance_records_' . date('Ymd_His') . '.csv')
+            ->withStringBody($csvContent);
+
+        return $this->response;
+    }
 
     public function view($id = null)
     {
