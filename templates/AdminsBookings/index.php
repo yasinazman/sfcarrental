@@ -40,6 +40,10 @@ $this->Html->css('admin-bookings', ['block' => true]);
     </div>
 </div>
 
+<div class="calendar-container">
+    <div id="bookingCalendar"></div>
+</div>
+
 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
     
     <div class="category-filter-bar" style="margin: 0; padding: 0;">
@@ -74,10 +78,6 @@ $this->Html->css('admin-bookings', ['block' => true]);
             <i class="fas fa-file-csv"></i> Export CSV
         </a>
     </div>
-</div>
-
-<div class="calendar-container">
-    <div id="bookingCalendar"></div>
 </div>
 
 <div class="recent-activity dashboard-box">
@@ -131,28 +131,29 @@ $this->Html->css('admin-bookings', ['block' => true]);
                             <?= h($booking->booking_status) ?>
                         </span>
                     </td>
-                    <td style="text-align: center; display: flex; justify-content: center; align-items: center; gap: 12px;">
-                        
-                        <?php if (strtolower($booking->booking_status) === 'pending payment' || strtolower($booking->booking_status) === 'pending'): ?>
-                            <?= $this->Form->postLink(
-                                '<i class="fas fa-check-circle"></i>',
-                                ['action' => 'quickStatus', $booking->id, 'Approved'],
-                                ['escape' => false, 'style' => 'color: #28a745; font-size: 18px;', 'title' => 'Approve Booking', 'confirm' => 'Approve Booking #' . $booking->id . '?']
-                            ) ?>
-                            <?= $this->Form->postLink(
-                                '<i class="fas fa-times-circle"></i>',
-                                ['action' => 'quickStatus', $booking->id, 'Cancelled'],
-                                ['escape' => false, 'style' => 'color: #dc3545; font-size: 18px;', 'title' => 'Reject Booking', 'confirm' => 'Reject Booking #' . $booking->id . '?']
-                            ) ?>
-                            <span style="color: #ccc;">|</span>
-                        <?php endif; ?>
+                    <td style="text-align: center;">
+                        <div style="display: flex; justify-content: center; align-items: center; gap: 12px;">
+                            <?php if (strtolower($booking->booking_status) === 'pending payment' || strtolower($booking->booking_status) === 'pending'): ?>
+                                <?= $this->Form->postLink(
+                                    '<i class="fas fa-check-circle"></i>',
+                                    ['action' => 'quickStatus', $booking->id, 'Approved'],
+                                    ['escape' => false, 'style' => 'color: #28a745; font-size: 18px;', 'title' => 'Approve Booking', 'confirm' => 'Approve Booking #' . $booking->id . '?']
+                                ) ?>
+                                <?= $this->Form->postLink(
+                                    '<i class="fas fa-times-circle"></i>',
+                                    ['action' => 'quickStatus', $booking->id, 'Cancelled'],
+                                    ['escape' => false, 'style' => 'color: #dc3545; font-size: 18px;', 'title' => 'Reject Booking', 'confirm' => 'Reject Booking #' . $booking->id . '?']
+                                ) ?>
+                                <span style="color: #ccc;">|</span>
+                            <?php endif; ?>
 
-                        <a href="<?= $this->Url->build(['action' => 'view', $booking->id]) ?>" style="color: #17a2b8; font-size: 16px;" title="View Details">
-                            <i class="fas fa-eye"></i>
-                        </a>
-                        <a href="<?= $this->Url->build(['action' => 'edit', $booking->id]) ?>" style="color: #007bff; font-size: 16px;" title="Update Booking">
-                            <i class="fas fa-edit"></i>
-                        </a>
+                            <a href="<?= $this->Url->build(['action' => 'view', $booking->id]) ?>" style="color: #17a2b8; font-size: 16px;" title="View Details">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            <a href="<?= $this->Url->build(['action' => 'edit', $booking->id]) ?>" style="color: #007bff; font-size: 16px;" title="Update Booking">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                        </div>
                     </td>
                 </tr>
                 <?php endforeach; ?>

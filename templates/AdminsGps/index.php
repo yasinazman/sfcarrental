@@ -107,26 +107,26 @@ $this->Html->css('admin-dashboard', ['block' => true]);
                     <td class="gps-time">
                         <i class="fas fa-circle"></i> Paused
                     </td>
-                    <td style="text-align: center; display: flex; justify-content: center; gap: 5px;">
-                        
-                        <a href="javascript:void(0);" class="btn-action btn-view" title="View Details"
-                           data-model="<?= h($car->car_model) ?>"
-                           data-plate="<?= h($car->plate_number) ?>"
-                           data-status="<?= h($car->availability_status) ?>"
-                           data-lat="<?= h($car->latitude) ?>"
-                           data-lng="<?= h($car->longitude) ?>">
-                            <i class="fas fa-eye"></i> View
-                        </a>
-                        
-                        <button onclick="focusOnCar(<?= $car->id ?>)" class="btn-action btn-locate" title="Locate on Map">
-                            <i class="fas fa-crosshairs"></i> Locate
-                        </button>
-                        
-                        <!-- Google Maps Direction Button -->
-                        <a href="https://www.google.com/maps/dir/?api=1&destination=<?= h($car->latitude) ?>,<?= h($car->longitude) ?>" target="_blank" class="btn-action btn-direction" title="Get Directions">
-                            <i class="fas fa-directions"></i> Direction
-                        </a>
-                        
+                    <td class="action-cell">
+                        <div class="action-cell-wrap">
+                            <a href="javascript:void(0);" class="btn-action btn-view" title="View Details"
+                            data-model="<?= h($car->car_model) ?>"
+                            data-plate="<?= h($car->plate_number) ?>"
+                            data-status="<?= h($car->availability_status) ?>"
+                            data-lat="<?= h($car->latitude) ?>"
+                            data-lng="<?= h($car->longitude) ?>">
+                                <i class="fas fa-eye"></i> View
+                            </a>
+                            
+                            <button onclick="focusOnCar(<?= $car->id ?>)" class="btn-action btn-locate" title="Locate on Map">
+                                <i class="fas fa-crosshairs"></i> Locate
+                            </button>
+                            
+                            <!-- Google Maps Direction Button -->
+                            <a href="https://www.google.com/maps/dir/?api=1&destination=<?= h($car->latitude) ?>,<?= h($car->longitude) ?>" target="_blank" class="btn-action btn-direction" title="Get Directions">
+                                <i class="fas fa-directions"></i> Direction
+                            </a>
+                        </div>
                     </td>
                 </tr>
                 <?php endforeach; ?>

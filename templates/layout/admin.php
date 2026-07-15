@@ -55,10 +55,30 @@
             <div class="topbar-right">
                 <i class="fas fa-moon topbar-icon" id="darkModeToggle" title="Toggle Dark/Light Mode" style="cursor: pointer; transition: 0.3s; font-size: 20px;"></i>
                 <i class="fas fa-bell topbar-icon" title="Notifications"></i>
-                <div class="admin-profile">
-                    <div class="admin-avatar"><i class="fas fa-user"></i></div>
-                    Administrator
+
+                <?php $identity = $this->request->getAttribute('identity'); ?>
+                <div class="admin-profile-wrapper">
+                    <div class="admin-profile" id="profileToggle">
+                        <div class="admin-avatar"><i class="fas fa-user"></i></div>
+                        <span><?= h($identity ? $identity->get('username') : 'Administrator') ?></span>
+                        <i class="fas fa-chevron-down" style="font-size: 11px; color: var(--text-light); margin-left: 4px;"></i>
+                    </div>
+
+                    <div class="profile-dropdown" id="profileDropdown">
+                        <div class="profile-dropdown-header">
+                            <div class="admin-avatar-lg"><i class="fas fa-user"></i></div>
+                            <div>
+                                <div class="dropdown-name"><?= h($identity ? $identity->get('username') : 'Administrator') ?></div>
+                                <div class="dropdown-role"><?= h($identity ? $identity->get('role') : '') ?></div>
+                            </div>
+                        </div>
+                        <ul class="profile-dropdown-menu">
+                            <li><a href="<?= $this->Url->build(['controller' => 'Admins', 'action' => 'profile']) ?>"><i class="fas fa-user-cog"></i> Account Settings</a></li>
+                            <li><a href="<?= $this->Url->build(['controller' => 'Admins', 'action' => 'logout']) ?>"><i class="fas fa-sign-out-alt"></i> Log Out</a></li>
+                        </ul>
+                    </div>
                 </div>
+                
             </div>
         </header>
 

@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (calendarEl && window.calendarEvents) {
         var calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
+            height: 'auto',
             headerToolbar: {
                 left: 'prev,next today',
                 center: 'title',

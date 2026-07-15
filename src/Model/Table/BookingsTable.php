@@ -57,8 +57,12 @@ class BookingsTable extends Table
             'foreignKey' => 'car_id',
             'joinType' => 'INNER',
         ]);
+        
+        // FUNGSI AUTOMASI PADAM BERANTAI DITAMBAH DI SINI
         $this->hasMany('Payments', [
             'foreignKey' => 'booking_id',
+            'dependent' => true,
+            'cascadeCallbacks' => true,
         ]);
     }
 

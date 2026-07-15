@@ -92,14 +92,16 @@ $this->Html->css('admin-dashboard', ['block' => true]);
                         ?>
                         <span class="badge-status <?= $badgeClass ?>"><?= h($record->status) ?></span>
                     </td>
-                    <td style="text-align: center;">
-                        <a href="<?= $this->Url->build(['action' => 'view', $record->id]) ?>" style="color: #17a2b8; margin-right: 15px; font-size: 16px;" title="View Details"><i class="fas fa-eye"></i></a>
-                        <a href="<?= $this->Url->build(['action' => 'edit', $record->id]) ?>" style="color: #007bff; margin-right: 15px; font-size: 16px;" title="Edit Record"><i class="fas fa-edit"></i></a>
-                        <?= $this->Form->postLink(
-                            '<i class="fas fa-trash"></i>',
-                            ['action' => 'delete', $record->id],
-                            ['confirm' => 'Delete this record?', 'escape' => false, 'style' => 'color: var(--accent-red); font-size: 16px;', 'title' => 'Delete']
-                        ) ?>
+                    <td class="action-cell">
+                        <div class="action-cell-wrap">
+                            <a href="<?= $this->Url->build(['action' => 'view', $record->id]) ?>" style="color: #17a2b8; margin-right: 15px; font-size: 16px;" title="View Details"><i class="fas fa-eye"></i></a>
+                            <a href="<?= $this->Url->build(['action' => 'edit', $record->id]) ?>" style="color: #007bff; margin-right: 15px; font-size: 16px;" title="Edit Record"><i class="fas fa-edit"></i></a>
+                            <?= $this->Form->postLink(
+                                '<i class="fas fa-trash"></i>',
+                                ['action' => 'delete', $record->id],
+                                ['confirm' => 'Delete this record?', 'escape' => false, 'style' => 'color: var(--accent-red); font-size: 16px;', 'title' => 'Delete']
+                            ) ?>
+                        </div>
                     </td>
                 </tr>
                 <?php endforeach; ?>

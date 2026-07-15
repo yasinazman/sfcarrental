@@ -91,6 +91,10 @@
 
 .cars-action-cell {
     text-align: center;
+    vertical-align: middle;
+}
+
+.cars-action-wrap {
     display: flex;
     justify-content: center;
     align-items: center;

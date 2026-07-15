@@ -104,23 +104,23 @@ $this->Html->css('admin-dashboard', ['block' => true]);
                         <?php $accStatusClass = ($customer->account_status === 'Blacklisted') ? 'badge-red' : 'badge-green'; ?>
                         <span class="badge-status <?= $accStatusClass ?>"><?= h($customer->account_status) ?></span>
                     </td>
-                    <td style="text-align: center; display: flex; justify-content: center; align-items: center; gap: 15px;">
-                        
-                        <?= $this->Form->postLink(
-                            $customer->account_status === 'Blacklisted' ? '<i class="fas fa-unlock"></i>' : '<i class="fas fa-ban"></i>',
-                            ['action' => 'toggleStatus', $customer->id],
-                            [
-                                'escape' => false, 
-                                'style' => 'color: ' . ($customer->account_status === 'Blacklisted' ? '#28a745' : '#dc3545') . '; font-size: 16px;', 
-                                'title' => $customer->account_status === 'Blacklisted' ? 'Reactivate Account' : 'Blacklist Customer',
-                                'confirm' => 'Are you sure you want to change this customer\'s status?'
-                            ]
-                        ) ?>
+                    <td class="action-cell">
+                        <div class="action-cell-wrap">
+                            <?= $this->Form->postLink(
+                                $customer->account_status === 'Blacklisted' ? '<i class="fas fa-unlock"></i>' : '<i class="fas fa-ban"></i>',
+                                ['action' => 'toggleStatus', $customer->id],
+                                [
+                                    'escape' => false, 
+                                    'style' => 'color: ' . ($customer->account_status === 'Blacklisted' ? '#28a745' : '#dc3545') . '; font-size: 16px;', 
+                                    'title' => $customer->account_status === 'Blacklisted' ? 'Reactivate Account' : 'Blacklist Customer',
+                                    'confirm' => 'Are you sure you want to change this customer\'s status?'
+                                ]
+                            ) ?>
 
-                        <span style="color: #ccc;">|</span>
-                        
-                        <a href="<?= $this->Url->build(['action' => 'view', $customer->id]) ?>" style="color: #17a2b8; font-size: 16px;" title="View Full Profile"><i class="fas fa-eye"></i></a>
-                        
+                            <span style="color: #ccc;">|</span>
+                            
+                            <a href="<?= $this->Url->build(['action' => 'view', $customer->id]) ?>" style="color: #17a2b8; font-size: 16px;" title="View Full Profile"><i class="fas fa-eye"></i></a>
+                        </div>
                     </td>
                 </tr>
                 <?php endforeach; ?>

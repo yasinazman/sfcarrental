@@ -67,7 +67,6 @@ $this->disableAutoLayout();
                         <option value="sedan" data-en="Standard Sedan" data-bm="Kompak">Compact</option>
                         <option value="suv" data-en="SUV / Crossover" data-bm="Sedan">Sedan</option>
                         <option value="mpv" data-en="Family MPV (7-Seater)" data-bm="MPV">MPV</option>
-                        <option value="luxury" data-en="Luxury & Sports" data-bm="SUV">SUV</option>
                     </select>
                 </div>
 
@@ -179,11 +178,6 @@ $this->disableAutoLayout();
                     <div class="category-icon"><i class="fa-solid fa-truck-monster"></i></div>
                     <h3 data-en="SUV" data-bm="SUV">SUV</h3>
                     <p data-en="Extra space and higher ground clearance" data-bm="Ruang lebih luas & tinggi dari tanah">Extra space and higher ground clearance</p>
-                </a>
-                <a href="<?= $fleetUrl ?>?car_type=luxury" class="category-big-card">
-                    <div class="category-icon"><i class="fa-solid fa-gem"></i></div>
-                    <h3 data-en="Luxury & Sports" data-bm="Mewah & Sports">Luxury & Sports</h3>
-                    <p data-en="Premium rides for a special occasion" data-bm="Kereta premium untuk majlis istimewa">Premium rides for a special occasion</p>
                 </a>
             </div>
 

@@ -141,34 +141,35 @@ $this->Html->css('admin-cars', ['block' => true]);
                             <?= h($status) ?>
                         </span>
                     </td>
-                    <td class="cars-action-cell">
-                        
-                        <?php if ($status !== 'Available'): ?>
-                            <?= $this->Form->postLink(
-                                '<i class="fas fa-check-circle"></i>',
-                                ['action' => 'toggleStatus', $car->id, 'Available'],
-                                ['escape' => false, 'class' => 'icon-avail', 'title' => 'Mark as Available', 'confirm' => 'Mark ' . h($car->plate_number) . ' as Available?']
-                            ) ?>
-                        <?php endif; ?>
-                        
-                        <?php if ($status !== 'Maintenance'): ?>
-                            <?= $this->Form->postLink(
-                                '<i class="fas fa-tools"></i>',
-                                ['action' => 'toggleStatus', $car->id, 'Maintenance'],
-                                ['escape' => false, 'class' => 'icon-maint', 'title' => 'Send to Maintenance', 'confirm' => 'Send ' . h($car->plate_number) . ' to Maintenance?']
-                            ) ?>
-                        <?php endif; ?>
+                    <td class="action-cell">
+                        <div class="action-cell-wrap">
+                            <?php if ($status !== 'Available'): ?>
+                                <?= $this->Form->postLink(
+                                    '<i class="fas fa-check-circle"></i>',
+                                    ['action' => 'toggleStatus', $car->id, 'Available'],
+                                    ['escape' => false, 'class' => 'icon-avail', 'title' => 'Mark as Available', 'confirm' => 'Mark ' . h($car->plate_number) . ' as Available?']
+                                ) ?>
+                            <?php endif; ?>
 
-                        <span class="action-divider">|</span>
+                            <?php if ($status !== 'Maintenance'): ?>
+                                <?= $this->Form->postLink(
+                                    '<i class="fas fa-tools"></i>',
+                                    ['action' => 'toggleStatus', $car->id, 'Maintenance'],
+                                    ['escape' => false, 'class' => 'icon-maint', 'title' => 'Send to Maintenance', 'confirm' => 'Send ' . h($car->plate_number) . ' to Maintenance?']
+                                ) ?>
+                            <?php endif; ?>
 
-                        <a href="<?= $this->Url->build(['action' => 'view', $car->id]) ?>" class="icon-view" title="View Details"><i class="fas fa-eye"></i></a>
-                        <a href="<?= $this->Url->build(['action' => 'edit', $car->id]) ?>" class="icon-edit" title="Edit"><i class="fas fa-edit"></i></a>
-                        
-                        <?= $this->Form->postLink(
-                            '<i class="fas fa-trash"></i>',
-                            ['action' => 'delete', $car->id],
-                            ['confirm' => 'Are you sure you want to delete ' . h($car->car_model) . ' from the system?', 'escape' => false, 'class' => 'icon-delete', 'title' => 'Delete']
-                        ) ?>
+                            <span class="action-divider">|</span>
+
+                            <a href="<?= $this->Url->build(['action' => 'view', $car->id]) ?>" class="icon-view" title="View Details"><i class="fas fa-eye"></i></a>
+                            <a href="<?= $this->Url->build(['action' => 'edit', $car->id]) ?>" class="icon-edit" title="Edit"><i class="fas fa-edit"></i></a>
+
+                            <?= $this->Form->postLink(
+                                '<i class="fas fa-trash"></i>',
+                                ['action' => 'delete', $car->id],
+                                ['confirm' => 'Are you sure you want to delete ' . h($car->car_model) . ' from the system?', 'escape' => false, 'class' => 'icon-delete', 'title' => 'Delete']
+                            ) ?>
+                        </div>
                     </td>
                 </tr>
                 <?php endforeach; ?>

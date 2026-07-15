@@ -47,6 +47,40 @@ class AdminsController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 
+    public function profile()
+    {
+        $identity = $this->Authentication->getIdentity();
+        $admin = $this->Admins->get($identity->getIdentifier());
+
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $data = $this->request->getData();
+
+            if (empty($data['new_password'])) {
+                unset($data['password']);
+            } else {
+                $hasher = new \Authentication\PasswordHasher\DefaultPasswordHasher();
+
+                if (!$hasher->check($data['current_password'], $admin->password)) {
+                    $this->Flash->error('Current password is incorrect.');
+                    return $this->redirect(['action' => 'profile']);
+                }
+
+                $data['password'] = $data['new_password'];
+            }
+
+            $admin = $this->Admins->patchEntity($admin, $data, ['fields' => ['username', 'password']]);
+
+            if ($this->Admins->save($admin)) {
+                $this->Flash->success('Your profile has been updated.');
+                return $this->redirect(['action' => 'profile']);
+            }
+            $this->Flash->error('Unable to update profile. Please check your input.');
+        }
+
+        $this->set(compact('admin'));
+        $this->set('pageTitle', 'Account Settings');
+    }
+
     public function login()
     {
         $this->viewBuilder()->disableAutoLayout();

@@ -396,3 +396,128 @@ table th, table td {
 [data-theme="dark"] .fc-daygrid-day-number {
     color: var(--text-main) !important;
 }
+
+[data-theme="dark"] .calendar-container {
+    background-color: var(--white) !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .fc {
+    --fc-page-bg-color: var(--white);
+    --fc-neutral-bg-color: #1e1e2d;
+    --fc-border-color: rgba(255, 255, 255, 0.05);
+    --fc-today-bg-color: rgba(230, 57, 70, 0.08);
+    --fc-list-event-hover-bg-color: #2a2a35;
+}
+
+[data-theme="dark"] .fc-daygrid-day,
+[data-theme="dark"] .fc-timegrid-slot,
+[data-theme="dark"] .fc-timegrid-col {
+    background-color: var(--white) !important;
+}
+
+[data-theme="dark"] .fc-day-other .fc-daygrid-day-top {
+    opacity: 0.4;
+}
+
+[data-theme="dark"] .fc-list,
+[data-theme="dark"] .fc-list-day-cushion {
+    background-color: var(--white) !important;
+    color: var(--text-main) !important;
+}
+
+[data-theme="dark"] .fc-list-event:hover td {
+    background-color: #2a2a35 !important;
+}
+
+[data-theme="dark"] .fc-list-event-time,
+[data-theme="dark"] .fc-list-event-title a {
+    color: var(--text-main) !important;
+}
+
+[data-theme="dark"] .fc-scroller {
+    background-color: var(--white) !important;
+}
+
+.admin-profile-wrapper {
+    position: relative;
+}
+.admin-profile {
+    cursor: pointer;
+    user-select: none;
+}
+.profile-dropdown {
+    display: none;
+    position: absolute;
+    top: 50px;
+    right: 0;
+    width: 240px;
+    background: var(--white);
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    border: 1px solid rgba(0,0,0,0.05);
+    overflow: hidden;
+    z-index: 100;
+}
+.profile-dropdown.open {
+    display: block;
+}
+.profile-dropdown-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+.admin-avatar-lg {
+    width: 42px;
+    height: 42px;
+    background-color: var(--sidebar-bg);
+    color: var(--white);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+}
+.dropdown-name {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text-main);
+}
+.dropdown-role {
+    font-size: 12px;
+    color: var(--text-light);
+    text-transform: capitalize;
+}
+.profile-dropdown-menu {
+    list-style: none;
+    margin: 0;
+    padding: 8px 0;
+}
+.profile-dropdown-menu li a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    color: var(--text-main);
+    text-decoration: none;
+    font-size: 13px;
+    transition: background 0.2s ease;
+}
+.profile-dropdown-menu li a:hover {
+    background: rgba(230, 57, 70, 0.08);
+    color: var(--accent-red);
+}
+
+[data-theme="dark"] .profile-dropdown {
+    background-color: var(--white) !important;
+    border: 1px solid rgba(255,255,255,0.08);
+}
+[data-theme="dark"] .profile-dropdown-header {
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+[data-theme="dark"] .dropdown-name {
+    color: var(--text-main) !important;
+}

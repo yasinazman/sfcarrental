@@ -1,57 +1,11 @@
 <?php
 /**
- * sfcarrental - Our Fleet Page
+ * sfcarrental - Our Fleet Page (Dynamic Database Edition)
  * @var \App\View\AppView $this
+ * @var iterable<\App\Model\Entity\Car> $cars
+ * @var string $carType
  */
 $this->disableAutoLayout();
-
-// --- Data kereta (boleh gantikan dengan data dari database/model nanti) ---
-$cars = [
-    [
-        'tag' => 'compact',
-        'name' => 'Perodua Axia',
-        'price' => 110,
-        'seats_en' => '4 Seats', 'seats_bm' => '4 Tempat',
-        'bags' => '1 Bag',
-        'fuel' => 'Petrol',
-        'spare_tyre_en' => 'Built-In', 'spare_tyre_bm' => 'Sedia Ada',
-        'child_seat' => 'ISOFIX',
-        'specs' => '1.0L',
-        'img' => 'https://peroduapj.com.my/wp-content/uploads/2015/12/perodua-axia-color-377345.webp',
-    ],
-    [
-        'tag' => 'suv',
-        'name' => 'Proton X50',
-        'price' => 250,
-        'seats_en' => '5 Seats', 'seats_bm' => '5 Tempat',
-        'bags' => '3 Bags',
-        'fuel' => 'Petrol',
-        'spare_tyre_en' => 'Built-in', 'spare_tyre_bm' => 'Sedia Ada',
-        'child_seat' => 'ISOFIX',
-        'specs' => '1.5L Turbo',
-        'img' => 'https://dodomat.com.my/cdn/shop/files/car_mat_proton_x50_2020-800x800_a8330c0f-9661-4eeb-a5ad-06e2a349a6b7.jpg?v=1732870426',
-    ],
-    [
-        'tag' => 'mpv',
-        'name' => 'Perodua Alza',
-        'price' => 180,
-        'seats_en' => '7 Seats', 'seats_bm' => '7 Tempat',
-        'bags' => '4 Bags',
-        'fuel' => 'Petrol EEV',
-        'spare_tyre_en' => 'Built-In', 'spare_tyre_bm' => 'Sedia Ada',
-        'child_seat' => 'ISOFIX',
-        'specs' => '1.5L',
-        'img' => 'https://peroduasale.com.my/wp-content/uploads/2024/08/Perodua-Alza.png',
-    ],
-];
-
-// --- Filter ikut ?car_type= dari URL (contoh: fleet?car_type=suv) ---
-$carType = strtolower($this->request->getQuery('car_type') ?? 'all');
-if ($carType !== 'all' && $carType !== '') {
-    $filteredCars = array_filter($cars, fn($c) => $c['tag'] === $carType);
-    // Kalau filter tak jumpa apa-apa, papar semua supaya page tak kosong
-    $cars = !empty($filteredCars) ? $filteredCars : $cars;
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -81,7 +35,6 @@ if ($carType !== 'all' && $carType !== '') {
             <p data-en="Please select how you want to continue" data-bm="Sila pilih cara anda mahu teruskan">Please select how you want to continue</p>
             <div class="signin-options">
                 <?php
-                    // NOTA: tukar controller/action/prefix di bawah ikut route sebenar dalam config/routes.php korang.
                     $userLoginUrl = '#';
                     $adminLoginUrl = '#';
                 ?>
@@ -198,7 +151,7 @@ if ($carType !== 'all' && $carType !== '') {
 
             <div class="fleet-filter-bar">
                 <a href="<?= $fleetUrl ?>" class="<?= $carType === 'all' ? 'active' : '' ?>" data-en="All Cars" data-bm="Semua">All Cars</a>
-                <a href="<?= $fleetUrl ?>?car_type=ekonomi" class="<?= $carType === 'ekonomi' ? 'active' : '' ?>" data-en="Economy" data-bm="Ekonomi">Economy</a>
+                <a href="<?= $fleetUrl ?>?car_type=economy" class="<?= $carType === 'economy' ? 'active' : '' ?>" data-en="Economy" data-bm="Ekonomi">Economy</a>
                 <a href="<?= $fleetUrl ?>?car_type=compact" class="<?= $carType === 'compact' ? 'active' : '' ?>" data-en="Compact" data-bm="Kompak">Compact</a>
                 <a href="<?= $fleetUrl ?>?car_type=sedan" class="<?= $carType === 'sedan' ? 'active' : '' ?>" data-en="Sedan" data-bm="Sedan">Sedan</a>
                 <a href="<?= $fleetUrl ?>?car_type=mpv" class="<?= $carType === 'mpv' ? 'active' : '' ?>" data-en="MPV" data-bm="MPV">MPV</a>
@@ -206,30 +159,50 @@ if ($carType !== 'all' && $carType !== '') {
             </div>
 
             <div class="fleet-grid">
-                <?php foreach ($cars as $car): ?>
-                <div class="car-card">
-                    <div class="car-tag"><?= strtoupper(h($car['tag'])) ?></div>
-                    <img src="<?= h($car['img']) ?>" alt="<?= h($car['name']) ?>" class="car-img">
-                    <div class="car-info">
-                        <div class="car-name"><?= h($car['name']) ?> </div>
-                        <div class="price-box">
-                            <span class="currency">MYR</span> <span class="amount"><?= h($car['price']) ?></span> <span class="per-day">/day</span>
-                        </div>
-                        <div class="car-specs">
-                            <span><i class="fa-solid fa-user"></i> <span data-en="<?= h($car['seats_en']) ?>" data-bm="<?= h($car['seats_bm']) ?>"><?= h($car['seats_en']) ?></span></span>
-                            <span><i class="fa-solid fa-gear"></i> Automatic</span>
-                            <span><i class="fa-solid fa-suitcase"></i> <?= h($car['bags']) ?></span>
-                        </div>
-                        <div class="car-extra-details">
-                            <div class="detail-item"><i class="fa-solid fa-gas-pump"></i> <span>Fuel:</span> <?= h($car['fuel']) ?></div>
-                            <div class="detail-item"><i class="fa-solid fa-circle-dot"></i> <span data-en="Spare Tyre:" data-bm="Tayar Ganti:">Spare Tyre:</span> <span data-en="<?= h($car['spare_tyre_en']) ?>" data-bm="<?= h($car['spare_tyre_bm']) ?>"><?= h($car['spare_tyre_en']) ?></span></div>
-                            <div class="detail-item"><i class="fa-solid fa-baby-carriage"></i> <span>Child Seat:</span> <?= h($car['child_seat']) ?></div>
-                            <div class="detail-item"><i class="fa-solid fa-wrench"></i> <span>Specs:</span> <?= h($car['specs']) ?> </div>
-                        </div>
-                        <a href="#" class="btn-lock"><i class="fa-solid fa-calendar-check"></i> <span data-en="Book Now & Pay Later" data-bm="Tempah & Bayar Kemudian">Book Now & Pay Later</span></a>
+                <?php if (empty($cars) || $cars->isEmpty()): ?>
+                    <div style="text-align:center; padding:50px; color:#777; grid-column: 1 / -1;">
+                        <i class="fa-solid fa-car-burst fa-3x" style="color:#ddd; margin-bottom:15px;"></i>
+                        <h3>Oops! No cars available.</h3>
+                        <p>We couldn't find any vehicles in this category at the moment.</p>
                     </div>
-                </div>
-                <?php endforeach; ?>
+                <?php else: ?>
+                    <?php foreach ($cars as $car): ?>
+                    <div class="car-card">
+                        <div class="car-tag"><?= strtoupper(h($car->category ?? 'STD')) ?></div>
+                        
+                        <?php if (!empty($car->image)): ?>
+                            <img src="<?= $this->Url->image('cars/' . $car->image) ?>" alt="<?= h($car->car_model) ?>" class="car-img">
+                        <?php else: ?>
+                            <div class="car-img" style="background:#f1f1f1; display:flex; align-items:center; justify-content:center; color:#ccc;"><i class="fa-solid fa-car fa-3x"></i></div>
+                        <?php endif; ?>
+
+                        <div class="car-info">
+                            <div class="car-name"><?= h($car->car_model) ?> </div>
+                            <div class="price-box">
+                                <span class="currency">MYR</span> <span class="amount"><?= $this->Number->format($car->daily_rate, ['places' => 0]) ?></span> <span class="per-day">/day</span>
+                            </div>
+                            <div class="car-specs">
+                                <span><i class="fa-solid fa-user"></i> <span data-en="<?= h($car->seat_capacity ?? 5) ?> Seats" data-bm="<?= h($car->seat_capacity ?? 5) ?> Tempat"><?= h($car->seat_capacity ?? 5) ?> Seats</span></span>
+                                <span><i class="fa-solid fa-gear"></i> <?= h($car->transmission ?? 'Auto') ?></span>
+                                <span><i class="fa-solid fa-suitcase"></i> <?= h($car->baggage_capacity ?? 2) ?> Bags</span>
+                            </div>
+                            <div class="car-extra-details">
+                                <div class="detail-item"><i class="fa-solid fa-gas-pump"></i> <span>Fuel:</span> <?= h($car->fuel_type ?? 'Petrol') ?></div>
+                                <div class="detail-item"><i class="fa-solid fa-circle-dot"></i> <span data-en="Spare Tyre:" data-bm="Tayar Ganti:">Spare Tyre:</span> <span><?= h($car->spare_tyre ?? 'Yes') ?></span></div>
+                                <div class="detail-item"><i class="fa-solid fa-baby-carriage"></i> <span>Child Seat:</span> ISOFIX</div>
+                                <div class="detail-item"><i class="fa-solid fa-wrench"></i> <span>Specs:</span> <?= h($car->special_specs ?? $car->engine_capacity) ?> </div>
+                            </div>
+                            
+                            <?php if ($car->availability_status === 'Available'): ?>
+                                <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'login']) ?>" class="btn-lock"><i class="fa-solid fa-calendar-check"></i> <span data-en="Book Now & Pay Later" data-bm="Tempah & Bayar Kemudian">Book Now & Pay Later</span></a>
+                            <?php else: ?>
+                                <a href="#" class="btn-lock" style="background:#ccc; cursor:not-allowed; border-color:#ccc;" onclick="return false;"><i class="fa-solid fa-clock"></i> <span data-en="Currently Unavailable" data-bm="Sedang Digunakan">Currently Unavailable</span></a>
+                            <?php endif; ?>
+                            
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </div>
 
         </section>
@@ -247,7 +220,6 @@ if ($carType !== 'all' && $carType !== '') {
     </footer>
 
     <script>
-        // --- LOGIK TUKAR BAHASA EN / BM ---
         const btnEn = document.getElementById('lang-en');
         const btnBm = document.getElementById('lang-bm');
 
@@ -260,7 +232,6 @@ if ($carType !== 'all' && $carType !== '') {
                 }
             });
 
-            // Kemas kini placeholder untuk input carian destinasi
             const destInput = document.querySelector('input[name="destination"]');
             if (destInput) {
                 destInput.placeholder = lang === 'en' ? destInput.getAttribute('data-en-placeholder') : destInput.getAttribute('data-bm-placeholder');
@@ -279,7 +250,6 @@ if ($carType !== 'all' && $carType !== '') {
             toggleLanguage('bm');
         });
 
-        // --- LOGIK FLOATING SIGN IN / REGISTER MODAL ---
         const btnSignIn = document.getElementById('btn-signin');
         const signinOverlay = document.getElementById('signin-overlay');
         const signinClose = document.getElementById('signin-close');
@@ -293,21 +263,18 @@ if ($carType !== 'all' && $carType !== '') {
             signinOverlay.classList.remove('active');
         });
 
-        // Tutup modal bila klik kawasan gelap di luar kotak
         signinOverlay.addEventListener('click', (e) => {
             if (e.target === signinOverlay) {
                 signinOverlay.classList.remove('active');
             }
         });
 
-        // Tutup modal dengan kekunci Esc
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 signinOverlay.classList.remove('active');
             }
         });
 
-        // --- LOGIK DARK MODE TERAPUNG (FLOATING TOGGLE) ---
         const themeToggleFloat = document.getElementById('theme-toggle-float');
 
         if (localStorage.getItem('theme') === 'dark') {

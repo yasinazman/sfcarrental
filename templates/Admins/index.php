@@ -99,31 +99,34 @@ $this->Html->script('admin-admins', ['block' => true]);
                         <?php endif; ?>
                     </td>
                     <td><span class="created-date"><?= h($admin->created->format('d M Y')) ?></span></td>
-                    <td class="action-flex">
-                        <?php if ($admin->id != 1): ?>
-                            
-                            <?= $this->Form->postLink(
-                                $admin->status === 'Suspended' ? '<i class="fas fa-unlock"></i>' : '<i class="fas fa-user-lock"></i>',
-                                ['action' => 'toggleStatus', $admin->id],
-                                [
-                                    'escape' => false, 
-                                    'class' => $admin->status === 'Suspended' ? 'icon-activate' : 'icon-suspend', 
-                                    'title' => $admin->status === 'Suspended' ? 'Restore Access' : 'Suspend Account',
-                                    'confirm' => 'Are you sure you want to change access for ' . h($admin->username) . '?'
-                                ]
-                            ) ?>
-                            
-                            <span class="action-divider">|</span>
-                            
-                            <?= $this->Form->postLink(
-                                '<i class="fas fa-trash"></i>',
-                                ['action' => 'delete', $admin->id],
-                                ['confirm' => 'Permanently delete ' . h($admin->username) . '?', 'escape' => false, 'class' => 'icon-delete', 'title' => 'Delete Admin']
-                            ) ?>
-                            
-                        <?php else: ?>
-                            <span class="icon-shield" title="Protected System Account"><i class="fas fa-shield-alt"></i></span>
-                        <?php endif; ?>
+                    
+                    <td class="action-cell">
+                        <div class="action-cell-wrap">
+                            <?php if ($admin->id != 1): ?>
+                                
+                                <?= $this->Form->postLink(
+                                    $admin->status === 'Suspended' ? '<i class="fas fa-unlock"></i>' : '<i class="fas fa-user-lock"></i>',
+                                    ['action' => 'toggleStatus', $admin->id],
+                                    [
+                                        'escape' => false, 
+                                        'class' => $admin->status === 'Suspended' ? 'icon-activate' : 'icon-suspend', 
+                                        'title' => $admin->status === 'Suspended' ? 'Restore Access' : 'Suspend Account',
+                                        'confirm' => 'Are you sure you want to change access for ' . h($admin->username) . '?'
+                                    ]
+                                ) ?>
+                                
+                                <span class="action-divider">|</span>
+                                
+                                <?= $this->Form->postLink(
+                                    '<i class="fas fa-trash"></i>',
+                                    ['action' => 'delete', $admin->id],
+                                    ['confirm' => 'Permanently delete ' . h($admin->username) . '?', 'escape' => false, 'class' => 'icon-delete', 'title' => 'Delete Admin']
+                                ) ?>
+                                
+                            <?php else: ?>
+                                <span class="icon-shield" title="Protected System Account"><i class="fas fa-shield-alt"></i></span>
+                            <?php endif; ?>
+                        </div>
                     </td>
                 </tr>
                 <?php endforeach; ?>

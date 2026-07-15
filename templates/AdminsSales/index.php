@@ -153,32 +153,34 @@ $this->Html->script('admin-sales', ['block' => true]);
                             <?= h($payment->payment_status) ?>
                         </span>
                     </td>
-                    <td class="action-flex">
-                        <?php if (strpos($status, 'pending') !== false): ?>
-                            <?= $this->Form->postLink(
-                                '<i class="fas fa-check-circle"></i>',
-                                ['action' => 'markAsPaid', $payment->id],
-                                ['escape' => false, 'class' => 'icon-check', 'title' => 'Mark as Paid (Manual)', 'confirm' => 'Mark Receipt #REC-' . str_pad($payment->id, 4, '0', STR_PAD_LEFT) . ' as Paid?']
-                            ) ?>
+                    <td class="action-cell">
+                        <div class="action-cell-wrap">
+                            <?php if (strpos($status, 'pending') !== false): ?>
+                                <?= $this->Form->postLink(
+                                    '<i class="fas fa-check-circle"></i>',
+                                    ['action' => 'markAsPaid', $payment->id],
+                                    ['escape' => false, 'class' => 'icon-check', 'title' => 'Mark as Paid (Manual)', 'confirm' => 'Mark Receipt #REC-' . str_pad($payment->id, 4, '0', STR_PAD_LEFT) . ' as Paid?']
+                                ) ?>
+                                <span style="color: #eee;">|</span>
+                            <?php endif; ?>
+                            
+                            <a href="javascript:void(0);" class="icon-view btn-view-modal" title="Quick View"
+                            data-receipt="#REC-<?= str_pad($payment->id, 4, '0', STR_PAD_LEFT) ?>"
+                            data-booking="#<?= h($payment->booking_id) ?>"
+                            data-customer="<?= h($payment->booking->customer->full_name ?? 'N/A') ?>"
+                            data-amount="RM <?= $this->Number->format($payment->total_payment, ['places' => 2]) ?>"
+                            data-method="<?= h($payment->payment_method ?: '-') ?>"
+                            data-date="<?= h($payment->created->format('d M Y, h:i A')) ?>"
+                            data-status="<?= h($payment->payment_status) ?>">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            
                             <span style="color: #eee;">|</span>
-                        <?php endif; ?>
-                        
-                        <a href="javascript:void(0);" class="icon-view btn-view-modal" title="Quick View"
-                           data-receipt="#REC-<?= str_pad($payment->id, 4, '0', STR_PAD_LEFT) ?>"
-                           data-booking="#<?= h($payment->booking_id) ?>"
-                           data-customer="<?= h($payment->booking->customer->full_name ?? 'N/A') ?>"
-                           data-amount="RM <?= $this->Number->format($payment->total_payment, ['places' => 2]) ?>"
-                           data-method="<?= h($payment->payment_method ?: '-') ?>"
-                           data-date="<?= h($payment->created->format('d M Y, h:i A')) ?>"
-                           data-status="<?= h($payment->payment_status) ?>">
-                            <i class="fas fa-eye"></i>
-                        </a>
-                        
-                        <span style="color: #eee;">|</span>
-                        
-                        <a href="<?= $this->Url->build(['action' => 'receipt', $payment->id]) ?>" target="_blank" style="color: #dc3545; font-size: 18px; transition: transform 0.2s;" title="Save as PDF / Print">
-                            <i class="fas fa-file-pdf" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'"></i>
-                        </a>
+                            
+                            <a href="<?= $this->Url->build(['action' => 'receipt', $payment->id]) ?>" target="_blank" style="color: #dc3545; font-size: 18px; transition: transform 0.2s;" title="Save as PDF / Print">
+                                <i class="fas fa-file-pdf" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'"></i>
+                            </a>
+                        </div>
                     </td>
                 </tr>
                 <?php endforeach; ?>

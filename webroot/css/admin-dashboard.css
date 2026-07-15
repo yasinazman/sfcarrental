@@ -284,3 +284,14 @@
     font-weight: 700;
     color: var(--text-main);
 }
+
+.dashboard-table td.action-cell {
+    text-align: center;
+    vertical-align: middle;
+}
+.action-cell-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+}
