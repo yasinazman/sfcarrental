@@ -10,37 +10,19 @@ namespace App\Controller;
  */
 class CarsController extends AppController
 {
-    /**
-     * Index method
-     *
-     * @return \Cake\Http\Response|null|void Renders view
-     */
     public function index()
     {
         $query = $this->Cars->find();
         $cars = $this->paginate($query);
-
         $this->set(compact('cars'));
     }
 
-    /**
-     * View method
-     *
-     * @param string|null $id Car id.
-     * @return \Cake\Http\Response|null|void Renders view
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
     public function view($id = null)
     {
         $car = $this->Cars->get($id, contain: ['Bookings']);
         $this->set(compact('car'));
     }
 
-    /**
-     * Add method
-     *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
-     */
     public function add()
     {
         $car = $this->Cars->newEmptyEntity();
@@ -48,7 +30,6 @@ class CarsController extends AppController
             $car = $this->Cars->patchEntity($car, $this->request->getData());
             if ($this->Cars->save($car)) {
                 $this->Flash->success(__('The car has been saved.'));
-
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The car could not be saved. Please, try again.'));
@@ -56,13 +37,6 @@ class CarsController extends AppController
         $this->set(compact('car'));
     }
 
-    /**
-     * Edit method
-     *
-     * @param string|null $id Car id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
     public function edit($id = null)
     {
         $car = $this->Cars->get($id, contain: []);
@@ -70,7 +44,6 @@ class CarsController extends AppController
             $car = $this->Cars->patchEntity($car, $this->request->getData());
             if ($this->Cars->save($car)) {
                 $this->Flash->success(__('The car has been saved.'));
-
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The car could not be saved. Please, try again.'));
@@ -78,13 +51,6 @@ class CarsController extends AppController
         $this->set(compact('car'));
     }
 
-    /**
-     * Delete method
-     *
-     * @param string|null $id Car id.
-     * @return \Cake\Http\Response|null Redirects to index.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
@@ -94,15 +60,40 @@ class CarsController extends AppController
         } else {
             $this->Flash->error(__('The car could not be deleted. Please, try again.'));
         }
-
         return $this->redirect(['action' => 'index']);
     }
 
     public function browse()
+    {
+        $cars = $this->Cars->find('all')->toArray();
+        $this->set(compact('cars'));
+    }
+
+   public function search() 
 {
-    // Ambil semua kereta yang ada dalam database
-    $cars = $this->Cars->find('all')->toArray();
+    // Pastikan data ini diisi semasa form carian disubmit
+    $searchData = $this->request->getQueryParams(); 
     
-    $this->set(compact('cars'));
+    // SIMPAN KE DALAM SESSION (Ini mesti ada!)
+    $this->request->getSession()->write('Booking.search_data', $searchData);
+        
+        // ... logik filter kereta anda ...
+    // Letak kod di dalam bracket { ini
+    $this->viewBuilder()->setLayout('default');
+
+    $pickupLocation = $this->request->getQuery('pickup_location', '');
+    $carType = $this->request->getQuery('car_category', '');
+    $pickupDate = $this->request->getQuery('pickup_date', '');
+    $returnDate = $this->request->getQuery('return_date', '');
+    
+    $query = $this->Cars->find('all');
+    
+    if (!empty($carType) && $carType !== 'all') {
+        $query->where(['car_category' => $carType]);
+    }
+    
+    $cars = $query->all();
+    
+    $this->set(compact('cars', 'pickupLocation', 'pickupDate', 'returnDate'));
 }
 }

@@ -1,11 +1,7 @@
 /* =========================================================
    CATEGORIES PAGE - categories.css
-   Guna variables sedia ada dari home.css (--primary-red, --card-bg dll)
-   Pastikan home.css di-load DULU sebelum categories.css dalam <head>,
-   sebab file ni bergantung kepada variables & reset dari home.css.
    ========================================================= */
 
-/* Header kecil di atas page categories */
 .categories-page-hero {
     width: 100%;
     background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.8)), url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1920') no-repeat center center/cover;
@@ -13,11 +9,13 @@
     text-align: center;
     color: #FFFFFF;
 }
+
 .categories-page-hero h1 {
     font-size: 2.4rem;
     font-weight: 800;
     margin-bottom: 0.6rem;
 }
+
 .categories-page-hero p {
     font-size: 1rem;
     color: #E2E8F0;
@@ -25,8 +23,8 @@
     margin: 0 auto;
 }
 
-/* CATEGORIES FILTER - CENTERED */
 .categories-container { width: 100%; }
+
 .categories-grid {
     display: flex;
     justify-content: center;
@@ -34,6 +32,7 @@
     flex-wrap: wrap;
     margin-top: 1.5rem;
 }
+
 .category-card {
     padding: 0.7rem 1.4rem;
     background: var(--card-bg);
@@ -46,13 +45,13 @@
     text-decoration: none;
     display: inline-block;
 }
+
 .category-card:hover, .category-card.active {
     background-color: var(--primary-red);
     color: #FFFFFF;
     border-color: var(--primary-red);
 }
 
-/* Grid kad kategori versi besar (dengan ikon) untuk page categories */
 .categories-big-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -60,6 +59,7 @@
     width: 100%;
     margin-top: 2rem;
 }
+
 .category-big-card {
     background: var(--card-bg);
     border: 1px solid var(--border-color);
@@ -70,28 +70,29 @@
     color: var(--text-dark);
     box-shadow: 0 4px 20px rgba(0,0,0,0.03);
 }
+
 .category-big-card:hover {
     transform: translateY(-5px);
     border-color: var(--primary-red);
 }
+
 .category-big-card .category-icon {
     font-size: 2.2rem;
     color: var(--primary-red);
     margin-bottom: 1rem;
 }
+
 .category-big-card h3 {
     font-size: 1.15rem;
     font-weight: 700;
     margin-bottom: 0.4rem;
 }
+
 .category-big-card p {
     font-size: 0.85rem;
     color: var(--text-muted);
 }
 
-/* Pastikan content categories page geser ke kanan bagi ruang booking form floating,
-   sama macam home page. Diletak terus di sini (bukan cuma harap rule dari home.css)
-   supaya confirm terpakai walau apa pun susunan/cache CSS. */
 @media (min-width: 993px) {
     body { padding-left: 280px !important; }
 }

@@ -3,104 +3,52 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-/**
- * Bookings Controller
- *
- * @property \App\Model\Table\BookingsTable $Bookings
- */
 class BookingsController extends AppController
 {
-    /**
-     * Index method
-     *
-     * @return \Cake\Http\Response|null|void Renders view
-     */
-    public function index()
+    public function add($carId = null)
     {
-        $query = $this->Bookings->find()
-            ->contain(['Customers', 'Cars']);
-        $bookings = $this->paginate($query);
+        $customer = $this->request->getSession()->read('Auth.Customer');
+        if (!$customer) {
+            $this->Flash->error(__('Sila log masuk.'));
+            return $this->redirect(['controller' => 'Customers', 'action' => 'login']);
+        }
 
-        $this->set(compact('bookings'));
-    }
-
-    /**
-     * View method
-     *
-     * @param string|null $id Booking id.
-     * @return \Cake\Http\Response|null|void Renders view
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function view($id = null)
-    {
-        $booking = $this->Bookings->get($id, contain: ['Customers', 'Cars', 'Payments']);
-        $this->set(compact('booking'));
-    }
-
-    /**
-     * Add method
-     *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
-     */
-    public function add()
-    {
         $booking = $this->Bookings->newEmptyEntity();
+        $car = $this->Bookings->Cars->get($carId);
+
         if ($this->request->is('post')) {
-            $booking = $this->Bookings->patchEntity($booking, $this->request->getData());
+            $data = $this->request->getData();
+            
+            // Kira hari
+            $start = new \Cake\I18n\DateTime($data['start_date']);
+            $end = new \Cake\I18n\DateTime($data['end_date']);
+            $diff = $start->diff($end);
+            $days = ($diff->days < 1) ? 1 : $diff->days;
+            
+            // Kira jumlah harga
+            $total = $days * $car->daily_rate;
+
+            $booking = $this->Bookings->patchEntity($booking, $data);
+            $booking->customer_id = $customer['id'];
+            $booking->car_id = $carId;
+            
+            // Update kedua-dua field untuk elakkan validation error
+            $booking->rental_price = $total; 
+            $booking->total_price = $total; 
+            
+            $booking->booking_status = 'Pending Payment';
+
             if ($this->Bookings->save($booking)) {
-                $this->Flash->success(__('The booking has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+                $this->Flash->success(__('Tempahan berjaya. Sila teruskan dengan pembayaran.'));
+                return $this->redirect(['controller' => 'Payments', 'action' => 'process', $booking->id]);
             }
-            $this->Flash->error(__('The booking could not be saved. Please, try again.'));
-        }
-        $customers = $this->Bookings->Customers->find('list', limit: 200)->all();
-        $cars = $this->Bookings->Cars->find('list', limit: 200)->all();
-        $this->set(compact('booking', 'customers', 'cars'));
-    }
-
-    /**
-     * Edit method
-     *
-     * @param string|null $id Booking id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function edit($id = null)
-    {
-        $booking = $this->Bookings->get($id, contain: []);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $booking = $this->Bookings->patchEntity($booking, $this->request->getData());
-            if ($this->Bookings->save($booking)) {
-                $this->Flash->success(__('The booking has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The booking could not be saved. Please, try again.'));
-        }
-        $customers = $this->Bookings->Customers->find('list', limit: 200)->all();
-        $cars = $this->Bookings->Cars->find('list', limit: 200)->all();
-        $this->set(compact('booking', 'customers', 'cars'));
-    }
-
-    /**
-     * Delete method
-     *
-     * @param string|null $id Booking id.
-     * @return \Cake\Http\Response|null Redirects to index.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function delete($id = null)
-    {
-        $this->request->allowMethod(['post', 'delete']);
-        $booking = $this->Bookings->get($id);
-        if ($this->Bookings->delete($booking)) {
-            $this->Flash->success(__('The booking has been deleted.'));
-        } else {
-            $this->Flash->error(__('The booking could not be deleted. Please, try again.'));
+            $this->Flash->error(__('Gagal menyimpan tempahan. Sila cuba lagi.'));
         }
 
-        return $this->redirect(['action' => 'index']);
-        
+        // Set default dari URL
+        $booking->start_date = $this->request->getQuery('start_date');
+        $booking->end_date = $this->request->getQuery('end_date');
+
+        $this->set(compact('booking', 'car'));
     }
 }

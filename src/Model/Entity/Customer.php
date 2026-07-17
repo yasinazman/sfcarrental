@@ -4,29 +4,26 @@ declare(strict_types=1);
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
+use Authentication\PasswordHasher\DefaultPasswordHasher;
 
 /**
- * Customer Entity
+ * Customer Entity.
  *
  * @property int $id
  * @property string $full_name
  * @property string $phone_number
  * @property string $password
- * @property string $ic_file_path
- * @property string $license_file_path
- * @property \Cake\I18n\DateTime|null $created
- * @property \Cake\I18n\DateTime|null $modified
- *
- * @property \App\Model\Entity\Booking[] $bookings
+ * @property string|null $ic_file_path
+ * @property string|null $ic_back_file_path
+ * @property string|null $license_file_path
+ * @property string $account_status
+ * @property \Cake\I18n\DateTime $created
+ * @property \Cake\I18n\DateTime $modified
  */
 class Customer extends Entity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
-     *
-     * Note that when '*' is set to true, this allows all unspecified fields to
-     * be mass assigned. For security purposes, it is advised to set '*' to false
-     * (or remove it), and explicitly make individual fields accessible as needed.
      *
      * @var array<string, bool>
      */
@@ -40,7 +37,6 @@ class Customer extends Entity
         'account_status' => true,
         'created' => true,
         'modified' => true,
-        'bookings' => true,
     ];
 
     /**
@@ -51,4 +47,18 @@ class Customer extends Entity
     protected array $_hidden = [
         'password',
     ];
+
+    /**
+     * Auto-hash password sebelum masuk database.
+     *
+     * @param string $password Kata laluan asal
+     * @return string|null Kata laluan yang telah di-hash
+     */
+    protected function _setPassword(string $password): ?string
+    {
+        if (strlen($password) > 0) {
+            return (new DefaultPasswordHasher())->hash($password);
+        }
+        return null;
+    }
 }

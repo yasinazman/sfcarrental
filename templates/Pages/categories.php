@@ -37,7 +37,7 @@ $this->disableAutoLayout();
                     $userLoginUrl = '#';
                     $adminLoginUrl = '#';
                 ?>
-                <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'login']) ?>" class="btn-option btn-user" style="text-decoration: none;">
+                <a href="<?= $this->Url->build(['controller' => 'Customers', 'action' => 'login']) ?>" class="btn-option btn-user" style="text-decoration: none;">
                 <i class="fa fa-user"></i> 
                 <span data-en="Continue as User" data-bm="Teruskan sebagai Pengguna">Continue as User</span>
                 </a>

@@ -1,55 +1,141 @@
-<?php
-/**
- * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
- *
- * Licensed under The MIT License
- * For full copyright and license information, please see the LICENSE.txt
- * Redistributions of files must retain the above copyright notice.
- *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
- * @link          https://cakephp.org CakePHP(tm) Project
- * @since         0.10.0
- * @license       https://opensource.org/licenses/mit-license.php MIT License
- * @var \App\View\AppView $this
- */
-
-$cakeDescription = 'CakePHP: the rapid development php framework';
-?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>
-        <?= $cakeDescription ?>:
-        <?= $this->fetch('title') ?>
-    </title>
+    <title>sfcarrental | <?= $this->fetch('title') ?></title>
     <?= $this->Html->meta('icon') ?>
 
-    <?= $this->Html->css(['normalize.min', 'milligram.min', 'fonts', 'cake']) ?>
-
-    <?= $this->fetch('meta') ?>
+    <?= $this->Html->css('home') ?>
     <?= $this->fetch('css') ?>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <?= $this->fetch('meta') ?>
     <?= $this->fetch('script') ?>
 </head>
-<body>
-    <nav class="top-nav">
-        <div class="top-nav-title">
-            <a href="<?= $this->Url->build('/') ?>"><span>Cake</span>PHP</a>
+<body class="page-home">
+
+    <!-- Floating Theme Toggle -->
+    <button id="theme-toggle-float" class="theme-btn-float" title="Toggle Dark/Light Mode">
+        <i class="fa-solid fa-moon"></i>
+    </button>
+
+    <!-- Sign In / Register Modal Overlay -->
+    <div class="signin-overlay" id="signin-overlay">
+        <div class="signin-modal">
+            <button class="signin-close" id="signin-close" title="Close"><i class="fa-solid fa-xmark"></i></button>
+            <div class="signin-icon"><i class="fa-solid fa-circle-user"></i></div>
+            <h3 data-en="Welcome to sfcarrental" data-bm="Selamat Datang ke sfcarrental">Welcome to sfcarrental</h3>
+            <p data-en="Please select how you want to continue" data-bm="Sila pilih cara anda mahu teruskan">Please select how you want to continue</p>
+            <div class="signin-options">
+                <a href="<?= $this->Url->build(['controller' => 'Customers', 'action' => 'login']) ?>" class="signin-option-btn">
+                    <i class="fa fa-user"></i> 
+                    <span data-en="Continue as User" data-bm="Teruskan sebagai Pengguna">Continue as User</span>
+                </a>
+                <a href="<?= $this->Url->build(['controller' => 'Admins', 'action' => 'login']) ?>" class="signin-option-btn admin">
+                    <i class="fa-solid fa-user-shield"></i>
+                    <span data-en="Continue as Admin" data-bm="Teruskan sebagai Admin">Continue as Admin</span>
+                </a>
+            </div>
         </div>
-        <div class="top-nav-links">
-            <a target="_blank" rel="noopener" href="https://book.cakephp.org/5/">Documentation</a>
-            <a target="_blank" rel="noopener" href="https://api.cakephp.org/">API</a>
+    </div>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="top-bar-container">
+            <div class="top-info">
+                <span><i class="fa-solid fa-headset"></i> <span data-en="24/7 Tourist Support: " data-bm="Bantuan Pelancong 24/7: ">24/7 Tourist Support: </span>+6017-244 9251</span>
+            </div>
+            <div class="top-langs">
+                <span id="lang-en" class="lang-btn active">EN</span> | <span id="lang-bm" class="lang-btn">BM</span>
+            </div>
         </div>
-    </nav>
-    <main class="main">
-        <div class="container">
-            <?= $this->Flash->render() ?>
-            <?= $this->fetch('content') ?>
+    </div>
+
+    <!-- Main Navigation -->
+    <header>
+        <div class="navbar">
+            <a href="<?= $this->Url->build('/') ?>" class="logo">sf<span>carrental</span></a>
+            <ul class="nav-links">
+                <li><a href="<?= $this->Url->build('/') ?>" data-en="Home" data-bm="Utama">Home</a></li>
+                <li><a href="<?= $this->Url->build(['controller' => 'Categories', 'action' => 'index']) ?>" data-en="Categories" data-bm="Kategori">Categories</a></li>
+                <li><a href="<?= $this->Url->build(['controller' => 'Fleets', 'action' => 'index']) ?>" data-en="Our Fleet" data-bm="Koleksi Kereta">Our Fleet</a></li>
+                <li><a href="<?= $this->Url->build('/#kelebihan') ?>" data-en="Why Us" data-bm="Kelebihan">Why Us</a></li>
+                <li><a href="<?= $this->Url->build(['controller' => 'Terms', 'action' => 'index']) ?>" data-en="Terms & Conditions" data-bm="Terma & Syarat">Terms & Conditions</a></li>
+                
+                <?php 
+                    $session = $this->request->getSession();
+                    $userLogged = $session->read('Auth.Customer'); 
+                ?>
+
+                <?php if ($userLogged): ?>
+    <li>
+        <a href="<?= $this->Url->build(['controller' => 'Customers', 'action' => 'dashboard']) ?>" 
+           style="color: var(--primary-red); font-weight: 700;">My Dashboard</a>
+    </li>
+    <li>
+        <?= $this->Html->link(
+            __('<i class="fa-solid fa-right-from-bracket"></i> Logout <span class="user-name">(' . h($userLogged['full_name']) . ')</span>'),
+            ['controller' => 'Customers', 'action' => 'logout'],
+            ['class' => 'btn-logout', 'escape' => false]
+        ) ?>
+    </li>
+<?php else: ?>
+    <!-- ... (kod signin sedia ada) ... -->
+<?php endif; ?>
+            </ul>
         </div>
-    </main>
+    </header>
+
+    <?= $this->Flash->render() ?>
+    <?= $this->fetch('content') ?>
+
     <footer>
+        <div class="footer-content">
+            <p>&copy; 2026 sfcarrental Malaysia. All Rights Reserved. Managed by SF Travel & Tours Sdn Bhd.</p>
+        </div>
     </footer>
+
+    <script>
+        // --- Language Toggle ---
+        function toggleLanguage(lang) {
+            document.querySelectorAll('[data-en]').forEach(el => {
+                el.innerHTML = lang === 'en' ? el.getAttribute('data-en') : el.getAttribute('data-bm');
+            });
+        }
+        document.getElementById('lang-en')?.addEventListener('click', () => toggleLanguage('en'));
+        document.getElementById('lang-bm')?.addEventListener('click', () => toggleLanguage('bm'));
+
+        // --- Sign In Modal Logic ---
+        const btnSignIn = document.getElementById('btn-signin');
+        const signinOverlay = document.getElementById('signin-overlay');
+        const signinClose = document.getElementById('signin-close');
+
+        if(btnSignIn) {
+            btnSignIn.addEventListener('click', (e) => {
+                e.preventDefault();
+                signinOverlay.classList.add('active');
+            });
+        }
+        signinClose?.addEventListener('click', () => signinOverlay.classList.remove('active'));
+        signinOverlay?.addEventListener('click', (e) => {
+            if (e.target === signinOverlay) signinOverlay.classList.remove('active');
+        });
+
+        // --- Dark Mode Logic ---
+        const themeToggleFloat = document.getElementById('theme-toggle-float');
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-theme');
+            themeToggleFloat.innerHTML = '<i class="fa-solid fa-sun"></i>';
+        }
+        themeToggleFloat.addEventListener('click', () => {
+            document.body.classList.toggle('dark-theme');
+            let isDark = document.body.classList.contains('dark-theme');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            themeToggleFloat.innerHTML = isDark ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
+        });
+    </script>
 </body>
 </html>

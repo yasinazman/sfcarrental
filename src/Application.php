@@ -56,11 +56,10 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
 
     public function getAuthenticationService(ServerRequestInterface $request): AuthenticationServiceInterface
     {
+        // KEMAS KINI: Menetapkan unauthenticatedRedirect kepada null bagi mengelakkan
+        // sekatan automatik (forced redirect) ke login Admin apabila customer cuba mengakses login mereka.
         $authenticationService = new AuthenticationService([
-            'unauthenticatedRedirect' => \Cake\Routing\Router::url([
-                'controller' => 'Admins', 
-                'action' => 'login'
-            ]),
+            'unauthenticatedRedirect' => null,
             'queryParam' => 'redirect',
         ]);
 

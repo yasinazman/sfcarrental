@@ -27,9 +27,21 @@ class AppController extends Controller
 
     public function beforeRender(EventInterface $event)
     {
-        if ($this->request->getParam('controller') === 'Pages') {
+        parent::beforeRender($event);
+
+        $controller = $this->request->getParam('controller');
+
+        // Senarai controller yang MESTI menggunakan layout 'default' (awam)
+        $publicControllers = ['Pages', 'Cars', 'Bookings', 'Categories', 'Terms', 'Fleets', 'Payments' ];
+
+        if (in_array($controller, $publicControllers)) {
             $this->viewBuilder()->setLayout('default');
         } 
+        // Customers menggunakan layout mereka sendiri (biasanya ajax/login)
+        elseif ($controller === 'Customers') {
+            // Biarkan Customers controller tentukan layoutnya sendiri
+        } 
+        // Selain daripada di atas, kita anggap ia adalah modul Admin
         else {
             $this->viewBuilder()->setLayout('admin');
         }
