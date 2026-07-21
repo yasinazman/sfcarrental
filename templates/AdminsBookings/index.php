@@ -10,7 +10,7 @@ $this->Html->css('admin-bookings', ['block' => true]);
     <div class="m-stat-card">
         <div class="m-stat-icon" style="background: rgba(255, 193, 7, 0.1); color: #ffc107;"><i class="fas fa-clock"></i></div>
         <div class="m-stat-info">
-            <h4>Pending Action</h4>
+            <h4>Pending Payments</h4>
             <p class="val"><?= h($pendingCount) ?></p>
         </div>
     </div>
@@ -133,20 +133,6 @@ $this->Html->css('admin-bookings', ['block' => true]);
                     </td>
                     <td style="text-align: center;">
                         <div style="display: flex; justify-content: center; align-items: center; gap: 12px;">
-                            <?php if (strtolower($booking->booking_status) === 'pending payment' || strtolower($booking->booking_status) === 'pending'): ?>
-                                <?= $this->Form->postLink(
-                                    '<i class="fas fa-check-circle"></i>',
-                                    ['action' => 'quickStatus', $booking->id, 'Approved'],
-                                    ['escape' => false, 'style' => 'color: #28a745; font-size: 18px;', 'title' => 'Approve Booking', 'confirm' => 'Approve Booking #' . $booking->id . '?']
-                                ) ?>
-                                <?= $this->Form->postLink(
-                                    '<i class="fas fa-times-circle"></i>',
-                                    ['action' => 'quickStatus', $booking->id, 'Cancelled'],
-                                    ['escape' => false, 'style' => 'color: #dc3545; font-size: 18px;', 'title' => 'Reject Booking', 'confirm' => 'Reject Booking #' . $booking->id . '?']
-                                ) ?>
-                                <span style="color: #ccc;">|</span>
-                            <?php endif; ?>
-
                             <a href="<?= $this->Url->build(['action' => 'view', $booking->id]) ?>" style="color: #17a2b8; font-size: 16px;" title="View Details">
                                 <i class="fas fa-eye"></i>
                             </a>

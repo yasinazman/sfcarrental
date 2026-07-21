@@ -13,6 +13,24 @@ class AdminsBookingsController extends AppController
         $bookingsTable = $this->fetchTable('Bookings');
         $maintenancesTable = $this->fetchTable('Maintenances');
 
+        // LOGIK AUTO-CANCEL 5 MINIT
+        $fiveMinsAgo = date('Y-m-d H:i:s', strtotime('-5 minutes'));
+        $expiredBookings = $bookingsTable->find()
+            ->where([
+                'booking_status IN' => ['Pending Payment', 'Pending'],
+                'created <=' => $fiveMinsAgo
+            ])->all();
+
+        foreach ($expiredBookings as $expBooking) {
+            $expBooking->booking_status = 'Cancelled';
+            if ($bookingsTable->save($expBooking)) {
+                // Lepaskan kembali kereta menjadi Available
+                if (!empty($expBooking->car_id)) {
+                    $this->_syncCarStatus($expBooking->car_id, 'Cancelled');
+                }
+            }
+        }
+
         $query = $bookingsTable->find()
             ->contain(['Customers', 'Cars'])
             ->order(['Bookings.id' => 'DESC']);

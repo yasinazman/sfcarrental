@@ -39,7 +39,11 @@ class BookingsController extends AppController
             $booking->booking_status = 'Pending Payment';
 
             if ($this->Bookings->save($booking)) {
-                $this->Flash->success(__('Tempahan berjaya. Sila teruskan dengan pembayaran.'));
+                // HOLD KERETA SEMENTARA (Elak double booking dalam masa 5 minit)
+                $car->availability_status = 'On Rent'; 
+                $this->Bookings->Cars->save($car);
+
+                $this->Flash->success(__('Tempahan berjaya. Sila teruskan dengan pembayaran. Masa 5 minit diberikan.'));
                 return $this->redirect(['controller' => 'Payments', 'action' => 'process', $booking->id]);
             }
             $this->Flash->error(__('Gagal menyimpan tempahan. Sila cuba lagi.'));

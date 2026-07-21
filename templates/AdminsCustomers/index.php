@@ -3,19 +3,12 @@ $this->assign('title', $pageTitle);
 $this->Html->css('admin-dashboard', ['block' => true]); 
 ?>
 
-<div class="maintenance-stats-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 24px;">
+<div class="maintenance-stats-grid" style="grid-template-columns: repeat(2, 1fr); margin-bottom: 24px;">
     <div class="m-stat-card">
         <div class="m-stat-icon" style="background: rgba(0, 123, 255, 0.1); color: #007bff;"><i class="fas fa-users"></i></div>
         <div class="m-stat-info">
             <h4>Total Registered</h4>
             <p class="val"><?= number_format($totalCustomers) ?></p>
-        </div>
-    </div>
-    <div class="m-stat-card">
-        <div class="m-stat-icon" style="background: rgba(255, 193, 7, 0.1); color: #ffc107;"><i class="fas fa-id-card-alt"></i></div>
-        <div class="m-stat-info">
-            <h4>Pending Verification</h4>
-            <p class="val"><?= number_format($pendingCount) ?></p>
         </div>
     </div>
     <div class="m-stat-card">
@@ -31,7 +24,6 @@ $this->Html->css('admin-dashboard', ['block' => true]);
     <div class="category-filter-bar" style="margin: 0; padding: 0;">
         <?php $currentFilter = $this->request->getQuery('status'); ?>
         <a href="<?= $this->Url->build(['action' => 'index']) ?>" class="badge-status <?= empty($currentFilter) ? 'badge-blue' : 'badge-grey' ?>" style="text-decoration: none; padding: 8px 16px;">All Customers</a>
-        <a href="<?= $this->Url->build(['action' => 'index', '?' => ['status' => 'Pending Verification']]) ?>" class="badge-status <?= $currentFilter === 'Pending Verification' ? 'badge-blue' : 'badge-grey' ?>" style="text-decoration: none; padding: 8px 16px;">Pending Verification</a>
         <a href="<?= $this->Url->build(['action' => 'index', '?' => ['status' => 'Blacklisted']]) ?>" class="badge-status <?= $currentFilter === 'Blacklisted' ? 'badge-blue' : 'badge-grey' ?>" style="text-decoration: none; padding: 8px 16px;">Blacklisted</a>
     </div>
 
