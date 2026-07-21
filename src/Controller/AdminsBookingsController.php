@@ -85,19 +85,33 @@ class AdminsBookingsController extends AppController
             ];
         }
 
-        $mQuery = $maintenancesTable->find()->contain(['Cars']);
+        $mQuery = $maintenancesTable->find()->contain(['Cars'])
+            ->where(['Maintenances.status IN' => ['In Progress', 'Scheduled']]);
+
         if (!empty($category)) {
             $mQuery->where(['Cars.category' => $category]);
         }
         $maintenances = $mQuery->all();
 
         foreach ($maintenances as $m) {
+            $status = strtolower($m->status);
+            
+            $targetDate = $m->service_date;
+            if (strpos($status, 'scheduled') !== false && $m->next_service_date) {
+                $targetDate = $m->next_service_date;
+            }
+
+            $mColor = '#343a40';
+            if (strpos($status, 'scheduled') !== false) {
+                $mColor = '#343a40';
+            }
+
             $calendarEvents[] = [
                 'id' => 'M' . $m->id,
-                'title' => '🔧 MAINTENANCE: ' . $m->car->plate_number,
-                'start' => $m->service_date->format('Y-m-d'),
+                'title' => '🔧 ' . strtoupper($m->status) . ': ' . $m->car->plate_number,
+                'start' => $targetDate->format('Y-m-d'),
                 'allDay' => true,
-                'color' => '#343a40',
+                'color' => $mColor,
                 'url' => Router::url(['controller' => 'AdminsMaintenances', 'action' => 'view', $m->id])
             ];
         }
