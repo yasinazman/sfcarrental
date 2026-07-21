@@ -24,7 +24,7 @@
 
 .booking-view-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(320px, 1fr));
     gap: 30px;
     padding: 30px;
 }
@@ -45,4 +45,8 @@
     display: flex;
     align-items: center;
     gap: 10px;
+}
+
+.view-page-wide {
+    max-width: 100%;
 }

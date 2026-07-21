@@ -12,7 +12,7 @@ $this->Html->css('admin-bookings', ['block' => true]);
     <a href="<?= $this->Url->build(['action' => 'index']) ?>" class="btn-cancel" style="padding: 10px 20px; text-decoration: none;"><i class="fas fa-arrow-left"></i> Back to List</a>
 </div>
 
-<div class="form-container" style="padding: 0;">
+<div class="form-container view-page-wide" style="padding: 0;">
     
     <?php
         $status = strtolower($booking->booking_status);
