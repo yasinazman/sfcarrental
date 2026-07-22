@@ -667,6 +667,44 @@ table th, table td {
     color: #ffffff !important;
 }
 
+[data-theme="dark"] .info-card,
+[data-theme="dark"] .detail-card,
+[data-theme="dark"] .car-specs-card,
+[data-theme="dark"] .notes-box {
+    background-color: #1e1e2d !important;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .info-label,
+[data-theme="dark"] .detail-label {
+    color: var(--text-light) !important;
+}
+
+[data-theme="dark"] .info-value,
+[data-theme="dark"] .detail-value,
+[data-theme="dark"] .service-title-area h4,
+[data-theme="dark"] .info-card-title,
+[data-theme="dark"] .detail-header {
+    color: var(--text-main) !important;
+}
+
+[data-theme="dark"] .spec-divider,
+[data-theme="dark"] .view-notes-section {
+    border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-theme="dark"] .sales-modal {
+    background-color: var(--white) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4) !important;
+}
+
+[data-theme="dark"] .close-btn {
+    color: var(--text-light);
+}
+[data-theme="dark"] .close-btn:hover {
+    color: #dc3545;
+}
+
 .profile-container {
     max-width: 600px;
     margin: 0 auto;

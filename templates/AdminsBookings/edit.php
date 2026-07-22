@@ -8,7 +8,7 @@ $this->Html->css('admin-form', ['block' => true]);
     <p style="color: var(--text-light); font-size: 14px; margin: 5px 0 0;">Manage approval status, deposits, and lockbox PIN.</p>
 </div>
 
-<div class="form-container">
+<div class="form-container view-page-wide">
     <?= $this->Form->create($booking) ?>
     
     <div class="form-grid">
