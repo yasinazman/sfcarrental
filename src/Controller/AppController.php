@@ -29,10 +29,26 @@ class AppController extends Controller
     {
         parent::beforeRender($event);
 
+        // 1. BACA SESI SECARA GLOBAL (CARA TERBAIK CAKEPHP AUTHENTICATION)
+        // Sistem akan tangkap data dari Authentication plugin secara automatik
+        $identity = $this->request->getAttribute('identity');
+        
+        if ($identity) {
+            // Jika user ada login, ambil datanya (Object/Entity)
+            $userLogged = $identity->getOriginalData(); 
+        } else {
+            // Fallback: Jika gagal, baru kita cuba baca manual dari Session
+            $session = $this->request->getSession();
+            $userLogged = $session->read('Auth.Customer') ?? $session->read('Auth');
+        }
+        
+        // 2. HANTAR DATA KE SEMUA VIEW & LAYOUT
+        $this->set('userLogged', $userLogged);
+
         $controller = $this->request->getParam('controller');
 
         // Senarai controller yang MESTI menggunakan layout 'default' (awam)
-        $publicControllers = ['Pages', 'Cars', 'Bookings', 'Categories', 'Terms', 'Fleets', 'Payments' ];
+        $publicControllers = ['Pages', 'Cars', 'Bookings', 'Categories', 'Terms', 'Fleets', 'Payments'];
 
         if (in_array($controller, $publicControllers)) {
             $this->viewBuilder()->setLayout('default');

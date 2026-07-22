@@ -66,25 +66,41 @@
                 <li><a href="<?= $this->Url->build(['controller' => 'Terms', 'action' => 'index']) ?>" data-en="Terms & Conditions" data-bm="Terma & Syarat">Terms & Conditions</a></li>
                 
                 <?php 
-                    $session = $this->request->getSession();
-                    $userLogged = $session->read('Auth.Customer'); 
+                    // Pastikan tiada ralat jika pembolehubah kosong
+                    $userLogged = $userLogged ?? null;
+                    $namaPengguna = '';
+
+                    if ($userLogged) {
+                        // Semak jika data adalah Object (Entity CakePHP)
+                        if (is_object($userLogged)) {
+                            $namaPengguna = $userLogged->full_name ?? $userLogged->name ?? 'Pengguna';
+                        } 
+                        // Semak jika data adalah Array biasa
+                        elseif (is_array($userLogged)) {
+                            $namaPengguna = $userLogged['full_name'] ?? $userLogged['name'] ?? 'Pengguna';
+                        }
+                    }
                 ?>
 
                 <?php if ($userLogged): ?>
-    <li>
-        <a href="<?= $this->Url->build(['controller' => 'Customers', 'action' => 'dashboard']) ?>" 
-           style="color: var(--primary-red); font-weight: 700;">My Dashboard</a>
-    </li>
-    <li>
-        <?= $this->Html->link(
-            __('<i class="fa-solid fa-right-from-bracket"></i> Logout <span class="user-name">(' . h($userLogged['full_name']) . ')</span>'),
-            ['controller' => 'Customers', 'action' => 'logout'],
-            ['class' => 'btn-logout', 'escape' => false]
-        ) ?>
-    </li>
-<?php else: ?>
-    <!-- ... (kod signin sedia ada) ... -->
-<?php endif; ?>
+                    <li>
+                        <a href="<?= $this->Url->build(['controller' => 'Customers', 'action' => 'dashboard']) ?>" 
+                           style="color: var(--primary-red); font-weight: 700;">My Dashboard</a>
+                    </li>
+                    <li>
+                        <?= $this->Html->link(
+                            __('<i class="fa-solid fa-right-from-bracket"></i> Logout <span class="user-name">(' . h($namaPengguna) . ')</span>'),
+                            ['controller' => 'Customers', 'action' => 'logout'],
+                            ['class' => 'btn-logout', 'escape' => false]
+                        ) ?>
+                    </li>
+                <?php else: ?>
+                    <li>
+                        <a href="#" id="btn-signin" class="btn-signin" style="background-color: var(--primary-red, #e60000); color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: bold; display: inline-flex; align-items: center; gap: 8px;">
+                            <i class="fa-solid fa-user"></i> <span data-en="Sign In / Register" data-bm="Log Masuk / Daftar">Sign In / Register</span>
+                        </a>
+                    </li>
+                <?php endif; ?>
             </ul>
         </div>
     </header>
@@ -95,20 +111,59 @@
     <footer>
         <div class="footer-content">
             <p>&copy; 2026 sfcarrental Malaysia. All Rights Reserved. Managed by SF Travel & Tours Sdn Bhd.</p>
+            <div class="footer-links">
+                <a href="<?= $this->Url->build(['controller' => 'Pages', 'action' => 'display', 'terms']) ?>" data-en="Terms & Conditions" data-bm="Terma & Syarat">Terms & Conditions</a> |
+                <a href="#" data-en="Contact Support" data-bm="Hubungi Bantuan">Contact Support</a>
+            </div>
         </div>
     </footer>
 
     <script>
-        // --- Language Toggle ---
+        // --- LOGIK TUKAR BAHASA EN / BM ---
+        const btnEn = document.getElementById('lang-en');
+        const btnBm = document.getElementById('lang-bm');
+
         function toggleLanguage(lang) {
-            document.querySelectorAll('[data-en]').forEach(el => {
-                el.innerHTML = lang === 'en' ? el.getAttribute('data-en') : el.getAttribute('data-bm');
+            // Tukar teks biasa
+            document.querySelectorAll('[data-en]').forEach(element => {
+                if (lang === 'en') {
+                    element.innerHTML = element.getAttribute('data-en');
+                } else {
+                    element.innerHTML = element.getAttribute('data-bm');
+                }
+            });
+
+            // Tukar placeholder input
+            const destInput = document.querySelector('input[name="destination"]');
+            if(destInput) {
+                destInput.placeholder = lang === 'en' ? destInput.getAttribute('data-en-placeholder') : destInput.getAttribute('data-bm-placeholder');
+            }
+
+            // Tukar teks dalam <select>
+            document.querySelectorAll('select option[data-en]').forEach(option => {
+                if (lang === 'en') {
+                    option.textContent = option.getAttribute('data-en');
+                } else {
+                    option.textContent = option.getAttribute('data-bm');
+                }
             });
         }
-        document.getElementById('lang-en')?.addEventListener('click', () => toggleLanguage('en'));
-        document.getElementById('lang-bm')?.addEventListener('click', () => toggleLanguage('bm'));
 
-        // --- Sign In Modal Logic ---
+        if(btnEn && btnBm) {
+            btnEn.addEventListener('click', () => {
+                btnEn.classList.add('active');
+                btnBm.classList.remove('active');
+                toggleLanguage('en');
+            });
+
+            btnBm.addEventListener('click', () => {
+                btnBm.classList.add('active');
+                btnEn.classList.remove('active');
+                toggleLanguage('bm');
+            });
+        }
+
+        // --- LOGIK SIGN IN / REGISTER MODAL ---
         const btnSignIn = document.getElementById('btn-signin');
         const signinOverlay = document.getElementById('signin-overlay');
         const signinClose = document.getElementById('signin-close');
@@ -119,23 +174,50 @@
                 signinOverlay.classList.add('active');
             });
         }
-        signinClose?.addEventListener('click', () => signinOverlay.classList.remove('active'));
-        signinOverlay?.addEventListener('click', (e) => {
-            if (e.target === signinOverlay) signinOverlay.classList.remove('active');
+        if(signinClose) {
+            signinClose.addEventListener('click', () => signinOverlay.classList.remove('active'));
+        }
+        if(signinOverlay) {
+            signinOverlay.addEventListener('click', (e) => {
+                if (e.target === signinOverlay) signinOverlay.classList.remove('active');
+            });
+        }
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && signinOverlay) signinOverlay.classList.remove('active');
         });
 
-        // --- Dark Mode Logic ---
+        // --- LOGIK DARK MODE ---
         const themeToggleFloat = document.getElementById('theme-toggle-float');
-        if (localStorage.getItem('theme') === 'dark') {
-            document.body.classList.add('dark-theme');
-            themeToggleFloat.innerHTML = '<i class="fa-solid fa-sun"></i>';
+        
+        function updateButtonIcon(theme) {
+            if (theme === 'dark') {
+                themeToggleFloat.innerHTML = '<i class="fa-solid fa-sun"></i>';
+                themeToggleFloat.title = "Switch to Light Mode";
+            } else {
+                themeToggleFloat.innerHTML = '<i class="fa-solid fa-moon"></i>';
+                themeToggleFloat.title = "Switch to Dark Mode";
+            }
         }
-        themeToggleFloat.addEventListener('click', () => {
-            document.body.classList.toggle('dark-theme');
-            let isDark = document.body.classList.contains('dark-theme');
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-            themeToggleFloat.innerHTML = isDark ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
-        });
+
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        if (currentTheme === 'dark') {
+            document.documentElement.classList.add('dark-theme');
+            document.body.classList.add('dark-theme');
+            updateButtonIcon('dark');
+        } else {
+            updateButtonIcon('light');
+        }
+
+        if(themeToggleFloat) {
+            themeToggleFloat.addEventListener('click', () => {
+                const isDark = document.body.classList.toggle('dark-theme');
+                document.documentElement.classList.toggle('dark-theme', isDark);
+                
+                const newTheme = isDark ? 'dark' : 'light';
+                localStorage.setItem('theme', newTheme);
+                updateButtonIcon(newTheme);
+            });
+        }
     </script>
 </body>
 </html>

@@ -3,13 +3,22 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use Cake\ORM\TableRegistry; // Tambahkan baris ini di bahagian atas
+use Cake\ORM\TableRegistry;
+use Cake\Event\EventInterface; // Wajib tambah ini untuk menggunakan beforeFilter
 
 class FleetsController extends AppController
 {
+    public function beforeFilter(EventInterface $event)
+    {
+        parent::beforeFilter($event);
+        
+        // Membenarkan pelawat awam melihat halaman senarai kenderaan tanpa log masuk
+        $this->Authentication->addUnauthenticatedActions(['index']);
+    }
+
     public function index()
     {
-        // Gantikan $this->loadModel('Cars') dengan cara ini:
+        // Panggil jadual Cars
         $carsTable = TableRegistry::getTableLocator()->get('Cars');
 
         // 1. Ambil nilai 'car_type' dari URL

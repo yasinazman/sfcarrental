@@ -24,6 +24,8 @@ $this->Html->css('customers-dashboard', ['block' => true]);
 
     <div class="booking-card">
     <h3 class="booking-title"><i class="fa-solid fa-calendar-check"></i> Plan Your Journey</h3>
+    
+    <!-- Guna tag <form> biasa dan pastikan tutup dengan betul -->
     <form action="<?= $this->Url->build(['controller' => 'Cars', 'action' => 'search']) ?>" method="GET">
         <div class="form-row">
             <div class="input-field">
@@ -32,16 +34,18 @@ $this->Html->css('customers-dashboard', ['block' => true]);
             </div>
             <div class="input-field">
                 <label>Vehicle Class</label>
+                <!-- Nama input ini ialah 'car_category' -->
                 <select name="car_category">
-                    <option value="all">All Classes</option>
-                    <option value="economy">Economy</option>
-                    <option value="compact">Compact</option>
-                    <option value="sedan">Sedan</option>
-                    <option value="mpv">MPV</option>
-                    <option value="suv">SUV</option>
-                </select>
+    <option value="all">All Classes</option>
+    <option value="Economy">Economy</option>
+    <option value="Compact">Compact</option>
+    <option value="Sedan">Sedan</option>
+    <option value="MPV">MPV</option>
+    <option value="SUV">SUV</option>
+</select>
             </div>
         </div>
+        
         <div class="form-row">
             <div class="input-field">
                 <label>Pick-up Date</label>
@@ -52,24 +56,26 @@ $this->Html->css('customers-dashboard', ['block' => true]);
                 <input type="datetime-local" name="return_date" required>
             </div>
             <div class="form-group">
-                    <label>Pickup Location </label>
-                    <select name="pickup_location" required>
-                        <option value="" data-en="Select Location..." data-bm="Pilih Lokasi...">Select Location...</option>
-                        <option value="SF HQ">SF Car Rental HQ</option>
-                        <option value="I-CITY">I-City Shah Alam</option>
-                        <option value="AEON">AEON Mall Shah Alam</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Drop Off Location</label>
-                    <select name="dropoff_location" required>
-                        <option value="" data-en="Select Location..." data-bm="Pilih Lokasi...">Select Location...</option>
-                        <option value="SF HQ">SF Car Rental HQ</option>
-                        <option value="I-CITY">I-City Shah Alam</option>
-                        <option value="AEON">AEON Mall Shah Alam</option>
-                    </select>
-                </div>
+                <label>Pickup Location </label>
+                <select name="pickup_location" required>
+                    <option value="">Select Location...</option>
+                    <option value="SF HQ">SF Car Rental HQ</option>
+                    <option value="I-CITY">I-City Shah Alam</option>
+                    <option value="AEON">AEON Mall Shah Alam</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Drop Off Location</label>
+                <select name="dropoff_location" required>
+                    <option value="">Select Location...</option>
+                    <option value="SF HQ">SF Car Rental HQ</option>
+                    <option value="I-CITY">I-City Shah Alam</option>
+                    <option value="AEON">AEON Mall Shah Alam</option>
+                </select>
+            </div>
         </div>
+        
+        <!-- Butang submit diletakkan terus di dalam <form> -->
         <button type="submit" class="btn-search-main">Search Available Cars</button>
     </form>
 </div>

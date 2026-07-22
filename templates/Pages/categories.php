@@ -109,6 +109,7 @@ $this->disableAutoLayout();
         </form>
     </div>
 
+    <!-- Top Bar -->
     <div class="top-bar">
         <div class="top-bar-container">
             <div class="top-info">
@@ -120,16 +121,53 @@ $this->disableAutoLayout();
         </div>
     </div>
 
+    <!-- Main Navigation -->
     <header>
         <div class="navbar">
-            <a href="<?= $this->Url->build(['controller' => 'Pages', 'action' => 'display', 'home']) ?>" class="logo">sf<span>carrental</span></a>
+            <a href="<?= $this->Url->build('/') ?>" class="logo">sf<span>carrental</span></a>
             <ul class="nav-links">
-                <li><a href="<?= $this->Url->build(['controller' => 'Pages', 'action' => 'display', 'home']) ?>" data-en="Home" data-bm="Utama">Home</a></li>
-                <li><a href="<?= $this->Url->build(['controller' => 'Pages', 'action' => 'display', 'categories']) ?>" class="active-link" data-en="Categories" data-bm="Kategori">Categories</a></li>
-                <li><a href="<?= $this->Url->build(['controller' => 'Pages', 'action' => 'display', 'fleet']) ?>" data-en="Our Fleet" data-bm="Koleksi Kereta">Our Fleet</a></li>
-                <li><a href="<?= $this->Url->build(['controller' => 'Pages', 'action' => 'display', 'home']) ?>#kelebihan" data-en="Why Us" data-bm="Kelebihan">Why Us</a></li>
-                <li><a href="<?= $this->Url->build(['controller' => 'Pages', 'action' => 'display', 'terms']) ?>" data-en="Terms & Conditions" data-bm="Terma & Syarat">Terms & Conditions</a></li>
-                <li><a href="#" id="btn-signin" class="btn-login"><i class="fa-solid fa-user-plus"></i> <span data-en="Sign In / Register" data-bm="Log Masuk / Daftar">Sign In / Register</span></a></li>
+                <li><a href="<?= $this->Url->build('/') ?>" data-en="Home" data-bm="Utama">Home</a></li>
+                <li><a href="<?= $this->Url->build(['controller' => 'Categories', 'action' => 'index']) ?>" data-en="Categories" data-bm="Kategori">Categories</a></li>
+                <li><a href="<?= $this->Url->build(['controller' => 'Fleets', 'action' => 'index']) ?>" data-en="Our Fleet" data-bm="Koleksi Kereta">Our Fleet</a></li>
+                <li><a href="<?= $this->Url->build('/#kelebihan') ?>" data-en="Why Us" data-bm="Kelebihan">Why Us</a></li>
+                <li><a href="<?= $this->Url->build(['controller' => 'Terms', 'action' => 'index']) ?>" data-en="Terms & Conditions" data-bm="Terma & Syarat">Terms & Conditions</a></li>
+                
+                <?php 
+                    // Pastikan tiada ralat jika pembolehubah kosong
+                    $userLogged = $userLogged ?? null;
+                    $namaPengguna = '';
+
+                    if ($userLogged) {
+                        // Semak jika data adalah Object (Entity CakePHP)
+                        if (is_object($userLogged)) {
+                            $namaPengguna = $userLogged->full_name ?? $userLogged->name ?? 'Pengguna';
+                        } 
+                        // Semak jika data adalah Array biasa
+                        elseif (is_array($userLogged)) {
+                            $namaPengguna = $userLogged['full_name'] ?? $userLogged['name'] ?? 'Pengguna';
+                        }
+                    }
+                ?>
+
+                <?php if ($userLogged): ?>
+                    <li>
+                        <a href="<?= $this->Url->build(['controller' => 'Customers', 'action' => 'dashboard']) ?>" 
+                           style="color: var(--primary-red); font-weight: 700;">My Dashboard</a>
+                    </li>
+                    <li>
+                        <?= $this->Html->link(
+                            __('<i class="fa-solid fa-right-from-bracket"></i> Logout <span class="user-name">(' . h($namaPengguna) . ')</span>'),
+                            ['controller' => 'Customers', 'action' => 'logout'],
+                            ['class' => 'btn-logout', 'escape' => false]
+                        ) ?>
+                    </li>
+                <?php else: ?>
+                    <li>
+                        <a href="#" id="btn-signin" class="btn-signin" style="background-color: var(--primary-red, #e60000); color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: bold; display: inline-flex; align-items: center; gap: 8px;">
+                            <i class="fa-solid fa-user"></i> <span data-en="Sign In / Register" data-bm="Log Masuk / Daftar">Sign In / Register</span>
+                        </a>
+                    </li>
+                <?php endif; ?>
             </ul>
         </div>
     </header>

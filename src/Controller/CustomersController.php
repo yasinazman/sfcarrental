@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use Authentication\PasswordHasher\DefaultPasswordHasher; // Untuk semak password nanti
+use Authentication\PasswordHasher\DefaultPasswordHasher;
 
 /**
  * Customers Controller
@@ -18,7 +18,6 @@ class CustomersController extends AppController
     public function initialize(): void
     {
         parent::initialize();
-        // Tiada lagi loadModel() di sini bagi mengelakkan ralat "Call to undefined method"
     }
 
     /**
@@ -57,14 +56,14 @@ class CustomersController extends AppController
         // 2. Tarik data profil customer terkini
         $customer = $this->Customers->get($customerSession['id']);
 
-        // 3. Panggil table Bookings & Cars (Penting untuk dropdown kereta)
+        // 3. Panggil table Bookings & Cars
         $bookingsTable = $this->fetchTable('Bookings');
         $carsTable = $this->fetchTable('Cars');
 
         // 4. Ambil senarai kereta untuk dropdown
         $cars = $carsTable->find('list', [
             'keyField' => 'id',
-            'valueField' => 'brand' // Anda boleh tukar kepada 'model_name' jika perlu
+            'valueField' => 'brand'
         ])->toArray();
 
         // 5. Cari semua booking milik customer tersebut
@@ -74,10 +73,10 @@ class CustomersController extends AppController
             ->order(['Bookings.created' => 'DESC'])
             ->all();
 
-        // 6. Hantar 'cars' ke template view supaya borang tempahan boleh berfungsi
+        // 6. Hantar data ke view
         $this->set(compact('customer', 'bookings', 'cars'));
     }
-    
+
     /**
      * Index method
      */
@@ -103,7 +102,6 @@ class CustomersController extends AppController
      */
     public function add()
     {
-        // MATIKAN LAYOUT ADMIN: Supaya borang pendaftaran tidak berterabur dengan sidebar admin
         $this->viewBuilder()->setLayout('ajax');
 
         $customer = $this->Customers->newEmptyEntity();
@@ -117,7 +115,7 @@ class CustomersController extends AppController
                 return $this->redirect($this->referer());
             }
 
-            // --- PROSES UPLOAD FAIL ---
+            // PROSES UPLOAD FAIL
             $uploadFolder = WWW_ROOT . 'uploads' . DS;
             if (!is_dir($uploadFolder)) {
                 mkdir($uploadFolder, 0775, true);
@@ -147,7 +145,6 @@ class CustomersController extends AppController
                 $data['license_file_path'] = 'uploads/' . $licenseName;
             }
 
-            // Set account status secara default
             $data['account_status'] = 'Active';
 
             $customer = $this->Customers->patchEntity($customer, $data);
@@ -167,10 +164,7 @@ class CustomersController extends AppController
      */
     public function login()
     {
-        // MATIKAN LAYOUT ADMIN: Menghalang layout/sidebar admin daripada bercampur dengan halaman login customer
         $this->viewBuilder()->setLayout('ajax');
-
-        // Benarkan request GET dan POST supaya paparan tidak menyekat proses
         $this->request->allowMethod(['get', 'post']);
         
         if ($this->request->is('post')) {
@@ -180,7 +174,7 @@ class CustomersController extends AppController
             $customer = $this->Customers->findByPhoneNumber($data['phone_number'])->first();
             
             if ($customer) {
-                // 2. Semak password menggunakan hasher CakePHP
+                // 2. Semak password
                 $hasher = new DefaultPasswordHasher();
                 if ($hasher->check($data['password'], $customer->password)) {
                     
@@ -190,7 +184,6 @@ class CustomersController extends AppController
                     
                     $this->Flash->success(__('Selamat datang kembali, ' . $customer->full_name));
                     
-                    // Lepas login berjaya, hantar terus ke Dashboard!
                     return $this->redirect(['controller' => 'Customers', 'action' => 'dashboard']);
                 }
             }
@@ -198,8 +191,6 @@ class CustomersController extends AppController
             $this->Flash->error(__('Nombor telefon atau kata laluan anda salah.'));
             return $this->redirect($this->referer());
         }
-        
-        // Jika diakses secara GET, paparkan template view login (biasanya templates/Customers/login.php)
     }
 
     /**
@@ -207,11 +198,16 @@ class CustomersController extends AppController
      */
     public function logout()
     {
-        $this->request->getSession()->destroy();
+        if ($this->components()->has('Authentication')) {
+            $this->Authentication->logout();
+        }
+
+        $this->request->getSession()->delete('Auth.Customer');
+        
         $this->Flash->success(__('Anda telah berjaya log keluar.'));
-        return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);
+        return $this->redirect('/');
     }
-    
+
     /**
      * Edit method
      */

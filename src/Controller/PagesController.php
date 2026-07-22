@@ -12,7 +12,26 @@ use Cake\I18n\FrozenTime;
 
 class PagesController extends AppController
 {
-    public function display(string ...$path): ?Response
+    /**
+     * BEFORE FILTER METHOD
+     * Membenarkan pengunjung melayari halaman statik tanpa perlu log masuk.
+     */
+    public function beforeFilter(\Cake\Event\EventInterface $event)
+    {
+        parent::beforeFilter($event);
+        
+        // Benarkan akses awam ke fungsi 'display' supaya layout boleh membaca status login
+        if ($this->components()->has('Authentication')) {
+            $this->Authentication->allowUnauthenticated(['display']);
+        }
+
+        // Sokongan tambahan jika menggunakan Auth legacy
+        if (isset($this->Auth)) {
+            $this->Auth->allow(['display']);
+        }
+    }
+
+  public function display(string ...$path): ?Response
     {
         if (!$path) {
             return $this->redirect('/');
