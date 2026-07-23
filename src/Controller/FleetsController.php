@@ -16,20 +16,21 @@ class FleetsController extends AppController
         $this->Authentication->addUnauthenticatedActions(['index']);
     }
 
-    public function index()
+   public function index()
     {
         // Panggil jadual Cars
         $carsTable = TableRegistry::getTableLocator()->get('Cars');
 
-        // 1. Ambil nilai 'car_type' dari URL
+        // 1. Ambil nilai 'car_type' dari URL (dihantar dari borang)
         $carType = $this->request->getQuery('car_type', 'all');
 
         // 2. Sediakan query asas menggunakan $carsTable
         $query = $carsTable->find();
 
         // 3. Filter berdasarkan jenis jika bukan 'all'
-        if ($carType !== 'all') {
-            $query->where(['category' => $carType]);
+        if ($carType !== 'all' && !empty($carType)) {
+            // TUKAR 'category' kepada 'car_category' 
+            $query->where(['car_category' => $carType]);
         }
 
         // 4. Dapatkan data

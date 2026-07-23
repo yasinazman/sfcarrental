@@ -27,7 +27,7 @@
 
 <div class="booking-form-container">
     <h3 class="booking-form-title" data-en="Booking Form" data-bm="Borang Tempahan">Booking Form</h3>
-    <form action="<?= $this->Url->build(['controller' => 'Pages', 'action' => 'display', 'fleet']) ?>" method="GET" class="booking-form">
+    <form action="<?= $this->Url->build(['controller' => 'Fleets', 'action' => 'index']) ?>" method="GET" class="booking-form">
         <div class="form-grid">
 
             <div class="form-group">
@@ -38,13 +38,13 @@
             <div class="form-group">
                 <label><i class="fa-solid fa-car-side"></i> <span data-en="Vehicle Class" data-bm="Jenis Kereta">Vehicle Class</span></label>
                 <select name="car_type">
-                    <option value="all" data-en="All Vehicle Classes" data-bm="Semua Jenis Kereta">All Vehicle Classes</option>
-                    <option value="ekonomi" data-en="Budget / Economy" data-bm="Ekonomi">Economy</option>
-                    <option value="sedan" data-en="Standard Sedan" data-bm="Kompak">Compact</option>
-                    <option value="suv" data-en="SUV / Crossover" data-bm="Sedan">Sedan</option>
-                    <option value="mpv" data-en="Family MPV (7-Seater)" data-bm="MPV">MPV</option>
-                    <option value="luxury" data-en="Luxury & Sports" data-bm="SUV">SUV</option>
-                </select>
+    <option value="all" data-en="All Vehicle Classes" data-bm="Semua Jenis Kereta">All Vehicle Classes</option>
+    <option value="economy" data-en="Economy" data-bm="Ekonomi">Economy</option>
+    <option value="compact" data-en="Compact" data-bm="Kompak">Compact</option>
+    <option value="sedan" data-en="Sedan" data-bm="Sedan">Sedan</option>
+    <option value="mpv" data-en="MPV" data-bm="MPV">MPV</option>
+    <option value="suv" data-en="SUV" data-bm="SUV">SUV</option>
+</select>
             </div>
 
             <div class="form-group">

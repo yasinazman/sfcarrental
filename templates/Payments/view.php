@@ -91,7 +91,9 @@ $seats = $car->seat_capacity ?? 5;
         @page { size: A4; margin: 1.5cm; }
         
         body { background: #ffffff !important; }
-        .receipt-full-page, header, nav, footer, .navbar, .flash-message { display: none !important; }
+        .receipt-full-page, header, nav, footer, .navbar, .top-bar, .message, .flash-message, .theme-btn-float { 
+    display: none !important; 
+}
         
         .print-only-receipt {
             display: block !important;

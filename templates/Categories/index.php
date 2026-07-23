@@ -27,7 +27,8 @@
 
 <div class="booking-form-container">
     <h3 class="booking-form-title" data-en="Booking Form" data-bm="Borang Tempahan">Booking Form</h3>
-    <form action="<?= $this->Url->build(['controller' => 'Pages', 'action' => 'display', 'fleet']) ?>" method="GET" class="booking-form">
+    <!-- URL DI BAWAH TELAH DITUKAR KEPADA FLEETS CONTROLLER -->
+    <form action="<?= $this->Url->build(['controller' => 'Fleets', 'action' => 'index']) ?>" method="GET" class="booking-form">
         <div class="form-grid">
             <div class="form-group">
                 <label><i class="fa-solid fa-map-location-dot"></i> <span data-en="Where are you heading to?" data-bm="Lokasi Destinasi">Where are you heading to?</span></label>
@@ -37,12 +38,13 @@
             <div class="form-group">
                 <label><i class="fa-solid fa-car-side"></i> <span data-en="Vehicle Class" data-bm="Jenis Kereta">Vehicle Class</span></label>
                 <select name="car_type">
-                    <option value="all" data-en="All Vehicle Classes" data-bm="Semua Jenis Kereta">All Vehicle Classes</option>
-                    <option value="ekonomi" data-en="Budget / Economy" data-bm="Ekonomi">Economy</option>
-                    <option value="sedan" data-en="Standard Sedan" data-bm="Kompak">Compact</option>
-                    <option value="suv" data-en="SUV / Crossover" data-bm="Sedan">Sedan</option>
-                    <option value="mpv" data-en="Family MPV (7-Seater)" data-bm="MPV">MPV</option>
-                </select>
+    <option value="all" data-en="All Vehicle Classes" data-bm="Semua Jenis Kereta">All Vehicle Classes</option>
+    <option value="economy" data-en="Economy" data-bm="Ekonomi">Economy</option>
+    <option value="compact" data-en="Compact" data-bm="Kompak">Compact</option>
+    <option value="sedan" data-en="Sedan" data-bm="Sedan">Sedan</option>
+    <option value="mpv" data-en="MPV" data-bm="MPV">MPV</option>
+    <option value="suv" data-en="SUV" data-bm="SUV">SUV</option>
+</select>
             </div>
 
             <div class="form-group">
@@ -100,9 +102,10 @@
             <div class="category-card"><span data-en="SUV" data-bm="SUV">SUV</span></div>
         </div>
 
-        <?php $fleetUrl = $this->Url->build(['controller' => 'Pages', 'action' => 'display', 'fleet']); ?>
+        <!-- URL DI BAWAH TELAH DITUKAR KEPADA FLEETS CONTROLLER -->
+        <?php $fleetUrl = $this->Url->build(['controller' => 'Fleets', 'action' => 'index']); ?>
         <div class="categories-big-grid">
-            <a href="<?= $fleetUrl ?>?car_type=ekonomi" class="category-big-card">
+            <a href="<?= $fleetUrl ?>?car_type=economy" class="category-big-card">
                 <div class="category-icon"><i class="fa-solid fa-car"></i></div>
                 <h3 data-en="Economy" data-bm="Ekonomi">Economy</h3>
                 <p data-en="Budget-friendly, great on fuel" data-bm="Mesra bajet, jimat minyak">Budget-friendly, great on fuel</p>
@@ -143,3 +146,5 @@
         });
     });
 </script>
+</body>
+</html>

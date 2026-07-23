@@ -49,7 +49,7 @@ class CustomersController extends AppController
         $customerSession = $session->read('Auth.Customer');
 
         if (!$customerSession) {
-            $this->Flash->error(__('Sila log masuk terlebih dahulu untuk mengakses dashboard.'));
+            $this->Flash->error(__('Please log in first to access the dashboard.'));
             return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);
         }
 
@@ -111,7 +111,7 @@ class CustomersController extends AppController
             // Semak jika nombor telefon sudah wujud
             $existing = $this->Customers->findByPhoneNumber($data['phone_number'])->first();
             if ($existing) {
-                $this->Flash->error(__('Nombor telefon ini telah pun didaftarkan. Sila guna nombor lain.'));
+                $this->Flash->error(__('This phone number is already registered. Please use a different number.'));
                 return $this->redirect($this->referer());
             }
 
@@ -150,11 +150,11 @@ class CustomersController extends AppController
             $customer = $this->Customers->patchEntity($customer, $data);
             
             if ($this->Customers->save($customer)) {
-                $this->Flash->success(__('Pendaftaran akaun berjaya! Sila log masuk.'));
+                $this->Flash->success(__('Account registration successful! Please log in.'));
                 return $this->redirect($this->referer());
             }
             
-            $this->Flash->error(__('Pendaftaran gagal. Sila semak semula maklumat anda.'));
+            $this->Flash->error(__('Registration failed. Please double-check your information.'));
         }
         $this->set(compact('customer'));
     }
@@ -182,13 +182,13 @@ class CustomersController extends AppController
                     $session = $this->request->getSession();
                     $session->write('Auth.Customer', $customer);
                     
-                    $this->Flash->success(__('Selamat datang kembali, ' . $customer->full_name));
+                    $this->Flash->success(__('Welcome back, ' . $customer->full_name));
                     
                     return $this->redirect(['controller' => 'Customers', 'action' => 'dashboard']);
                 }
             }
             
-            $this->Flash->error(__('Nombor telefon atau kata laluan anda salah.'));
+            $this->Flash->error(__('Your phone number or password is incorrect.'));
             return $this->redirect($this->referer());
         }
     }
@@ -204,7 +204,7 @@ class CustomersController extends AppController
 
         $this->request->getSession()->delete('Auth.Customer');
         
-        $this->Flash->success(__('Anda telah berjaya log keluar.'));
+        $this->Flash->success(__('You have successfully logged out.'));
         return $this->redirect('/');
     }
 

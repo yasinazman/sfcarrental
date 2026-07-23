@@ -77,6 +77,7 @@ class PagesController extends AppController
                         'start_date <' => $returnDate, // Tarikh ambil orang lain sebelum kita pulang
                         'end_date >' => $pickupDate    // Tarikh pulang orang lain selepas kita ambil
                     ])
+                    ->all()
                     ->extract('car_id')
                     ->toArray();
 
@@ -89,6 +90,7 @@ class PagesController extends AppController
                         'service_date >=' => date('Y-m-d 00:00:00', strtotime($pickupDateReq)),
                         'service_date <=' => date('Y-m-d 23:59:59', strtotime($returnDateReq))
                     ])
+                    ->all()
                     ->extract('car_id')
                     ->toArray();
 

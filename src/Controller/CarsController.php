@@ -8,6 +8,7 @@ class CarsController extends AppController
 
     // ... fungsi lain (index, view, add, edit, delete, browse) kekal sama ...
 
+
    public function search() 
    {
         $this->viewBuilder()->setLayout('default');

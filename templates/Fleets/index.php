@@ -7,7 +7,7 @@
  */
 // KOD $this->disableAutoLayout(); TELAH DIPADAM SUPAYA IA GUNA DEFAULT LAYOUT
 
-$fleetUrl = $this->Url->build(['controller' => 'Pages', 'action' => 'display', 'fleet']);
+$fleetUrl = $this->Url->build(['controller' => 'Fleets', 'action' => 'index']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -42,13 +42,13 @@ $fleetUrl = $this->Url->build(['controller' => 'Pages', 'action' => 'display', '
             <div class="form-group">
                 <label><i class="fa-solid fa-car-side"></i> <span data-en="Vehicle Class" data-bm="Jenis Kereta">Vehicle Class</span></label>
                 <select name="car_type">
-                    <option value="all" data-en="All Vehicle Classes" data-bm="Semua Jenis Kereta">All Vehicle Classes</option>
-                    <option value="ekonomi" data-en="Budget / Economy" data-bm="Ekonomi">Economy</option>
-                    <option value="sedan" data-en="Standard Sedan" data-bm="Kompak">Compact</option>
-                    <option value="suv" data-en="SUV / Crossover" data-bm="Sedan">Sedan</option>
-                    <option value="mpv" data-en="Family MPV (7-Seater)" data-bm="MPV">MPV</option>
-                    <option value="luxury" data-en="Luxury & Sports" data-bm="SUV">SUV</option>
-                </select>
+    <option value="all" data-en="All Vehicle Classes" data-bm="Semua Jenis Kereta">All Vehicle Classes</option>
+    <option value="economy" data-en="Economy" data-bm="Ekonomi">Economy</option>
+    <option value="compact" data-en="Compact" data-bm="Kompak">Compact</option>
+    <option value="sedan" data-en="Sedan" data-bm="Sedan">Sedan</option>
+    <option value="mpv" data-en="MPV" data-bm="MPV">MPV</option>
+    <option value="suv" data-en="SUV" data-bm="SUV">SUV</option>
+</select>
             </div>
 
             <div class="form-group">
@@ -155,7 +155,7 @@ $fleetUrl = $this->Url->build(['controller' => 'Pages', 'action' => 'display', '
                         </div>
                         
                         <?php if ($car->availability_status === 'Available'): ?>
-                            <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'login']) ?>" class="btn-lock"><i class="fa-solid fa-calendar-check"></i> <span data-en="Book Now & Pay Later" data-bm="Tempah & Bayar Kemudian">Book Now & Pay Later</span></a>
+                            <a href="<?= $this->Url->build(['controller' => 'Customers', 'action' => 'login']) ?>" class="btn-lock"><i class="fa-solid fa-calendar-check"></i> <span data-en="Book Now & Pay Later" data-bm="Tempah & Bayar Kemudian">Book Now & Pay Later</span></a>
                         <?php else: ?>
                             <a href="#" class="btn-lock" style="background:#ccc; cursor:not-allowed; border-color:#ccc;" onclick="return false;"><i class="fa-solid fa-clock"></i> <span data-en="Currently Unavailable" data-bm="Sedang Digunakan">Currently Unavailable</span></a>
                         <?php endif; ?>
