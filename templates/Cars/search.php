@@ -21,18 +21,11 @@
         background-color: #121212; /* Dark theme background */
     }
 
-    /* Padding untuk grid supaya tidak melekat pada hujung skrin */
-    .content-wrapper {
-        padding: 40px !important;
-        width: 100% !important;
-        box-sizing: border-box;
-    }
-
     /* ========================================================
-       REKA BENTUK KAD KERETA (Seiras dengan halaman Fleet)
+       REKA BENTUK KAD KERETA
        ======================================================== */
     .fleet-card {
-        background: #1e232d; /* Warna biru gelap/kelabu seperti dalam gambar */
+        background: #1e232d; 
         border: 1px solid #2a303c;
         border-radius: 12px;
         overflow: hidden;
@@ -46,9 +39,9 @@
         box-shadow: 0 10px 20px rgba(0,0,0,0.3);
     }
 
+    /* Bahagian Gambar (Kotak Putih) */
     .car-image-container {
-        position: relative;
-        background: #ffffff; /* Latar putih supaya gambar kereta nampak jelas */
+        background: #ffffff; 
         padding: 20px;
         text-align: center;
         border-bottom: 3px solid #1a1e27;
@@ -60,39 +53,7 @@
         object-fit: contain;
     }
 
-    /* Tag Kategori & Nombor Plat */
-    .tag-container {
-        position: absolute;
-        top: 15px;
-        left: 15px;
-        right: 15px;
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .category-tag {
-        background: rgba(0, 0, 0, 0.7);
-        color: #fff;
-        padding: 5px 12px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: bold;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-
-    .plate-tag {
-        background: #fdc500; /* Warna kuning ala-ala nombor plat Malaysia */
-        color: #000;
-        padding: 5px 12px;
-        border-radius: 4px;
-        font-size: 13px;
-        font-weight: 800;
-        text-transform: uppercase;
-        letter-spacing: 1.5px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    }
-
+    /* Maklumat di bawah gambar (Kotak Gelap) */
     .car-info {
         padding: 25px;
         display: flex;
@@ -100,14 +61,45 @@
         flex-grow: 1;
     }
 
+    /* Tajuk Kereta & Susunan Nombor Plat */
     .car-model-title {
         color: #ffffff;
         font-size: 22px;
         font-weight: bold;
         text-align: center;
-        margin: 0 0 15px 0;
+        margin: 0 0 10px 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px; /* Jarak antara nama kereta dan plat */
     }
 
+    .plate-badge {
+        background: #fdc500; /* Warna kuning plat Malaysia */
+        color: #000;
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-weight: 800;
+        letter-spacing: 1px;
+        font-size: 14px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .category-badge {
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.1);
+        color: #aaa;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 20px;
+    }
+
+    /* Harga */
     .price-box {
         text-align: center;
         margin-bottom: 20px;
@@ -222,12 +214,8 @@
         <?php foreach ($cars as $car): ?>
             <div class="fleet-card">
                 
-                <!-- Gambar Kereta, Kategori & Nombor Plat -->
+                <!-- Gambar Kereta Sahaja -->
                 <div class="car-image-container">
-                    <div class="tag-container">
-                        <span class="category-tag"><?= h($car->category ?? 'STANDARD') ?></span>
-                        <span class="plate-tag"><?= h($car->plate_number ?? 'N/A') ?></span>
-                    </div>
                     <?php if (!empty($car->image)): ?>
                         <img src="<?= $this->Url->image('cars/' . h($car->image)) ?>" alt="<?= h($car->car_model) ?>">
                     <?php else: ?>
@@ -239,7 +227,19 @@
                 
                 <!-- Maklumat Kereta -->
                 <div class="car-info">
-                    <h3 class="car-model-title"><?= h($car->car_model) ?></h3>
+                    
+                    <!-- Tajuk dan Badge Nombor Plat (Berada dalam aliran standard) -->
+                    <h3 class="car-model-title">
+                        <?= h($car->car_model) ?>
+                        <?php if (!empty($car->plate_number)): ?>
+                            <span class="plate-badge"><?= h($car->plate_number) ?></span>
+                        <?php endif; ?>
+                    </h3>
+                    
+                    <!-- Kategori Kereta -->
+                    <div style="text-align: center;">
+                        <span class="category-badge"><?= h($car->category ?? 'STANDARD') ?></span>
+                    </div>
                     
                     <div class="price-box">
                         <span class="currency">MYR</span>
@@ -270,10 +270,10 @@
                         </div>
                     </div>
                     
-                    <!-- Butang Pilih Kereta (Menghantar data carian ke borang tempahan) -->
+                    <!-- Butang Pilih Kereta -->
                     <?= $this->Html->link('<i class="fa-regular fa-calendar-check" style="margin-right: 8px;"></i> Select This Car', [
-                        'controller' => 'Bookings', 
-                        'action' => 'add', 
+                        'controller' => 'Bookings',
+                        'action' => 'add',
                         $car->id,
                         '?' => [
                             'start_date' => $this->request->getQuery('pickup_date') ?? $this->request->getQuery('start_date'),
@@ -283,7 +283,7 @@
                             'dropoff_location' => $this->request->getQuery('dropoff_location')
                         ]
                     ], [
-                        'escape' => false, // Penting supaya ikon FontAwesome dirender sebagai HTML
+                        'escape' => false,
                         'class' => 'btn-select-car'
                     ]) ?>
                 </div>

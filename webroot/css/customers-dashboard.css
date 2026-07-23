@@ -1,5 +1,49 @@
-/* Reset & Global */
-body { margin: 0; padding: 0; background: #121212; color: #fff; font-family: sans-serif; }
+/* =========================================================
+   1. WARNA ASAS (LIGHT MODE - DEFAULT)
+   ========================================================= */
+:root {
+    --bg-color: #f4f7f6;         /* Background utama (cerah) */
+    --text-color: #1a1a1a;       /* Teks (gelap) */
+    --text-muted: #666666;       /* Teks kelabu/pudar */
+    --card-bg: #ffffff;          /* Kotak form/kereta (putih) */
+    --border-color: #dddddd;     /* Garisan cerah */
+    --input-bg: #ffffff;         /* Kotak input putih */
+    --input-text: #333333;       /* Teks dalam input */
+    --primary-red: #e50914;      /* Warna merah jenama */
+    --table-border: #eeeeee;
+}
+
+/* =========================================================
+   2. WARNA GELAP (DARK MODE)
+   ========================================================= */
+body.dark-theme {
+    --bg-color: #121212;         /* Background utama (gelap) */
+    --text-color: #ffffff;       /* Teks (cerah) */
+    --text-muted: #aaaaaa;       /* Teks kelabu/pudar cerah */
+    --card-bg: #1e1e1e;          /* Kotak form/kereta (gelap) */
+    --border-color: #333333;     /* Garisan gelap */
+    --input-bg: #2a2a2a;         /* Kotak input gelap */
+    --input-text: #ffffff;       /* Teks dalam input */
+    --table-border: #2d2d2d;
+}
+
+/* =========================================================
+   3. RESET & GLOBAL (MENGGUNAKAN VARIABLE)
+   ========================================================= */
+body { 
+    margin: 0; 
+    padding: 0; 
+    background-color: var(--bg-color); 
+    color: var(--text-color); 
+    font-family: 'Plus Jakarta Sans', sans-serif; 
+    transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* Biarkan Navbar dan Header sentiasa gelap untuk kekalkan logo */
+header, .navbar, .top-bar, footer {
+    background-color: #141414 !important;
+    border-bottom: 1px solid #333 !important;
+}
 
 .dashboard-wrapper {
     max-width: 1000px;
@@ -7,72 +51,143 @@ body { margin: 0; padding: 0; background: #121212; color: #fff; font-family: san
     padding: 0 20px;
 }
 
-/* Profil Kad Moden */
+/* =========================================================
+   4. KAD PROFIL & BOOKING
+   ========================================================= */
 .profile-card {
-    background: #1e1e1e;
+    background-color: var(--card-bg);
     padding: 30px;
     border-radius: 20px;
     display: flex;
     align-items: center;
     gap: 20px;
-    border: 1px solid #2d2d2d;
+    border: 1px solid var(--border-color);
     margin-bottom: 30px;
+    transition: background-color 0.4s ease, border-color 0.4s ease;
 }
 
 .profile-avatar {
     width: 60px; height: 60px;
-    background: #e50914;
+    background: var(--primary-red);
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     font-size: 24px; font-weight: bold;
+    color: white;
 }
 
 .booking-card {
-    background: #1e1e1e;
+    background-color: var(--card-bg);
     padding: 30px;
     border-radius: 20px;
-    border: 1px solid #333;
+    border: 1px solid var(--border-color);
     max-width: 800px;
     margin: 20px auto;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    transition: background-color 0.4s ease, border-color 0.4s ease;
+}
+body.dark-theme .booking-card {
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
-.booking-title { color: #fff; margin-bottom: 25px; font-size: 1.5rem; }
+.booking-title { 
+    color: var(--text-color); 
+    margin-bottom: 25px; 
+    font-size: 1.5rem; 
+}
 
+/* =========================================================
+   5. BORANG & INPUT
+   ========================================================= */
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
 
-.input-field label { display: block; margin-bottom: 8px; color: #aaa; font-size: 0.9rem; }
+.input-field label { 
+    display: block; 
+    margin-bottom: 8px; 
+    color: var(--text-muted); 
+    font-size: 0.9rem; 
+}
 
 .input-field input, .input-field select {
-    width: 100%; padding: 12px; border-radius: 10px;
-    background: #2a2a2a; border: 1px solid #444; color: white;
+    width: 100%; 
+    padding: 12px; 
+    border-radius: 10px;
+    background-color: var(--input-bg); 
+    border: 1px solid var(--border-color); 
+    color: var(--input-text);
+    transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease;
 }
 
 .btn-search-main {
-    width: 100%; padding: 15px; background: #e50914; color: white;
-    border: none; border-radius: 10px; font-weight: bold; cursor: pointer;
+    width: 100%; padding: 15px; 
+    background: var(--primary-red); 
+    color: white;
+    border: none; border-radius: 10px; 
+    font-weight: bold; cursor: pointer;
     transition: 0.3s;
 }
 
 .btn-search-main:hover { background: #c10712; }
 
-/* Sejarah Section */
+/* =========================================================
+   6. SEJARAH TEMPAHAN (HISTORY SECTION)
+   ========================================================= */
 .history-section {
-    background: #1e1e1e;
+    background-color: var(--card-bg);
     padding: 30px;
     border-radius: 20px;
-    border: 1px solid #2d2d2d;
+    border: 1px solid var(--border-color);
+    transition: background-color 0.4s ease, border-color 0.4s ease;
 }
 
 .booking-table { width: 100%; border-collapse: collapse; }
-.booking-table th { color: #888; text-align: left; padding: 15px; border-bottom: 1px solid #2d2d2d; }
-.booking-table td { padding: 15px; border-bottom: 1px solid #2d2d2d; color: #ddd; }
+.booking-table th { 
+    color: var(--text-muted); 
+    text-align: left; 
+    padding: 15px; 
+    border-bottom: 1px solid var(--table-border); 
+}
+.booking-table td { 
+    padding: 15px; 
+    border-bottom: 1px solid var(--table-border); 
+    color: var(--text-color); 
+}
 
-.pin-box { background: #000; padding: 4px 8px; border-radius: 4px; font-family: monospace; color: #00ff00; }
-.badge-status { background: #2d2d2d; padding: 5px 12px; border-radius: 20px; color: #e50914; border: 1px solid #e50914; font-size: 12px; }
+.pin-box { 
+    background: #000; 
+    padding: 4px 8px; 
+    border-radius: 4px; 
+    font-family: monospace; 
+    color: #00ff00; 
+}
 
-.btn-back-home { margin-left: auto; background: #333; color: #fff; padding: 10px 20px; border-radius: 8px; text-decoration: none; }
+.badge-status { 
+    background-color: var(--input-bg); 
+    padding: 5px 12px; 
+    border-radius: 20px; 
+    color: var(--primary-red); 
+    border: 1px solid var(--primary-red); 
+    font-size: 12px; 
+}
+
+.btn-back-home { 
+    margin-left: auto; 
+    background: #333; 
+    color: #fff; 
+    padding: 10px 20px; 
+    border-radius: 8px; 
+    text-decoration: none; 
+}
 .btn-back-home:hover { background: #444; }
+body.dark-theme .btn-back-home {
+    background: #333;
+}
+body:not(.dark-theme) .btn-back-home {
+    background: #e2e8f0;
+    color: #1a1a1a;
+}
+body:not(.dark-theme) .btn-back-home:hover {
+    background: #cbd5e1;
+}
 
-.empty-booking-state { text-align: center; padding: 50px; color: #888; }
+.empty-booking-state { text-align: center; padding: 50px; color: var(--text-muted); }
 .empty-icon { font-size: 50px; margin-bottom: 20px; }

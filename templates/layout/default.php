@@ -66,21 +66,50 @@
                 <li><a href="<?= $this->Url->build(['controller' => 'Terms', 'action' => 'index']) ?>" data-en="Terms & Conditions" data-bm="Terma & Syarat">Terms & Conditions</a></li>
                 
                 <?php 
-                    // Pastikan tiada ralat jika pembolehubah kosong
-                    $userLogged = $userLogged ?? null;
-                    $namaPengguna = '';
+    // Pastikan butang Logout/Login tak error
+    $userLogged = $userLogged ?? null;
+    $namaPengguna = 'Pengguna';
 
-                    if ($userLogged) {
-                        // Semak jika data adalah Object (Entity CakePHP)
-                        if (is_object($userLogged)) {
-                            $namaPengguna = $userLogged->full_name ?? $userLogged->name ?? 'Pengguna';
-                        } 
-                        // Semak jika data adalah Array biasa
-                        elseif (is_array($userLogged)) {
-                            $namaPengguna = $userLogged['full_name'] ?? $userLogged['name'] ?? 'Pengguna';
-                        }
-                    }
-                ?>
+    // 1. CUBA KOREK DARI VARIABLE APPCONTROLLER ATAU SESSION
+    $namaPenuh = '';
+
+    // Cuba dari ArrayObject $userLogged
+    if ($userLogged) {
+        if (isset($userLogged['full_name'])) {
+            $namaPenuh = $userLogged['full_name'];
+        } elseif (isset($userLogged->full_name)) {
+            $namaPenuh = $userLogged->full_name;
+        }
+    }
+
+    // Kalau kosong lagi, kita korek paksa dari Session (Semua kemungkinan pintu laluan)
+    if (empty($namaPenuh)) {
+        $session = $this->request->getSession();
+        $namaPenuh = $session->read('Auth.Customer.full_name') 
+                  ?? $session->read('Auth.User.full_name') 
+                  ?? $session->read('Auth.Identity.full_name') 
+                  ?? $session->read('Auth.full_name');
+    }
+
+    // 2. LOGIK POTONG NAMA (Hanya jalan jika berjaya dapat nama sebenar)
+    if (!empty($namaPenuh) && $namaPenuh !== 'Pengguna') {
+        // Pecahkan nama guna 'space'
+        $namaArray = explode(' ', trim((string)$namaPenuh));
+        
+        // Ambil perkataan pertama (Contoh: Muhammad)
+        $namaPendek = $namaArray[0];
+
+        // Senarai nama depan nak diabaikan
+        $abaikanNama = ['muhammad', 'muhd', 'nur', 'siti', 'ahmad', 'abdul'];
+        
+        // Cek jika nama pertama tu ada dalam list abaikan, ambil nama kedua (Contoh: Adib)
+        if (count($namaArray) > 1 && in_array(strtolower($namaArray[0]), $abaikanNama)) {
+            $namaPendek = $namaArray[1]; 
+        }
+
+        $namaPengguna = $namaPendek;
+    }
+?>
 
                 <?php if ($userLogged): ?>
                     <li>
