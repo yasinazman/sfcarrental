@@ -27,12 +27,20 @@ class PaymentsController extends AppController
 
     public function view($id = null)
     {
-        $payment = $this->Payments->get($id, contain: ['Bookings']);
+        // Memastikan hubungan 'Bookings' dan 'Cars' ditarik dengan lengkap dari pangkalan data
+        $payment = $this->Payments->get($id, [
+            'contain' => [
+                'Bookings' => [
+                    'Cars'
+                ]
+            ]
+        ]);
+
         $this->set(compact('payment'));
     }
 
     /**
-     * FUNGSI BARU: Process Payment (Untuk pelanggan)
+     * FUNGSI: Process Payment (Untuk pelanggan)
      */
     public function process($bookingId = null)
     {
@@ -84,7 +92,6 @@ class PaymentsController extends AppController
         $this->set(compact('payment', 'bookings'));
     }
 
-    // Fungsi Edit & Delete dikekalkan seperti asal
     public function edit($id = null)
     {
         $payment = $this->Payments->get($id, contain: []);

@@ -127,7 +127,18 @@ $fleetUrl = $this->Url->build(['controller' => 'Pages', 'action' => 'display', '
                     <?php endif; ?>
 
                     <div class="car-info">
-                        <div class="car-name"><?= h($car->car_model) ?> </div>
+                        <div class="car-name">
+                            <?= h($car->car_model) ?>
+                        </div>
+                        
+                        <!-- REKA BENTUK NOMBOR PLAT DITAMBAH DI SINI -->
+                        <div style="margin-top: 5px;">
+                            <span style="background-color: #f7ca18; color: #000; font-family: monospace; font-size: 14px; font-weight: bold; padding: 4px 10px; border-radius: 4px; border: 1px solid #333; letter-spacing: 1px; display: inline-block;">
+                                <?= h($car->plate_number) ?>
+                            </span>
+                        </div>
+                        <!-- TAMAT REKA BENTUK NOMBOR PLAT -->
+
                         <div class="price-box">
                             <span class="currency">MYR</span> <span class="amount"><?= $this->Number->format($car->daily_rate, ['places' => 0]) ?></span> <span class="per-day">/day</span>
                         </div>
@@ -158,3 +169,6 @@ $fleetUrl = $this->Url->build(['controller' => 'Pages', 'action' => 'display', '
     </section>
 
 </div>
+
+</body>
+</html>

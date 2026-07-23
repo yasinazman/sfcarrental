@@ -10,7 +10,7 @@ class BookingsController extends AppController
         // 1. Dapatkan data customer yang sedang login dari session
         $customerSession = $this->request->getSession()->read('Auth.Customer');
         if (!$customerSession) {
-            $this->Flash->error(__('Sila log masuk untuk membuat tempahan.'));
+            $this->Flash->error(__('Please log in to make a reservation.'));
             return $this->redirect(['controller' => 'Customers', 'action' => 'login']);
         }
 
@@ -54,7 +54,10 @@ class BookingsController extends AppController
 
             // Jika tempahan berjaya disimpan dalam database
             if ($this->Bookings->save($booking)) {
-<<<<<<< HEAD
+                
+                // HOLD KERETA SEMENTARA (Elak double booking dalam masa 5 minit)
+                $car->availability_status = 'On Rent'; 
+                $this->Bookings->Cars->save($car);
                 
                 // --- INTEGRASI TOYYIBPAY BERMULA DI SINI ---
                 $amountToPay = (float)$data['deposit_amount'] * 100;
@@ -76,7 +79,7 @@ class BookingsController extends AppController
                     'billSplitPayment' => 0,
                     'billSplitPaymentArgs' => '',
                     'billPaymentChannel' => '0', 
-                    'billContentEmail' => 'Terima kasih atas tempahan anda bersama SF Car Rental.',
+                    'billContentEmail' => 'Thank you for your booking with SF Car Rental.',
                     'billChargeToCustomer' => 1, 
                 ];
 
@@ -95,20 +98,14 @@ class BookingsController extends AppController
                     $billCode = $obj[0]->BillCode;
                     $booking->bill_code = $billCode;
                     $this->Bookings->save($booking);
+                    
+                    $this->Flash->success(__('Booking successful. Please proceed with payment.'));
                     return $this->redirect('https://dev.toyyibpay.com/' . $billCode);
                 } else {
-                    $this->Flash->error(__('Sistem gagal menjana bil pembayaran. Sila hubungi admin.'));
+                    $this->Flash->error(__('The system failed to generate the payment bill. Please contact the admin.'));
                 }
             } else {
-                $this->Flash->error(__('Maaf, tempahan gagal diproses. Sila cuba lagi.'));
-=======
-                // HOLD KERETA SEMENTARA (Elak double booking dalam masa 5 minit)
-                $car->availability_status = 'On Rent'; 
-                $this->Bookings->Cars->save($car);
-
-                $this->Flash->success(__('Tempahan berjaya. Sila teruskan dengan pembayaran. Masa 5 minit diberikan.'));
-                return $this->redirect(['controller' => 'Payments', 'action' => 'process', $booking->id]);
->>>>>>> edebb090b3915489d8d577f282d9806c008119a3
+                $this->Flash->error(__('Sorry, the order failed to process. Please try again.'));
             }
         }
 
@@ -121,6 +118,7 @@ class BookingsController extends AppController
 
         $this->set(compact('booking', 'car', 'totalDays', 'totalPrice'));
     }
+    
     /**
      * FUNGSI 1: URL Return (Untuk Pelanggan)
      * Selepas pelanggan bayar di ToyyibPay, mereka akan landing di sini.
@@ -129,31 +127,55 @@ class BookingsController extends AppController
     {
         // Dapatkan data yang dipulangkan oleh ToyyibPay di URL
         $statusId = $this->request->getQuery('status_id');
-        $orderId = $this->request->getQuery('order_id'); // Ini adalah ID dari jadual bookings
+        $orderId = $this->request->getQuery('order_id'); // ID dari jadual bookings
+        $billCode = $this->request->getQuery('billcode');
+        $transactionId = $this->request->getQuery('transaction_id');
 
         if ($orderId) {
             $booking = $this->Bookings->get($orderId);
 
             if ($statusId == 1) {
-                // Status 1 = Berjaya
+                // 1. Kemaskini status Tempahan
                 $booking->deposit_status = 'Paid';
                 $booking->booking_status = 'Confirmed';
                 $this->Bookings->save($booking);
+
+                // 2. SIMPAN REKOD KE JADUAL PAYMENTS
+                $paymentsTable = $this->fetchTable('Payments');
                 
-                $this->Flash->success(__('Pembayaran deposit berjaya! Tempahan anda telah disahkan.'));
+                // Semak jika rekod bayaran untuk booking ini sudah wujud (elak duplicate)
+                $payment = $paymentsTable->find()->where(['booking_id' => $orderId])->first();
+                if (!$payment) {
+                    $payment = $paymentsTable->newEmptyEntity();
+                }
+
+                $payment->booking_id = $booking->id;
+                $payment->payment_method = 'ToyyibPay (FPX)';
+                $payment->payment_status = 'Paid';
+                // Ambil nilai deposit dari booking, jika tiada ambil total_price
+                $payment->total_payment = $booking->deposit_amount ?? $booking->total_price; 
+                $payment->payment_time = new \Cake\I18n\DateTime();
+
+                if ($paymentsTable->save($payment)) {
+                    $this->Flash->success(__('Deposit payment successful! Your booking has been confirmed.'));
+
+                    // 3. REDIRECT TERUS KE HALAMAN RESIT (payments/view.php)
+                    return $this->redirect(['controller' => 'Payments', 'action' => 'view', $payment->id]);
+                }
+                
             } elseif ($statusId == 3) {
                 // Status 3 = Gagal / Batal
                 $booking->deposit_status = 'Failed';
                 $booking->booking_status = 'Payment Failed';
                 $this->Bookings->save($booking);
                 
-                $this->Flash->error(__('Pembayaran dibatalkan atau gagal. Sila cuba lagi.'));
+                $this->Flash->error(__('Payment cancelled or failed. Please try again.'));
             } else {
-                $this->Flash->warning(__('Status pembayaran anda sedang diproses.'));
+                $this->Flash->warning(__('Your payment status is being processed.'));
             }
         }
 
-        // Hantar pelanggan kembali ke dashboard mereka
+        // Jika gagal atau tiada orderId, hantar pelanggan kembali ke dashboard
         return $this->redirect(['controller' => 'Customers', 'action' => 'dashboard']);
     }
 
@@ -163,7 +185,6 @@ class BookingsController extends AppController
      */
     public function paymentCallback()
     {
-        // Callback selalunya dihantar menggunakan POST
         $this->request->allowMethod(['post']);
         $this->viewBuilder()->disableAutoLayout();
         
@@ -175,9 +196,21 @@ class BookingsController extends AppController
             $booking->deposit_status = 'Paid';
             $booking->booking_status = 'Confirmed';
             $this->Bookings->save($booking);
+
+            // Simpan juga ke jadual Payments jika belum ada
+            $paymentsTable = $this->fetchTable('Payments');
+            $payment = $paymentsTable->find()->where(['booking_id' => $orderId])->first();
+            if (!$payment) {
+                $payment = $paymentsTable->newEmptyEntity();
+                $payment->booking_id = $booking->id;
+                $payment->payment_method = 'ToyyibPay (FPX)';
+                $payment->payment_status = 'Paid';
+                $payment->total_payment = $booking->deposit_amount ?? $booking->total_price;
+                $payment->payment_time = new \Cake\I18n\DateTime();
+                $paymentsTable->save($payment);
+            }
         }
 
-        // Respon 'OK' supaya ToyyibPay tahu sistem kita dah terima data
         return $this->response->withStringBody('OK');
     }
 }
