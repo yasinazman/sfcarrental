@@ -12,7 +12,7 @@ $this->Html->css('admin-bookings', ['block' => true]);
     <a href="<?= $this->Url->build(['action' => 'index']) ?>" class="btn-cancel" style="padding: 10px 20px; text-decoration: none;"><i class="fas fa-arrow-left"></i> Back to List</a>
 </div>
 
-<div class="form-container" style="padding: 0;">
+<div class="form-container view-page-wide" style="padding: 0;">
     
     <?php
         $status = strtolower($booking->booking_status);
@@ -52,7 +52,7 @@ $this->Html->css('admin-bookings', ['block' => true]);
             </div>
             <div style="margin-bottom: 12px;">
                 <span style="color: var(--text-light); font-size: 13px; display: block;">Registration Plate</span>
-                <span style="font-weight: 600; font-size: 15px; background: #eee; padding: 2px 8px; border-radius: 4px;"><?= h($booking->car->plate_number ?? 'N/A') ?></span>
+                <span style="font-weight: 600; font-size: 15px; border-radius: 4px;"><?= h($booking->car->plate_number ?? 'N/A') ?></span>
             </div>
             <div>
                 <span style="color: var(--text-light); font-size: 13px; display: block;">Lockbox PIN (If Applicable)</span>

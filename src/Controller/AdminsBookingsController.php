@@ -13,6 +13,24 @@ class AdminsBookingsController extends AppController
         $bookingsTable = $this->fetchTable('Bookings');
         $maintenancesTable = $this->fetchTable('Maintenances');
 
+        // LOGIK AUTO-CANCEL 5 MINIT
+        $fiveMinsAgo = date('Y-m-d H:i:s', strtotime('-5 minutes'));
+        $expiredBookings = $bookingsTable->find()
+            ->where([
+                'booking_status IN' => ['Pending Payment', 'Pending'],
+                'created <=' => $fiveMinsAgo
+            ])->all();
+
+        foreach ($expiredBookings as $expBooking) {
+            $expBooking->booking_status = 'Cancelled';
+            if ($bookingsTable->save($expBooking)) {
+                // Lepaskan kembali kereta menjadi Available
+                if (!empty($expBooking->car_id)) {
+                    $this->_syncCarStatus($expBooking->car_id, 'Cancelled');
+                }
+            }
+        }
+
         $query = $bookingsTable->find()
             ->contain(['Customers', 'Cars'])
             ->order(['Bookings.id' => 'DESC']);
@@ -67,19 +85,33 @@ class AdminsBookingsController extends AppController
             ];
         }
 
-        $mQuery = $maintenancesTable->find()->contain(['Cars']);
+        $mQuery = $maintenancesTable->find()->contain(['Cars'])
+            ->where(['Maintenances.status IN' => ['In Progress', 'Scheduled']]);
+
         if (!empty($category)) {
             $mQuery->where(['Cars.category' => $category]);
         }
         $maintenances = $mQuery->all();
 
         foreach ($maintenances as $m) {
+            $status = strtolower($m->status);
+            
+            $targetDate = $m->service_date;
+            if (strpos($status, 'scheduled') !== false && $m->next_service_date) {
+                $targetDate = $m->next_service_date;
+            }
+
+            $mColor = '#343a40';
+            if (strpos($status, 'scheduled') !== false) {
+                $mColor = '#343a40';
+            }
+
             $calendarEvents[] = [
                 'id' => 'M' . $m->id,
-                'title' => '🔧 MAINTENANCE: ' . $m->car->plate_number,
-                'start' => $m->service_date->format('Y-m-d'),
+                'title' => '🔧 ' . strtoupper($m->status) . ': ' . $m->car->plate_number,
+                'start' => $targetDate->format('Y-m-d'),
                 'allDay' => true,
-                'color' => '#343a40',
+                'color' => $mColor,
                 'url' => Router::url(['controller' => 'AdminsMaintenances', 'action' => 'view', $m->id])
             ];
         }

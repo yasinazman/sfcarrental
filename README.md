@@ -1,53 +1,89 @@
-# CakePHP Application Skeleton
+<div align="center">
+  <h1 style="background-color: #141414; padding: 20px; border-radius: 8px; display: inline-block;">
+    <b><span style="color: #FFFFFF;">SF</span> <span style="color: #E50914;">Car Rental</span></b>
+  </h1>
+</div>
 
-![Build Status](https://github.com/cakephp/app/actions/workflows/ci.yml/badge.svg?branch=5.x)
-[![Total Downloads](https://img.shields.io/packagist/dt/cakephp/app.svg?style=flat-square)](https://packagist.org/packages/cakephp/app)
-[![PHPStan](https://img.shields.io/badge/PHPStan-level%208-brightgreen.svg?style=flat-square)](https://github.com/phpstan/phpstan)
+**Developed for IMS611: SYSTEMS ANALYSIS AND DESIGN IN INFORMATION MANAGEMENT**
 
-A skeleton for creating applications with [CakePHP](https://cakephp.org) 5.x.
+SF Car Rental is a specialized web-based management system developed for a Small and Medium-sized Enterprise (SME) to streamline vehicle booking operations. The system provides a centralized digital hub, allowing customers to rent cars easily while enabling administrators to manage fleets, track bookings, and oversee maintenance records efficiently in one place.
 
-The framework source code can be found here: [cakephp/cakephp](https://github.com/cakephp/cakephp).
+## 🚀 Key Features
 
-## Installation
+* **Secure Authentication:** Role-based access for administrators and walk-in customers.
+* **Full CRUD Lifecycle:** Comprehensive management of cars, bookings, customers, and maintenance records.
+* **Dynamic UI/UX:** Professional responsive design featuring a persistent Dark Mode toggle and floating toast notifications.
+* **Interactive Dashboard:** Real-time statistics tracking for total cars, bookings, and revenue.
+* **Document Verification:** Secure upload system for identity cards and driving licenses.
 
-1. Download [Composer](https://getcomposer.org/doc/00-intro.md) or update `composer self-update`.
-2. Run `php composer.phar create-project --prefer-dist cakephp/app [app_name]`.
+## 🛠️ Tech Stack
 
-If Composer is installed globally, run
+* **Backend:** CakePHP Framework
+* **Database:** MySQL
+* **Frontend:** HTML5, CSS3, Vanilla JavaScript
+* **Library:** FontAwesome 6, FullCalendar JS, Google Fonts
 
+## 📁 Installation & Setup
+
+**1. Clone the repository:**
 ```bash
-composer create-project --prefer-dist cakephp/app
+git clone [https://github.com/yasinazman/sfcarrental.git](https://github.com/yasinazman/sfcarrental.git)
+```
+*Alternatively, you can simply **Download ZIP** from the repository homepage and extract it.*
+
+**2. Install Dependencies:**
+Run this command in the project terminal to download required libraries:
+```bash
+composer install
 ```
 
-In case you want to use a custom app dir name (e.g. `/myapp/`):
+**3. Database Setup:**
+* Create a new database named `sfcarrental`.
+* Import the SQL schema file named `sfcarrental.sql`.
 
-```bash
-composer create-project --prefer-dist cakephp/app myapp
-```
+**4. Environment Configuration:**
+* Open `config/app_local.php` and configure your database credentials.
 
-You can now either use your machine's webserver to view the default home page, or start
-up the built-in webserver with:
+**5. Browser Requirement:**
+* For the best experience, use **Google Chrome**.
 
-```bash
-bin/cake server -p 8765
-```
+**6. Admin Access (Login Credentials):**
+To access the administrator dashboard, use the default login:
+* **Username:** yasin
+* **Password:** 123456
 
-Then visit `http://localhost:8765` to see the welcome page.
+## 👥 Development Team (CDIM2625B)
 
-## Update
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Student ID</th>
+  </tr>
+  <tr>
+    <td>Muhammad Yasin Bin Azman</td>
+    <td>2025198311</td>
+  </tr>
+  <tr>
+    <td>Adi Farhan Bin Mohd Faizal</td>
+    <td>2025198493</td>
+  </tr>
+  <tr>
+    <td>Mario Nasu Anak Anen</td>
+    <td>2025188553</td>
+  </tr>
+  <tr>
+    <td>Muhamad Aqif Haqeemy Bin Masri</td>
+    <td>2025167039</td>
+  </tr>
+  <tr>
+    <td>Muhammad Adib Fitri Bin Suhaimi</td>
+    <td>2025197205</td>
+  </tr>
+</table>
 
-Since this skeleton is a starting point for your application and various files
-would have been modified as per your needs, there isn't a way to provide
-automated upgrades, so you have to do any updates manually.
+<br>
 
-## Configuration
-
-Read and edit the environment specific `config/app_local.php` and set up the
-`'Datasources'` and any other configuration relevant for your application.
-Other environment agnostic settings can be changed in `config/app.php`.
-
-## Layout
-
-The app skeleton uses [Milligram](https://milligram.io/) (v1.3) minimalist CSS
-framework by default. You can, however, replace it with any other library or
-custom styles.
+**Lecturer:** MR. YAMIN BIN KAMIS<br>
+**Program:** Bachelor of Information Science (Hons.) Information Systems Management<br>
+**Faculty:** Faculty of Information Science, College of Computing, Informatics and Mathematics<br>
+**Campus:** UiTM Puncak Perdana

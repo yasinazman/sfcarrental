@@ -54,6 +54,7 @@ class BookingsController extends AppController
 
             // Jika tempahan berjaya disimpan dalam database
             if ($this->Bookings->save($booking)) {
+<<<<<<< HEAD
                 
                 // --- INTEGRASI TOYYIBPAY BERMULA DI SINI ---
                 $amountToPay = (float)$data['deposit_amount'] * 100;
@@ -100,6 +101,14 @@ class BookingsController extends AppController
                 }
             } else {
                 $this->Flash->error(__('Maaf, tempahan gagal diproses. Sila cuba lagi.'));
+=======
+                // HOLD KERETA SEMENTARA (Elak double booking dalam masa 5 minit)
+                $car->availability_status = 'On Rent'; 
+                $this->Bookings->Cars->save($car);
+
+                $this->Flash->success(__('Tempahan berjaya. Sila teruskan dengan pembayaran. Masa 5 minit diberikan.'));
+                return $this->redirect(['controller' => 'Payments', 'action' => 'process', $booking->id]);
+>>>>>>> edebb090b3915489d8d577f282d9806c008119a3
             }
         }
 

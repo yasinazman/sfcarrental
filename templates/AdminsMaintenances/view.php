@@ -11,7 +11,7 @@ $this->Html->css('admin-form', ['block' => true]);
     <a href="<?= $this->Url->build(['action' => 'index']) ?>" class="btn-cancel btn-back"><i class="fas fa-arrow-left"></i> Back to List</a>
 </div>
 
-<div class="form-container view-container">
+<div class="form-container view-container view-page-wide">
     
     <div class="view-main-info">
         <div class="service-title-area">

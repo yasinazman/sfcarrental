@@ -25,15 +25,6 @@ class AdminsCustomersController extends AppController
         if (!empty($statusFilter)) {
             if ($statusFilter === 'Blacklisted') {
                 $query->where(['Customers.account_status' => 'Blacklisted']);
-            } elseif ($statusFilter === 'Pending Verification') {
-                $query->where([
-                    'OR' => [
-                        ['Customers.ic_file_path IS' => null], 
-                        ['Customers.ic_file_path' => ''], 
-                        ['Customers.license_file_path IS' => null], 
-                        ['Customers.license_file_path' => '']
-                    ]
-                ]);
             }
         }
 
@@ -41,12 +32,6 @@ class AdminsCustomersController extends AppController
 
         $totalCustomers = $customersTable->find()->count();
         $blacklistedCount = $customersTable->find()->where(['account_status' => 'Blacklisted'])->count();
-        $pendingCount = $customersTable->find()->where([
-            'OR' => [
-                ['ic_file_path IS' => null], ['ic_file_path' => ''], 
-                ['license_file_path IS' => null], ['license_file_path' => '']
-            ]
-        ])->count();
 
         $customerBookings = [];
         $allBookings = $bookingsTable->find('all');
@@ -57,7 +42,7 @@ class AdminsCustomersController extends AppController
             $customerBookings[$b->customer_id]++;
         }
 
-        $this->set(compact('customers', 'search', 'statusFilter', 'totalCustomers', 'blacklistedCount', 'pendingCount', 'customerBookings'));
+        $this->set(compact('customers', 'search', 'statusFilter', 'totalCustomers', 'blacklistedCount', 'customerBookings'));
         $this->set('pageTitle', 'Customer Database');
     }
 

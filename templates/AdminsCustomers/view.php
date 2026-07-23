@@ -53,8 +53,14 @@ $this->Html->css('admin-customers', ['block' => true]);
                     <div>
                         <span style="font-size: 11px; color: #888; font-weight: 600; display: block; margin-bottom: 6px;">FRONT</span>
                         <?php if (!empty($customer->ic_file_path)): ?>
-                            <a href="<?= $this->Url->image('customers/' . $customer->ic_file_path) ?>" target="_blank">
-                                <img src="<?= $this->Url->image('customers/' . $customer->ic_file_path) ?>" class="document-img" alt="IC Front">
+                            <?php 
+                                // Semak jika data bermula dengan 'uploads/' (Customer daftar) atau tidak (Admin daftar)
+                                $icFrontUrl = str_starts_with($customer->ic_file_path, 'uploads/') 
+                                    ? $this->Url->build('/' . $customer->ic_file_path) 
+                                    : $this->Url->image('customers/' . $customer->ic_file_path); 
+                            ?>
+                            <a href="<?= $icFrontUrl ?>" target="_blank">
+                                <img src="<?= $icFrontUrl ?>" class="document-img" alt="IC Front">
                             </a>
                         <?php else: ?>
                             <div class="document-missing" style="padding: 20px 10px;">
@@ -68,8 +74,13 @@ $this->Html->css('admin-customers', ['block' => true]);
                     <div>
                         <span style="font-size: 11px; color: #888; font-weight: 600; display: block; margin-bottom: 6px;">BACK</span>
                         <?php if (!empty($customer->ic_back_file_path)): ?>
-                            <a href="<?= $this->Url->image('customers/' . $customer->ic_back_file_path) ?>" target="_blank">
-                                <img src="<?= $this->Url->image('customers/' . $customer->ic_back_file_path) ?>" class="document-img" alt="IC Back">
+                            <?php 
+                                $icBackUrl = str_starts_with($customer->ic_back_file_path, 'uploads/') 
+                                    ? $this->Url->build('/' . $customer->ic_back_file_path) 
+                                    : $this->Url->image('customers/' . $customer->ic_back_file_path); 
+                            ?>
+                            <a href="<?= $icBackUrl ?>" target="_blank">
+                                <img src="<?= $icBackUrl ?>" class="document-img" alt="IC Back">
                             </a>
                         <?php else: ?>
                             <div class="document-missing" style="padding: 20px 10px;">
@@ -84,8 +95,13 @@ $this->Html->css('admin-customers', ['block' => true]);
             <div>
                 <span class="document-label">Driving License</span>
                 <?php if (!empty($customer->license_file_path)): ?>
-                    <a href="<?= $this->Url->image('customers/' . $customer->license_file_path) ?>" target="_blank">
-                        <img src="<?= $this->Url->image('customers/' . $customer->license_file_path) ?>" class="document-img" alt="License Document">
+                    <?php 
+                        $licenseUrl = str_starts_with($customer->license_file_path, 'uploads/') 
+                            ? $this->Url->build('/' . $customer->license_file_path) 
+                            : $this->Url->image('customers/' . $customer->license_file_path); 
+                    ?>
+                    <a href="<?= $licenseUrl ?>" target="_blank">
+                        <img src="<?= $licenseUrl ?>" class="document-img" alt="License Document">
                     </a>
                 <?php else: ?>
                     <div class="document-missing">

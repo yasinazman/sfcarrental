@@ -3,7 +3,7 @@ $this->assign('title', $pageTitle);
 $this->Html->css('admin-form', ['block' => true]); 
 ?>
 
-<div class="form-container">
+<div class="form-container view-page-wide">
     <?= $this->Form->create($maintenance) ?>
     
     <div class="form-grid">

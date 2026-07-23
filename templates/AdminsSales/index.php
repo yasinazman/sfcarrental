@@ -155,15 +155,6 @@ $this->Html->script('admin-sales', ['block' => true]);
                     </td>
                     <td class="action-cell">
                         <div class="action-cell-wrap">
-                            <?php if (strpos($status, 'pending') !== false): ?>
-                                <?= $this->Form->postLink(
-                                    '<i class="fas fa-check-circle"></i>',
-                                    ['action' => 'markAsPaid', $payment->id],
-                                    ['escape' => false, 'class' => 'icon-check', 'title' => 'Mark as Paid (Manual)', 'confirm' => 'Mark Receipt #REC-' . str_pad($payment->id, 4, '0', STR_PAD_LEFT) . ' as Paid?']
-                                ) ?>
-                                <span style="color: #eee;">|</span>
-                            <?php endif; ?>
-                            
                             <a href="javascript:void(0);" class="icon-view btn-view-modal" title="Quick View"
                             data-receipt="#REC-<?= str_pad($payment->id, 4, '0', STR_PAD_LEFT) ?>"
                             data-booking="#<?= h($payment->booking_id) ?>"

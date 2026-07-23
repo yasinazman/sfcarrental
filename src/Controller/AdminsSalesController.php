@@ -126,25 +126,6 @@ class AdminsSalesController extends AppController
         $this->set('pageTitle', 'Sales & Revenue Report');
     }
 
-    public function markAsPaid($id = null)
-    {
-        $this->request->allowMethod(['post']);
-        $paymentsTable = $this->fetchTable('Payments');
-        $payment = $paymentsTable->get($id);
-
-        $payment->payment_status = 'Completed';
-        $payment->payment_method = 'Cash (Manual)';
-        $payment->payment_time = FrozenTime::now();
-
-        if ($paymentsTable->save($payment)) {
-            $this->Flash->success("Receipt #REC-" . str_pad($payment->id, 4, '0', STR_PAD_LEFT) . " has been marked as Paid.");
-        } else {
-            $this->Flash->error("Unable to update payment status.");
-        }
-        
-        return $this->redirect($this->referer(['action' => 'index']));
-    }
-
     public function receipt($id = null)
     {
         $this->viewBuilder()->disableAutoLayout();
