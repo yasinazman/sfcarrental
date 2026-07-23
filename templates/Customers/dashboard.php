@@ -99,6 +99,7 @@ $this->Html->css('customers-dashboard', ['block' => true]);
                             <th>Smart-Pin</th>
                             <th>Pricing</th>
                             <th>Status</th>
+                            <th>Action</th> <!-- TAMBAH COLUMN BARU DI SINI -->
                         </tr>
                     </thead>
                     <tbody>
@@ -109,6 +110,18 @@ $this->Html->css('customers-dashboard', ['block' => true]);
                                 <td><span class="pin-box"><?= h($booking->lockbox_pin ?? '-') ?></span></td>
                                 <td>RM <?= number_format((float)$booking->total_price, 2) ?></td>
                                 <td><span class="badge-status"><?= h($booking->booking_status ?? 'Pending') ?></span></td>
+                                <td>
+                                    <!-- LOGIK BUTANG EXTEND BERMULA DI SINI -->
+                                    <?php if ($booking->booking_status === 'Confirmed'): ?>
+                                        <a href="<?= $this->Url->build(['controller' => 'Bookings', 'action' => 'extend', $booking->id]) ?>" 
+                                           style="background-color: #ffc107; color: #000; padding: 6px 12px; border-radius: 5px; text-decoration: none; font-size: 13px; font-weight: bold; display: inline-block; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                                            <i class="fa-solid fa-clock"></i> Extend
+                                        </a>
+                                    <?php else: ?>
+                                        <span style="color: #999; font-size: 13px;">-</span>
+                                    <?php endif; ?>
+                                    <!-- LOGIK BUTANG EXTEND TAMAT DI SINI -->
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>

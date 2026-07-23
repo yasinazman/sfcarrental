@@ -12,7 +12,7 @@
     .booking-full-page {
         width: 100%;
         min-height: 100vh;
-        background-color: #f4f7f6; /* Warna latar cerah */
+        background-color: #f4f7f6;
         padding: 40px;
         box-sizing: border-box;
         transition: background-color 0.3s ease;
@@ -224,19 +224,11 @@
                     </div>
                 </div>
                 
-                <!-- Deposit Amount -->
-                <div style="margin-bottom: 25px;">
-                    <?= $this->Form->control('deposit_amount', [
-                        'label' => ['text' => 'Deposit Amount (RM)', 'class' => 'input-label'],
-                        'class' => 'input-field',
-                        'id' => 'deposit-input', /* ID ditambah untuk fungsi JavaScript */
-                        'required' => true
+                <div style="margin-top: 25px;">
+                    <?= $this->Form->button(__('Confirm & Proceed to Payment'), [
+                        'style' => 'width: 100%; background: #e50914; color: white; padding: 18px; border: none; font-size: 16px; font-weight: bold; cursor: pointer; border-radius: 8px;'
                     ]) ?>
                 </div>
-                
-                <?= $this->Form->button(__('Confirm & Proceed to Payment'), [
-                    'style' => 'width: 100%; background: #e50914; color: white; padding: 18px; border: none; font-size: 16px; font-weight: bold; cursor: pointer; border-radius: 8px;'
-                ]) ?>
             <?= $this->Form->end() ?>
         </div>
 
@@ -256,7 +248,7 @@
                     <p class="total-price"><strong>Total Rental: RM <?= number_format($totalPrice, 2) ?></strong></p>
                     <div style="background: rgba(229, 9, 20, 0.1); padding: 10px 15px; border-radius: 6px; border-left: 4px solid #e50914; margin-top: 15px;">
                         <p style="margin: 0; color: #e50914; font-weight: bold; font-size: 1.1em;">
-                            Payable Deposit: RM <span id="summary-deposit-display">0.00</span>
+                            Total Payable: RM <?= number_format($totalPrice, 2) ?>
                         </p>
                     </div>
                 <?php endif; ?>
@@ -264,29 +256,9 @@
             
             <div class="summary-note">
                 <p style="margin: 0;">
-                    * Please double-check your dates carefully. The total rental price above is based on the selected duration. A deposit is required to secure your booking.
+                    * Please double-check your dates carefully. The total rental price above is based on the selected duration. Full payment is required to secure your booking.
                 </p>
             </div>
         </div>
     </div>
 </div>
-
-<!-- Script untuk kemas kini nilai Deposit secara langsung (real-time) -->
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    const depositInput = document.getElementById("deposit-input");
-    const depositDisplay = document.getElementById("summary-deposit-display");
-
-    if (depositInput && depositDisplay) {
-        // Paparkan nilai awal sekiranya sudah ada
-        let initialValue = parseFloat(depositInput.value) || 0;
-        depositDisplay.textContent = initialValue.toFixed(2);
-
-        // Kemas kini nilai setiap kali pelanggan menaip/ubah
-        depositInput.addEventListener("input", function() {
-            let currentValue = parseFloat(this.value) || 0;
-            depositDisplay.textContent = currentValue.toFixed(2);
-        });
-    }
-});
-</script>
