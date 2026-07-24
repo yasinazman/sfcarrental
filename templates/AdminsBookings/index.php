@@ -149,7 +149,13 @@ $this->Html->css('admin-bookings', ['block' => true]);
 </div>
 
 <script>
-    window.calendarEvents = <?= json_encode($calendarEvents) ?>;
+    let eventsData = <?= json_encode($calendarEvents) ?>;
+    
+    eventsData.forEach(function(event) {
+        event.display = 'block';
+    });
+
+    window.calendarEvents = eventsData;
 </script>
 
 <?php 

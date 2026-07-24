@@ -63,7 +63,7 @@ class AdminsBookingsController extends AppController
             if (strpos($status, 'pending') !== false) {
                 $color = '#ffc107';
                 $pendingCount++;
-            } elseif (strpos($status, 'approved') !== false || strpos($status, 'active') !== false) {
+            } elseif (in_array($status, ['confirmed', 'approved', 'active'])) {
                 $color = '#28a745';
                 $activeCount++;
                 $totalRevenue += (float)$booking->total_price;
@@ -132,12 +132,14 @@ class AdminsBookingsController extends AppController
             $booking->booking_status = $status;
             
             if ($bookingsTable->save($booking)) {
-                if (!empty($booking->car_id)) {
-                    $this->_syncCarStatus($booking->car_id, $status);
-                }
-                
-                $this->Flash->success("Booking #{$id} has been successfully {$status}.");
-            } else {
+            if (!empty($booking->car_id)) {
+                $this->_syncCarStatus($booking->car_id, $status);
+            }
+            
+            $this->_syncPaymentStatus($booking->id, $status);
+            
+            $this->Flash->success("Booking #{$id} has been successfully {$status}.");
+        } else {
                 $this->Flash->error("Unable to update Booking #{$id}.");
             }
         }
@@ -170,6 +172,8 @@ class AdminsBookingsController extends AppController
                 if (!empty($booking->car_id)) {
                     $this->_syncCarStatus($booking->car_id, $booking->booking_status);
                 }
+                
+                $this->_syncPaymentStatus($booking->id, $booking->booking_status);
                 
                 $this->Flash->success('Booking status and details have been successfully updated.');
                 return $this->redirect(['action' => 'index']);
@@ -248,6 +252,30 @@ class AdminsBookingsController extends AppController
                 $carsTable->save($car);
             }
         } catch (\Cake\Datasource\Exception\RecordNotFoundException $e) {
+        }
+    }
+
+    /**
+     * FUNGSI BANTUAN (PRIVATE HELPER)
+     * Mengemaskini status di jadual Payments secara automatik apabila
+     * Booking berkaitan ditukar status kepada Cancelled
+     */
+    private function _syncPaymentStatus($bookingId, $bookingStatus)
+    {
+        $status = strtolower($bookingStatus);
+
+        if ($status !== 'cancelled') {
+            return;
+        }
+
+        $paymentsTable = $this->fetchTable('Payments');
+        $payment = $paymentsTable->find()
+            ->where(['booking_id' => $bookingId])
+            ->first();
+
+        if ($payment) {
+            $payment->payment_status = 'Cancelled';
+            $paymentsTable->save($payment);
         }
     }
 }

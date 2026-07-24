@@ -24,12 +24,31 @@ class BookingsController extends AppController
         $pickupLocation = $this->request->getQuery('pickup_location');
         $dropoffLocation = $this->request->getQuery('dropoff_location');
 
-        // Kiraan awal hari dan harga
+        // Kiraan awal hari, harga dan SEMAKAN DOUBLE BOOKING
         $totalDays = 0;
         $totalPrice = 0;
         if ($startDate && $endDate) {
-            $start = new \Cake\I18n\DateTime($startDate);
-            $end = new \Cake\I18n\DateTime($endDate);
+            $start = clone new \Cake\I18n\DateTime($startDate);
+            $end = clone new \Cake\I18n\DateTime($endDate);
+            
+            // Tambah buffer masa 30 minit 
+            $startBuffer = (clone $start)->modify('-30 minutes');
+            $endBuffer = (clone $end)->modify('+30 minutes');
+            
+            // Semak jika ada tempahan lain yang bertindih dengan tarikh ini (+ buffer)
+            $overlap = $this->Bookings->find()
+                ->where([
+                    'car_id' => $carId,
+                    'booking_status IN' => ['Pending Payment', 'Confirmed', 'Approved', 'Active'],
+                    'start_date <' => $endBuffer,
+                    'end_date >' => $startBuffer
+                ])->first();
+
+            if ($overlap) {
+                $this->Flash->error(__('Sorry, this car is already booked or under maintenance for the selected time. Please allow a 30-minute buffer.'));
+                return $this->redirect($this->referer());
+            }
+
             $diff = $start->diff($end);
             $totalDays = ($diff->days < 1) ? 1 : $diff->days;
             $totalPrice = $totalDays * (float)$car->daily_rate;
@@ -48,18 +67,17 @@ class BookingsController extends AppController
             // Kita kekalkan column ini di database jika ada, tetapi biarkan 'Pending'
             $data['deposit_status'] = 'Pending';
             
-            // Tarikh mungkin tidak dihantar melalui POST, jadi kita paksa guna data GET tadi
             $data['start_date'] = $startDate;
             $data['end_date'] = $endDate;
+            
+            $data['destination'] = $destination;
+            $data['pickup_location'] = $pickupLocation;
+            $data['dropoff_location'] = $dropoffLocation;
 
             $booking = $this->Bookings->patchEntity($booking, $data);
 
             // Jika tempahan berjaya disimpan dalam database
             if ($this->Bookings->save($booking)) {
-                
-                // HOLD KERETA SEMENTARA (Elak double booking dalam masa 5 minit)
-                $car->availability_status = 'On Rent'; 
-                $this->Bookings->Cars->save($car);
                 
                 // --- INTEGRASI TOYYIBPAY BERMULA DI SINI ---
                 
@@ -87,14 +105,10 @@ class BookingsController extends AppController
                     'billChargeToCustomer' => 1, 
                 ];
 
-                $curl = curl_init();
-                curl_setopt($curl, CURLOPT_POST, 1);
-                curl_setopt($curl, CURLOPT_URL, 'https://dev.toyyibpay.com/index.php/api/createBill');  
-                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-                curl_setopt($curl, CURLOPT_POSTFIELDS, $toyyibpayData);
-
-                $result = curl_exec($curl);
-                curl_close($curl);
+                // Menggunakan sistem HTTP Client rasmi CakePHP
+                $http = new \Cake\Http\Client();
+                $response = $http->post('https://dev.toyyibpay.com/index.php/api/createBill', $toyyibpayData);
+                $result = $response->getStringBody();
 
                 $obj = json_decode($result);
 
@@ -231,20 +245,21 @@ class BookingsController extends AppController
             // =========================================================================
             // LOGIK BARU: SEMAK KETERSEDIAAN KERETA (ELAK DOUBLE BOOKING MASA EXTEND)
             // =========================================================================
+            $newEndBuffer = (clone $newEnd)->modify('+30 minutes');
+
             $conflictCount = $this->Bookings->find()
                 ->where([
-                    'car_id' => $booking->car_id, // Mesti check kereta yang sama
-                    'id !=' => $booking->id,      // Kecualikan tempahan yang sedang di-extend ini
-                    'booking_status IN' => ['Confirmed', 'Pending Payment'], // Hanya kira tempahan orang lain yang aktif
-                    'start_date <' => $newEndDate, // Tempahan orang lain tu MULA sebelum tarikh tamat baru
-                    'end_date >' => $oldEnd->format('Y-m-d H:i:s') // Tempahan orang lain tu TAMAT selepas jadual asal kereta ni
+                    'car_id' => $booking->car_id, 
+                    'id !=' => $booking->id,      
+                    'booking_status IN' => ['Confirmed', 'Pending Payment', 'Approved', 'Active'], 
+                    'start_date <' => $newEndBuffer,
+                    'end_date >' => $oldEnd->format('Y-m-d H:i:s') 
                 ])
                 ->count();
 
             if ($conflictCount > 0) {
-                // Jika sistem jumpa ada tempahan lain yang bertindih
                 $this->Flash->error(__('Maaf, kereta ini telah ditempah oleh pelanggan lain pada tarikh lanjutan tersebut. Sila pulangkan mengikut jadual asal.'));
-                return $this->redirect($this->referer()); // Patah balik ke page sebelum ni
+                return $this->redirect($this->referer()); 
             }
             // =========================================================================
 
@@ -284,14 +299,10 @@ class BookingsController extends AppController
                     'billChargeToCustomer' => 1, 
                 ];
 
-                // Setup cURL ke ToyyibPay
-                $curl = curl_init();
-                curl_setopt($curl, CURLOPT_POST, 1);
-                curl_setopt($curl, CURLOPT_URL, 'https://dev.toyyibpay.com/index.php/api/createBill');  
-                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-                curl_setopt($curl, CURLOPT_POSTFIELDS, $toyyibpayData);
-                $result = curl_exec($curl);
-                curl_close($curl);
+                // Menggunakan sistem HTTP Client rasmi CakePHP
+                $http = new \Cake\Http\Client();
+                $response = $http->post('https://dev.toyyibpay.com/index.php/api/createBill', $toyyibpayData);
+                $result = $response->getStringBody();
 
                 $obj = json_decode($result);
 
@@ -309,46 +320,46 @@ class BookingsController extends AppController
         $this->set(compact('booking'));
     }
 
-public function extendReturn()
-{
-    $statusId = $this->request->getQuery('status_id');
-    $refNo = $this->request->getQuery('transaction_id'); 
-    $externalRef = $this->request->getQuery('order_id'); // Format: EXT-12
+    public function extendReturn()
+    {
+        $statusId = $this->request->getQuery('status_id');
+        $refNo = $this->request->getQuery('transaction_id'); 
+        $externalRef = $this->request->getQuery('order_id'); // Format: EXT-12
 
-    if ($externalRef && strpos($externalRef, 'EXT-') !== false) {
-        $bookingId = str_replace('EXT-', '', $externalRef);
-        $booking = $this->Bookings->get($bookingId);
+        if ($externalRef && strpos($externalRef, 'EXT-') !== false) {
+            $bookingId = str_replace('EXT-', '', $externalRef);
+            $booking = $this->Bookings->get($bookingId);
 
-        if ($statusId == 1) {
-            // 1. Ambil data sementara dari Session
-            $extData = $this->request->getSession()->read("Extension.{$booking->id}");
+            if ($statusId == 1) {
+                // 1. Ambil data sementara dari Session
+                $extData = $this->request->getSession()->read("Extension.{$booking->id}");
 
-            if ($extData) {
-                // 2. Kemaskini Jadual Bookings
-                $booking->end_date = new \Cake\I18n\DateTime($extData['new_end_date']);
-                $booking->total_price = $booking->total_price + $extData['extra_price'];
-                $this->Bookings->save($booking);
+                if ($extData) {
+                    // 2. Kemaskini Jadual Bookings
+                    $booking->end_date = new \Cake\I18n\DateTime($extData['new_end_date']);
+                    $booking->total_price = $booking->total_price + $extData['extra_price'];
+                    $this->Bookings->save($booking);
 
-                // 3. Tambah rekod bayaran baru ke dalam jadual Payments
-                $paymentsTable = $this->fetchTable('Payments');
-                $payment = $paymentsTable->newEmptyEntity();
-                $payment->booking_id = $booking->id;
-                $payment->payment_method = 'ToyyibPay - Extension';
-                $payment->payment_status = 'Paid';
-                $payment->total_payment = $extData['extra_price']; 
-                $payment->payment_time = new \Cake\I18n\DateTime();
-                $paymentsTable->save($payment);
+                    // 3. Tambah rekod bayaran baru ke dalam jadual Payments
+                    $paymentsTable = $this->fetchTable('Payments');
+                    $payment = $paymentsTable->newEmptyEntity();
+                    $payment->booking_id = $booking->id;
+                    $payment->payment_method = 'ToyyibPay - Extension';
+                    $payment->payment_status = 'Paid';
+                    $payment->total_payment = $extData['extra_price']; 
+                    $payment->payment_time = new \Cake\I18n\DateTime();
+                    $paymentsTable->save($payment);
 
-                // 4. Buang Session supaya tak berulang
-                $this->request->getSession()->delete("Extension.{$booking->id}");
+                    // 4. Buang Session supaya tak berulang
+                    $this->request->getSession()->delete("Extension.{$booking->id}");
 
-                $this->Flash->success(__('Berjaya! Masa sewa anda telah dilanjutkan.'));
-                return $this->redirect(['controller' => 'Customers', 'action' => 'dashboard']);
+                    $this->Flash->success(__('Berjaya! Masa sewa anda telah dilanjutkan.'));
+                    return $this->redirect(['controller' => 'Customers', 'action' => 'dashboard']);
+                }
+            } else {
+                $this->Flash->error(__('Bayaran extension dibatalkan. Masa sewa kekal asal.'));
             }
-        } else {
-            $this->Flash->error(__('Bayaran extension dibatalkan. Masa sewa kekal asal.'));
         }
+        return $this->redirect(['controller' => 'Customers', 'action' => 'dashboard']);
     }
-    return $this->redirect(['controller' => 'Customers', 'action' => 'dashboard']);
-}
 }

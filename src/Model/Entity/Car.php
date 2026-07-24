@@ -34,6 +34,7 @@ class Car extends Entity
         'plate_number' => true,
         'car_model' => true,
         'category' => true,
+        'car_category' => true,
         'image' => true,
         'engine_capacity' => true,
         'seat_capacity' => true,

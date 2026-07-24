@@ -117,6 +117,11 @@ class AdminsCarsController extends AppController
 
         if ($this->request->is('post')) {
             $data = $this->request->getData();
+
+            if (isset($data['category'])) {
+                $data['car_category'] = $data['category'];
+            }
+
             $image = $this->request->getData('image_file');
             
             if ($image !== null && !$image->getError()) {
@@ -156,6 +161,11 @@ class AdminsCarsController extends AppController
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $data = $this->request->getData();
+
+            if (isset($data['category'])) {
+                $data['car_category'] = $data['category'];
+            }
+
             $image = $this->request->getData('image_file');
 
             if ($image !== null && !$image->getError()) {

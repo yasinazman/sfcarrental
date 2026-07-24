@@ -188,6 +188,23 @@
         background: #b20710;
     }
 
+    /* CSS BARU UNTUK BUTANG DISABLE */
+    .btn-disabled {
+        display: block;
+        width: 100%;
+        background: #333333;
+        color: #777777 !important;
+        text-align: center;
+        padding: 15px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 16px;
+        cursor: not-allowed;
+        margin-top: auto;
+        pointer-events: none;
+    }
+
     /* Responsif Grid */
     .cars-grid {
         display: grid;
@@ -271,21 +288,39 @@
                     </div>
                     
                     <!-- Butang Pilih Kereta -->
-                    <?= $this->Html->link('<i class="fa-regular fa-calendar-check" style="margin-right: 8px;"></i> Select This Car', [
-                        'controller' => 'Bookings',
-                        'action' => 'add',
-                        $car->id,
-                        '?' => [
-                            'start_date' => $this->request->getQuery('pickup_date') ?? $this->request->getQuery('start_date'),
-                            'end_date' => $this->request->getQuery('return_date') ?? $this->request->getQuery('end_date'),
-                            'destination' => $this->request->getQuery('destination'),
-                            'pickup_location' => $this->request->getQuery('pickup_location'),
-                            'dropoff_location' => $this->request->getQuery('dropoff_location')
-                        ]
-                    ], [
-                        'escape' => false,
-                        'class' => 'btn-select-car'
-                    ]) ?>
+                    <?php 
+                    // Semak jika kereta ini ada dalam senarai tempahan bertindih
+                    $isBooked = isset($bookedCarIds) && in_array($car->id, $bookedCarIds); 
+                    
+                    // Semak jika status fizikal kereta sedang diselenggara
+                    $isMaintenance = (strtolower($car->availability_status ?? '') === 'maintenance');
+                    ?>
+
+                    <?php if ($isMaintenance): ?>
+                        <a href="javascript:void(0);" class="btn-disabled" title="This car is currently under maintenance">
+                            <i class="fa-solid fa-wrench" style="margin-right: 8px;"></i> Under Maintenance
+                        </a>
+                    <?php elseif ($isBooked): ?>
+                        <a href="javascript:void(0);" class="btn-disabled" title="This car is already booked for the selected dates">
+                            <i class="fa-solid fa-ban" style="margin-right: 8px;"></i> Not Available
+                        </a>
+                    <?php else: ?>
+                        <?= $this->Html->link('<i class="fa-regular fa-calendar-check" style="margin-right: 8px;"></i> Select This Car', [
+                            'controller' => 'Bookings',
+                            'action' => 'add',
+                            $car->id,
+                            '?' => [
+                                'start_date' => $this->request->getQuery('pickup_date') ?? $this->request->getQuery('start_date'),
+                                'end_date' => $this->request->getQuery('return_date') ?? $this->request->getQuery('end_date'),
+                                'destination' => $this->request->getQuery('destination'),
+                                'pickup_location' => $this->request->getQuery('pickup_location'),
+                                'dropoff_location' => $this->request->getQuery('dropoff_location')
+                            ]
+                        ], [
+                            'escape' => false,
+                            'class' => 'btn-select-car'
+                        ]) ?>
+                    <?php endif; ?>
                 </div>
 
             </div>

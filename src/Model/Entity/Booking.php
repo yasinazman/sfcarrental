@@ -21,6 +21,9 @@ use Cake\ORM\Entity;
  * @property string|null $deposit_status
  * @property \Cake\I18n\DateTime|null $created
  * @property \Cake\I18n\DateTime|null $modified
+ * @property string|null $destination
+ * @property string|null $pickup_location
+ * @property string|null $dropoff_location
  *
  * @property \App\Model\Entity\Customer $customer
  * @property \App\Model\Entity\Car $car
@@ -48,7 +51,9 @@ class Booking extends Entity
         'booking_status' => true,
         'lockbox_pin' => true,
         'deposit_status' => true,
-        'created' => true,
+        'destination' => true,
+        'pickup_location' => true,
+        'dropoff_location' => true,
         'modified' => true,
         'customer' => true,
         'car' => true,

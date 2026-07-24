@@ -28,6 +28,7 @@ $this->Html->css('admin-bookings', ['block' => true]);
 
     <div class="booking-view-grid">
         
+        <!-- CUSTOMER INFORMATION -->
         <div class="detail-card">
             <h4 class="detail-header"><i class="fas fa-user"></i> Customer Information</h4>
             <div style="margin-bottom: 12px;">
@@ -38,12 +39,9 @@ $this->Html->css('admin-bookings', ['block' => true]);
                 <span style="color: var(--text-light); font-size: 13px; display: block;">Phone Number</span>
                 <span style="font-weight: 600; font-size: 15px; color: #007bff;"><?= h($booking->customer->phone_number ?? 'N/A') ?></span>
             </div>
-            <div>
-                <span style="color: var(--text-light); font-size: 13px; display: block;">Email Address</span>
-                <span style="font-weight: 600; font-size: 15px;"><?= h($booking->customer->email ?? 'N/A') ?></span>
-            </div>
         </div>
 
+        <!-- VEHICLE DETAILS -->
         <div class="detail-card">
             <h4 class="detail-header"><i class="fas fa-car"></i> Vehicle Details</h4>
             <div style="margin-bottom: 12px;">
@@ -60,20 +58,33 @@ $this->Html->css('admin-bookings', ['block' => true]);
             </div>
         </div>
 
+        <!-- RENTAL SCHEDULE & TRIP DETAILS -->
         <div class="detail-card">
-            <h4 class="detail-header"><i class="fas fa-calendar-alt"></i> Rental Schedule</h4>
+            <h4 class="detail-header"><i class="fas fa-map-marked-alt"></i> Trip Details & Schedule</h4>
+            
             <div style="margin-bottom: 15px; background: rgba(40, 167, 69, 0.1); padding: 10px; border-left: 4px solid #28a745; border-radius: 4px;">
                 <span style="color: #28a745; font-size: 12px; font-weight: bold; display: block;">PICK-UP (IN)</span>
                 <span style="font-weight: 600; font-size: 16px;"><?= h($booking->start_date->format('l, d F Y')) ?></span><br>
                 <span style="color: #555; font-size: 14px;"><i class="far fa-clock"></i> <?= h($booking->start_date->format('h:i A')) ?></span>
+                <hr style="border: 0; border-top: 1px dashed rgba(40, 167, 69, 0.3); margin: 8px 0;">
+                <span style="color: #444; font-size: 13px; font-weight: 500;"><i class="fas fa-map-marker-alt" style="color: #28a745; width: 16px;"></i> <?= h($booking->pickup_location ?: 'N/A') ?></span>
             </div>
-            <div style="background: rgba(220, 53, 69, 0.1); padding: 10px; border-left: 4px solid #dc3545; border-radius: 4px;">
+            
+            <div style="margin-bottom: 15px; background: rgba(220, 53, 69, 0.1); padding: 10px; border-left: 4px solid #dc3545; border-radius: 4px;">
                 <span style="color: #dc3545; font-size: 12px; font-weight: bold; display: block;">DROP-OFF (OUT)</span>
                 <span style="font-weight: 600; font-size: 16px;"><?= h($booking->end_date->format('l, d F Y')) ?></span><br>
                 <span style="color: #555; font-size: 14px;"><i class="far fa-clock"></i> <?= h($booking->end_date->format('h:i A')) ?></span>
+                <hr style="border: 0; border-top: 1px dashed rgba(220, 53, 69, 0.3); margin: 8px 0;">
+                <span style="color: #444; font-size: 13px; font-weight: 500;"><i class="fas fa-map-marker-alt" style="color: #dc3545; width: 16px;"></i> <?= h($booking->dropoff_location ?: 'N/A') ?></span>
+            </div>
+            
+            <div style="background: #f8f9fa; padding: 10px; border-radius: 4px; border: 1px solid #e9ecef;">
+                <span style="color: var(--text-light); font-size: 12px; font-weight: bold; display: block; text-transform: uppercase;">DESTINATION</span>
+                <span style="font-weight: 600; font-size: 14px; color: #333;"><i class="fas fa-route" style="color: #6c757d; margin-right: 5px;"></i> <?= h($booking->destination ?: 'Not Specified') ?></span>
             </div>
         </div>
 
+        <!-- FINANCIAL SUMMARY -->
         <div class="detail-card">
             <h4 class="detail-header"><i class="fas fa-file-invoice-dollar"></i> Financial Summary</h4>
             <div style="display: flex; justify-content: space-between; margin-bottom: 12px; border-bottom: 1px dashed #ddd; padding-bottom: 8px;">
@@ -82,7 +93,7 @@ $this->Html->css('admin-bookings', ['block' => true]);
             </div>
             <div style="display: flex; justify-content: space-between; margin-bottom: 12px; border-bottom: 1px dashed #ddd; padding-bottom: 8px;">
                 <span style="color: var(--text-light);">Security Deposit</span>
-                <span style="font-weight: 600;">RM <?= $this->Number->format($booking->deposit_amount, ['places' => 2]) ?></span>
+                <span style="font-weight: 600;">RM <?= isset($booking->deposit_amount) ? $this->Number->format($booking->deposit_amount, ['places' => 2]) : '0.00' ?></span>
             </div>
             <div style="display: flex; justify-content: space-between; margin-top: 15px; background: #e8f4fd; padding: 10px; border-radius: 6px;">
                 <span style="color: #007bff; font-weight: bold; font-size: 16px;">Total Amount</span>
